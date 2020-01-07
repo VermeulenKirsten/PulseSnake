@@ -21,8 +21,13 @@ const handleData = async function(url, callback, method = 'GET', body = null) {
 // ***********  Objects ***********
 function createsnake(name, lenth, speed, xpos, ypos) {
   let obj = {};
-  obj.xpos = xpos;
-  obj.ypos = ypos;
+  obj.tail = [
+    [xpos, ypos],
+    [xpos - 1, ypos],
+    [xpos - 2, ypos]
+  ];
+  // obj.xpos = xpos;
+  // obj.ypos = ypos;
   return obj;
 }
 // ***********  Event Listeners ***********
@@ -59,6 +64,7 @@ const handlekeydowns = function() {
 // ***********  Core Game Mechanics ***********
 const createfield = function() {
   console.log('create field');
+  gamefield = [];
   for (let x = 0; x < 10; x++) {
     gamefield.push([]);
     for (let y = 0; y < 10; y++) {
@@ -72,24 +78,56 @@ const displayinconsole = function() {
 
   let input = inputbuffer.shift();
   if (input == 'down') {
-    snake1.xpos += 1;
+    let newkop = [snake1.tail[0][0] + 1, snake1.tail[0][1]];
+    snake1.tail.pop();
+    snake1.tail.unshift(newkop);
   } else if (input == 'up') {
-    snake1.xpos -= 1;
+    // snake1.xpos -= 1;
+    // for (let tailpos = 0; tailpos < snake1.tail.length; tailpos++) {
+    //   snake1.tail[tailpos][0] -= 1;
+    // }
+
+    let newkop = [snake1.tail[0][0] - 1, snake1.tail[0][1]];
+    snake1.tail.pop();
+    snake1.tail.unshift(newkop);
   } else if (input == 'left') {
-    snake1.ypos -= 1;
+    let newkop = [snake1.tail[0][0], snake1.tail[0][1] - 1];
+    snake1.tail.pop();
+    snake1.tail.unshift(newkop);
   } else if (input == 'right') {
-    snake1.ypos += 1;
+    let newkop = [snake1.tail[0][0], snake1.tail[0][1] + 1];
+    snake1.tail.pop();
+    snake1.tail.unshift(newkop);
   }
-  gamefield[snake1.xpos][snake1.ypos] = 1;
+  createfield();
+  displaysnake(snake1);
   console.table(gamefield);
   console.log(inputbuffer);
   if (!stop) {
     setTimeout(displayinconsole, 2000);
   }
 };
+
+const displaysnake = function(snakeobj) {
+  console.log('snakeopbject: ', snakeobj);
+  for (let piece of snakeobj.tail) {
+    gamefield[piece[0]][piece[1]] = 1;
+  }
+};
 const gametick = function() {
   displayinconsole();
 };
+
+// ***********  generate fruit ***********
+// const generatefruit = function() {
+//   x = math.floor(Math.random() * 9);
+//   y = math.floor(Math.random() * 9);
+//   if (gamefield[x][y] == 0) {
+//     gamefield[x][y] = 2;
+//   } else {
+//     generatefruit();
+//   }
+// };
 
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
@@ -99,6 +137,7 @@ const init = function() {
   createfield();
   handlekeydowns();
   gametick();
+  // generatefruit();
 };
 document.addEventListener('DOMContentLoaded', function() {
   init();
