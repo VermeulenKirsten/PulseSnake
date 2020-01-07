@@ -1,12 +1,20 @@
 // const ip = "127.0.0.1:5000";
 // const socketio = io.connect(ip);
 
-let inputbuffer = ['right'];
+// let inputbuffer = ['right'];
 let gamefield = [[]];
 let stop = false;
 let snake1;
 let fruit;
+let canvas;
+let ctx;
+let gamewidth = 10;
+let gamehight = 10;
 // ***********  DOM references ***********
+const getdomelements = function() {
+  canvas = document.querySelector('.c-gameboard');
+  ctx = canvas.getContext('2d');
+};
 
 // ***********  HTML Generation ***********
 
@@ -20,46 +28,26 @@ const handleData = async function(url, callback, method = 'GET', body = null) {
 };
 
 // ***********  Objects ***********
-function createsnake(name, lenth, speed, xpos, ypos) {
-  let obj = {};
-  obj.tail = [
-    [xpos, ypos],
-    [xpos - 1, ypos],
-    [xpos - 2, ypos],
-    [xpos - 3, ypos],
-    [xpos - 4, ypos]
-  ];
-  obj.isalive = true;
-  return obj;
-}
+
 // ***********  Event Listeners ***********
 //event that triggers when keyboard buttons are pressed
 const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
-    let lastkey = inputbuffer[inputbuffer.length - 1];
     //left arrow key pressed
     if (key.which === 37) {
-      if (lastkey != 'right' && lastkey != 'left') {
-        inputbuffer.push('left');
-      }
+      snake1.Input('left');
     }
     //up arrow key pressed
     else if (key.which === 38) {
-      if (lastkey != 'down' && lastkey != 'up') {
-        inputbuffer.push('up');
-      }
+      snake1.Input('up');
     }
     //right arrow key pressed
     else if (key.which === 39) {
-      if (lastkey != 'left' && lastkey != 'right') {
-        inputbuffer.push('right');
-      }
+      snake1.Input('right');
     }
     //down arrow key pressed
     else if (key.which === 40) {
-      if (lastkey != 'up' && lastkey != 'down') {
-        inputbuffer.push('down');
-      }
+      snake1.Input('down');
     }
     //space bar pressed
     else if (key.which === 32) {
@@ -83,76 +71,37 @@ const createfield = function() {
       gamefield[x].push(0);
     }
   }
+
+  ctx.clearRect(0, 0, 100, 100);
 };
 
 const displayinconsole = function() {
-  // console.log('display in console');
-  let tailend;
-  let newhead;
-  let input = inputbuffer[0];
-  if (inputbuffer.length > 1) {
-    input = inputbuffer.shift();
-  }
-  try {
-    if (input == 'down') {
-      newhead = [snake1.tail[0][0] + 1, snake1.tail[0][1]];
-      tailend = snake1.tail.pop();
-      snake1.tail.unshift(newhead);
-    } else if (input == 'up') {
-      newhead = [snake1.tail[0][0] - 1, snake1.tail[0][1]];
-      tailend = snake1.tail.pop();
-      snake1.tail.unshift(newhead);
-    } else if (input == 'left') {
-      newhead = [snake1.tail[0][0], snake1.tail[0][1] - 1];
-      tailend = snake1.tail.pop();
-      snake1.tail.unshift(newhead);
-    } else if (input == 'right') {
-      newhead = [snake1.tail[0][0], snake1.tail[0][1] + 1];
-      tailend = snake1.tail.pop();
-      snake1.tail.unshift(newhead);
-    }
-    if (snake1.tail[0][1] < 0 || snake1.tail[0][1] > 9) {
-      throw 'u dead';
-    }
-  } catch {
-    snake1.isalive = false;
-    console.log('u dead boi');
-    stop = true;
-  }
+  // move the snake
+  snake1.Movesnake();
+
   // create empty field where we can re-draw everything
   createfield();
   // show te fruit we created before
   gamefield[fruit[0]][fruit[1]] = 2;
+  ctx.fillStyle = '#FF0000';
+  ctx.fillRect(fruit[1] * 10, fruit[0] * 10, 1 * 10, 1 * 10);
 
-  // check if the snake ate the candy
-  if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
-    snake1.tail.push(tailend);
-    generatefruit();
-  }
-
-  //check if hte snfake ate himself
-  for (let t = 1; t < snake1.tail.length; t++) {
-    let tailpiece = snake1.tail[t];
-    if (tailpiece[0] == newhead[0] && tailpiece[1] == newhead[1]) {
-      stop = true;
-      console.log('u dead boi!!');
-    }
-  }
-
-  //show the location of the snake
+  //display the snake
   displaysnake(snake1);
 
   console.table(gamefield);
   if (!stop) {
-    setTimeout(displayinconsole, 1500);
+    setTimeout(displayinconsole, 500);
   }
 };
 
 const displaysnake = function(snakeobj) {
   // console.log('snakeopbject: ', snakeobj);
   try {
-    for (let piece of snakeobj.tail) {
+    for (let piece of snakeobj.Tail) {
       gamefield[piece[0]][piece[1]] = 1;
+      ctx.fillStyle = '#00FF00';
+      ctx.fillRect(piece[1] * 10, piece[0] * 10, 1 * 10, 1 * 10);
     }
   } catch {
     snake1.isalive = false;
@@ -179,13 +128,18 @@ const generatefruit = function() {
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
-  snake1 = createsnake('bob', 1, 1, 5, 5);
+  // snake1 = createsnake('bob', 1, 1, 5, 5);
+  snake1 = new Snake('bob', 1, [], 'right', 1, 5, 5);
+  console.log(snake1.Isalive);
+
+  getdomelements();
+
   createfield();
   generatefruit();
   handlekeydowns();
   gametick();
-  // generatefruit();
 };
+
 document.addEventListener('DOMContentLoaded', function() {
   init();
 });
