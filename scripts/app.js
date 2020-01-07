@@ -5,12 +5,13 @@
 let gamefield = [[]];
 let stop = false;
 let snakes = [];
-let fruit;
-let candy;
+let fruit = [null, null];
+let candy = [null, null];
 let canvas;
 let ctx;
-let gamewidth = 10;
-let gamehight = 10;
+let gamewidth = 533;
+let gameheight = 533;
+let scalefactor = 20;
 // ***********  DOM references ***********
 const getdomelements = function() {
   canvas = document.querySelector('.c-gameboard');
@@ -65,27 +66,26 @@ const handlekeydowns = function() {
 // ***********  Core Game Mechanics ***********
 const createfield = function() {
   // console.log('create field');
-  gamefield = [];
-  for (let x = 0; x < 10; x++) {
-    gamefield.push([]);
-    for (let y = 0; y < 10; y++) {
-      gamefield[x].push(0);
-    }
-  }
-
-  ctx.clearRect(0, 0, 100, 100);
+  // gamefield = [];
+  // for (let x = 0; x < gamewidth; x++) {
+  //   gamefield.push([]);
+  //   for (let y = 0; y < gameheight; y++) {
+  //     gamefield[x].push(0);
+  //   }
+  // }
+  ctx.clearRect(0, 0, gamewidth, gameheight);
 };
 
 const displaysnake = function(snakeobj) {
   // console.log('snakeopbject: ', snakeobj);
   try {
     for (let piece of snakeobj.Tail) {
-      gamefield[piece[0]][piece[1]] = 1;
+      // gamefield[piece[0]][piece[1]] = 1;
       ctx.fillStyle = snakeobj.Color;
-      ctx.fillRect(piece[1] * 10, piece[0] * 10, 1 * 10, 1 * 10);
+      ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
     }
   } catch {
-    snake1.isalive = false;
+    snakeobj.isalive = false;
     console.log('u dead boi');
     stop = true;
   }
@@ -95,13 +95,13 @@ const gametick = function() {
   createfield();
 
   // show the fruit we created before
-  gamefield[fruit[0]][fruit[1]] = 2;
+  // gamefield[fruit[0]][fruit[1]] = 2;
   ctx.fillStyle = '#FF0000';
-  ctx.fillRect(fruit[1] * 10, fruit[0] * 10, 1 * 10, 1 * 10);
+  ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
   // show the candy
-  gamefield[candy[0]][candy[1]] = 3;
+  // gamefield[candy[0]][candy[1]] = 3;
   ctx.fillStyle = '#FF00FF';
-  ctx.fillRect(candy[1] * 10, candy[0] * 10, 1 * 10, 1 * 10);
+  ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
 
   // move the snake
   for (player of snakes) {
@@ -112,41 +112,51 @@ const gametick = function() {
   for (player of snakes) {
     displaysnake(player);
   }
-
-  console.table(gamefield);
   if (!stop) {
-    setTimeout(gametick, 500);
+    setTimeout(gametick, 200);
   }
 };
 
 // ***********  generate fruit ***********
 const generatefruit = function() {
-  x = Math.floor(Math.random() * 9);
-  y = Math.floor(Math.random() * 9);
+  x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
+  y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   console.log('x: ', x, ' y: ', y);
-  if (gamefield[x][y] == 0) {
-    fruit = [x, y];
-  } else {
-    generatefruit();
-  }
+  if (candy[0] != x && candy[1] != y)
+    for (player of snakes) {
+      for (tailpiece of player.Tail) {
+        if (tailpiece[0] == x && tailpiece[1] == y) {
+          generatefruit();
+          break;
+        }
+      }
+    }
+  fruit = [y, x];
 };
 // ***********  generate candy ***********
 const generatecandy = function() {
-  x = Math.floor(Math.random() * 9);
-  y = Math.floor(Math.random() * 9);
+  x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
+  y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   console.log('x: ', x, ' y: ', y);
-  if (gamefield[x][y] == 0) {
-    candy = [x, y];
-  } else {
-    generatecandy();
-  }
+  if (candy[0] != x && candy[1] != y)
+    for (player of snakes) {
+      for (tailpiece of player.Tail) {
+        if (tailpiece[0] == x && tailpiece[1] == y) {
+          generatefruit();
+          break;
+        }
+      }
+    }
+  candy = [y, x];
+  // } else {
+  //   generatecandy();
+  // }
 };
 
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
   MQTTconnect();
-  // snake1 = createsnake('bob', 1, 1, 5, 5);
   let xpos = 5;
   let ypos = 5;
   let tail = [
@@ -169,7 +179,7 @@ const init = function() {
   ];
   snake2 = new Snake('gorge', 2, tail, 'left', 1, 4, 4, '#0000FF');
   snakes.push(snake1);
-  snakes.push(snake2);
+  // snakes.push(snake2);
 
   getdomelements();
 

@@ -18,7 +18,7 @@ function Snake(name, id, tail, direction, speed, xpos, ypos, color = '#00FF00') 
           this.Inputbuffer.push('down');
         }
         let jsonstring = JSON.stringify(this);
-        let message = new Paho.MQTT.Message(jsonstring);
+        let message = new Paho.MQTT.Message(jsonstring, 2);
         message.destinationName = 'ktest';
         mqtt.send(message);
       }
@@ -32,8 +32,8 @@ function Snake(name, id, tail, direction, speed, xpos, ypos, color = '#00FF00') 
       direction = this.Inputbuffer.shift();
     }
     if (direction == 'down') {
-      newhead = [snake1.Tail[0][0] + 1, snake1.Tail[0][1]];
-      tailend = snake1.Tail.pop();
+      newhead = [this.Tail[0][0] + 1, this.Tail[0][1]];
+      tailend = this.Tail.pop();
       this.Tail.unshift(newhead);
     } else if (direction == 'up') {
       newhead = [this.Tail[0][0] - 1, this.Tail[0][1]];
@@ -73,7 +73,12 @@ function Snake(name, id, tail, direction, speed, xpos, ypos, color = '#00FF00') 
     }
     // check if the snake went off screen and should die
     try {
-      if (this.Tail[0][1] < 0 || this.Tail[0][1] > 9) {
+      console.log('he should die right here: ', gamewidth / scalefactor - 1);
+      console.log(this.Tail[0][1]);
+      if (this.Tail[0][0] <= 0 || this.Tail[0][0] > gameheight / scalefactor - 1) {
+        console.log('u dead boi');
+        throw 'u dead';
+      } else if (this.Tail[0][1] <= 0 || this.Tail[0][1] > gamewidth / scalefactor - 1) {
         console.log('u dead boi');
         throw 'u dead';
       }

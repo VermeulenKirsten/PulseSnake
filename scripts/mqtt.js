@@ -1,5 +1,5 @@
 let mqtt;
-let reconnectTimeout = 1000;
+let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
 let roomcode;
@@ -15,9 +15,9 @@ const onFailure = function() {
 };
 
 const onMessageArrived = function(msg) {
-  console.log(msg);
+  console.log('message:', msg.payloadString);
   snakemessage = JSON.parse(msg.payloadString);
-  for (let t = 0; t < snakes.length - 1; t++) {
+  for (let t = 0; t < snakes.length; t++) {
     if (snakes[t].Name == snakemessage.Name) {
       snakes[t].Id = snakemessage.Id;
       snakes[t].Name = snakemessage.Name;
@@ -29,16 +29,13 @@ const onMessageArrived = function(msg) {
       console.log('this snake got replaced', snakes[t]);
     }
   }
-
-  console.log(JSON.parse(msg.payloadString));
-  console.log('message:', msg.payloadString);
 };
 
 const MQTTconnect = function() {
   console.log('connecting to ' + host);
-  mqtt = new Paho.MQTT.Client(host, Number(port), 'kevin');
+  mqtt = new Paho.MQTT.Client(host, Number(port), 'robbe');
   let options = {
-    timeout: 1,
+    timeout: 0,
     onSuccess: onConnect,
     onFailure: onFailure
   };
