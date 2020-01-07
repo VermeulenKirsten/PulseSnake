@@ -1,12 +1,7 @@
-function Snake(name, id, tail, direction, speed, xpos, ypos) {
+function Snake(name, id, tail, direction, speed, xpos, ypos, color = '#00FF00') {
   (this.Id = id), (this.Name = name), (this.Speed = speed);
-  (this.Tail = [
-    [xpos, ypos],
-    [xpos - 1, ypos],
-    [xpos - 2, ypos],
-    [xpos - 3, ypos],
-    [xpos - 4, ypos]
-  ]),
+  (this.Tail = tail),
+    (this.Color = color),
     (this.Inputbuffer = [direction]),
     (this.Isalive = true),
     (this.Input = function(direction) {
@@ -22,6 +17,10 @@ function Snake(name, id, tail, direction, speed, xpos, ypos) {
         } else if (lastkey != 'up' && direction == 'down') {
           this.Inputbuffer.push('down');
         }
+        let jsonstring = JSON.stringify(this);
+        let message = new Paho.MQTT.Message(jsonstring);
+        message.destinationName = 'ktest';
+        mqtt.send(message);
       }
     });
   this.Movesnake = function() {
