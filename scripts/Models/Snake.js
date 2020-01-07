@@ -50,11 +50,18 @@ function Snake(name, id, tail, direction, speed, xpos, ypos) {
       this.Tail.unshift(newhead);
     }
 
-    // check if the snake ate the candy
+    // check if the snake ate the fruit
     if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
-      console.log('UUUU HUNGRYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY');
       this.Tail.push(tailend);
       generatefruit();
+    }
+
+    // check if the snake ate the candy
+    if (candy[0] == newhead[0] && candy[1] == newhead[1]) {
+      if (this.Tail.length > 3) {
+        this.Tail.pop();
+      }
+      generatecandy();
     }
 
     // check if the snake ate himself

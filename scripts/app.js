@@ -6,6 +6,7 @@ let gamefield = [[]];
 let stop = false;
 let snake1;
 let fruit;
+let candy;
 let canvas;
 let ctx;
 let gamewidth = 10;
@@ -86,6 +87,10 @@ const displayinconsole = function() {
   ctx.fillStyle = '#FF0000';
   ctx.fillRect(fruit[1] * 10, fruit[0] * 10, 1 * 10, 1 * 10);
 
+  gamefield[candy[0]][candy[1]] = 3;
+  ctx.fillStyle = '#FF00FF';
+  ctx.fillRect(candy[1] * 10, candy[0] * 10, 1 * 10, 1 * 10);
+
   //display the snake
   displaysnake(snake1);
 
@@ -124,6 +129,17 @@ const generatefruit = function() {
     generatefruit();
   }
 };
+// ***********  generate candy ***********
+const generatecandy = function() {
+  x = Math.floor(Math.random() * 9);
+  y = Math.floor(Math.random() * 9);
+  console.log('x: ', x, ' y: ', y);
+  if (gamefield[x][y] == 0) {
+    candy = [x, y];
+  } else {
+    generatecandy();
+  }
+};
 
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
@@ -135,7 +151,10 @@ const init = function() {
   getdomelements();
 
   createfield();
+
   generatefruit();
+  generatecandy();
+
   handlekeydowns();
   gametick();
 };
