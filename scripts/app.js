@@ -4,7 +4,7 @@
 // let inputbuffer = ['right'];
 let gamefield = [[]];
 let stop = false;
-let snake1;
+let snakes = [];
 let fruit;
 let candy;
 let canvas;
@@ -57,7 +57,7 @@ const handlekeydowns = function() {
       } else {
         stop = true;
       }
-      displayinconsole();
+      gametick();
     }
   });
 };
@@ -76,36 +76,12 @@ const createfield = function() {
   ctx.clearRect(0, 0, 100, 100);
 };
 
-const displayinconsole = function() {
-  // move the snake
-  snake1.Movesnake();
-
-  // create empty field where we can re-draw everything
-  createfield();
-  // show te fruit we created before
-  gamefield[fruit[0]][fruit[1]] = 2;
-  ctx.fillStyle = '#FF0000';
-  ctx.fillRect(fruit[1] * 10, fruit[0] * 10, 1 * 10, 1 * 10);
-
-  gamefield[candy[0]][candy[1]] = 3;
-  ctx.fillStyle = '#FF00FF';
-  ctx.fillRect(candy[1] * 10, candy[0] * 10, 1 * 10, 1 * 10);
-
-  //display the snake
-  displaysnake(snake1);
-
-  console.table(gamefield);
-  if (!stop) {
-    setTimeout(displayinconsole, 500);
-  }
-};
-
 const displaysnake = function(snakeobj) {
   // console.log('snakeopbject: ', snakeobj);
   try {
     for (let piece of snakeobj.Tail) {
       gamefield[piece[0]][piece[1]] = 1;
-      ctx.fillStyle = '#00FF00';
+      ctx.fillStyle = snakeobj.Color;
       ctx.fillRect(piece[1] * 10, piece[0] * 10, 1 * 10, 1 * 10);
     }
   } catch {
@@ -115,7 +91,32 @@ const displaysnake = function(snakeobj) {
   }
 };
 const gametick = function() {
-  displayinconsole();
+  // create empty field where we can re-draw everything
+  createfield();
+
+  // show the fruit we created before
+  gamefield[fruit[0]][fruit[1]] = 2;
+  ctx.fillStyle = '#FF0000';
+  ctx.fillRect(fruit[1] * 10, fruit[0] * 10, 1 * 10, 1 * 10);
+  // show the candy
+  gamefield[candy[0]][candy[1]] = 3;
+  ctx.fillStyle = '#FF00FF';
+  ctx.fillRect(candy[1] * 10, candy[0] * 10, 1 * 10, 1 * 10);
+
+  // move the snake
+  for (player of snakes) {
+    player.Movesnake();
+  }
+
+  //display the snake
+  for (player of snakes) {
+    displaysnake(player);
+  }
+
+  console.table(gamefield);
+  if (!stop) {
+    setTimeout(gametick, 500);
+  }
 };
 
 // ***********  generate fruit ***********
@@ -144,9 +145,31 @@ const generatecandy = function() {
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
+  MQTTconnect();
   // snake1 = createsnake('bob', 1, 1, 5, 5);
-  snake1 = new Snake('bob', 1, [], 'right', 1, 5, 5);
-  console.log(snake1.Isalive);
+  let xpos = 5;
+  let ypos = 5;
+  let tail = [
+    [xpos, ypos],
+    [xpos - 1, ypos],
+    [xpos - 2, ypos],
+    [xpos - 3, ypos],
+    [xpos - 4, ypos]
+  ];
+
+  snake1 = new Snake('bob', 1, tail, 'right', 1, 5, 5);
+  xpos = 4;
+  ypos = 5;
+  tail = [
+    [xpos, ypos],
+    [xpos - 1, ypos],
+    [xpos - 2, ypos],
+    [xpos - 3, ypos],
+    [xpos - 4, ypos]
+  ];
+  snake2 = new Snake('gorge', 2, tail, 'left', 1, 4, 4, '#0000FF');
+  snakes.push(snake1);
+  snakes.push(snake2);
 
   getdomelements();
 
