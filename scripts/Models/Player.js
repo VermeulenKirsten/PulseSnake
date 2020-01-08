@@ -1,3 +1,3 @@
-function Player(name, color = '#FF0000') {
-  (this.name = name), (this.color = color);
+function Player(id, color = '#FF0000') {
+  (this.id = id), (this.color = color), this.name;
 }
