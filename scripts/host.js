@@ -1,42 +1,23 @@
 let roomId = '';
-let name;
 let form;
-let buttonStart;
-let playerId;
-let playerList;
 
-const showplayers = function() {
-  let output = '';
-  for (player of roomInfo.players) {
-    output += `<li>${player.name}</li>`;
-  }
-  playerList.innerHTML = output;
-};
-
-// ***********  start the game ***********
-
-const startGame = function() {
-  console.log('start');
-  //   message = new Paho.MQTT.Message(JSON.stringify(roomInfo));
-  //   message.destinationName = '0000';
-  mqtt.send('0001', '{"test":"sdf"}', 1, false);
-};
 // ***********  generate room ***********
 const generateRoom = function() {
-  MQTTconnect(name.value);
   playerId = createUuid();
   let host = new Player(playerId);
   host.name = 'Speler 1';
-  // console.log(host);
   roomInfo = new room(roomId);
   roomInfo.addPlayer(host);
-  showplayers();
+
+  //store gameinfo in sessionstorage and go to lobby
+  sessionStorage.setItem('playerId', playerId);
+  sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+  window.location.href = 'http://127.0.0.1:5500/hostlobby.html';
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
   form.addEventListener('submit', generateRoom);
-  buttonStart.addEventListener('click', startGame);
 };
 // ***********  generate a roomId ***********
 
@@ -51,9 +32,6 @@ const generateRoomId = function() {
 
 const generateDOMelements = function() {
   form = document.querySelector('.js-form');
-  name = document.querySelector('.js-name');
-  buttonStart = document.querySelector('.js-startGame');
-  playerList = document.querySelector('#playerListjs');
   addListener();
 };
 
