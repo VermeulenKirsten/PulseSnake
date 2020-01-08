@@ -30,11 +30,12 @@ const onMessageArrived = function(msg) {
       {
         let newplayer = incommingMessage.message;
         if (roomInfo.players.length < 4) {
+          console.log(roomInfo);
           roomInfo.addPlayer(newplayer);
+          console.table(roomInfo);
           message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
           message.destinationName = '0001';
           mqtt.send(message);
-          console.table(roomInfo);
           showplayers();
         } else {
           message = new Paho.MQTT.Message(JSON.stringify(new Message('error', 'room full')));
@@ -64,7 +65,6 @@ const onMessageArrived = function(msg) {
 
 const MQTTconnect = function(name) {
   console.log('connecting to ' + host);
-  console.log(typeof name);
   mqtt = new Paho.MQTT.Client(host, Number(port), name);
   let options = {
     timeout: 0,
