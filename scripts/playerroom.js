@@ -4,11 +4,12 @@ let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
 
 let roomId;
-let playerName;
+let playerId;
+// let playerName;
 let playerList;
 
 window.onbeforeunload = function() {
-  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerName)));
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
   message.destinationName = roomId;
   mqtt.send(message);
 };
@@ -18,10 +19,9 @@ const onConnect = function() {
   console.log('Connected');
   //   mqtt.subscribe(roomId);
   mqtt.subscribe('0001');
-  console.log;
-  let player = new Player(playerName);
-  console.log('send: ', JSON.stringify(new Message('player', player)));
-  message = new Paho.MQTT.Message(JSON.stringify(new Message('player', player)));
+  let guest = new Player(playerId);
+  console.log('send: ', JSON.stringify(new Message('player', guest)));
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
   message.destinationName = roomId;
   mqtt.send(message);
 };
@@ -49,7 +49,7 @@ const onMessageArrived = function(msg) {
 
 const MQTTconnect = function() {
   console.log('connecting to ' + host);
-  mqtt = new Paho.MQTT.Client(host, Number(port), playerName);
+  mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
   let options = {
     timeout: 0,
     onSuccess: onConnect,
@@ -74,8 +74,11 @@ const getDomelements = function() {
 const init = function() {
   var url = new URL(window.location.href);
   roomId = url.searchParams.get('roomId');
-  playerName = url.searchParams.get('playerName');
-  console.log(roomId, playerName);
+
+  playerId = createUuid();
+
+  //   playerName = url.searchParams.get('playerName');
+  console.log(roomId, playerId);
 
   getDomelements();
   MQTTconnect();
