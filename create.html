@@ -4,7 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="scripts/host.js"></script>
+    <script src="scripts/Models/Player.js"></script>
+    <script src="scripts/Models/Room.js"></script>
+    <script src="scripts/host-mqtt.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+
     <title>Pulse Snake 2.0</title>
   </head>
-  <body></body>
+  <body>
+    <p>roomid: <span class="js-roomid"></span></p>
+    <form class="js-form" id="form" onsubmit="return false;">
+      <!-- <label for="speler1">Speler 1</label>
+      <input type="radio" name="speler" id="speler1" value="1" />
+      <label for="speler2">Speler 2</label>
+      <input type="radio" name="speler" id="speler2" value="2" />
+      <label for="speler3">Speler 3</label>
+      <input type="radio" name="speler" id="speler3" value="3" />
+      <label for="speler4">Speler 4</label>
+      <input type="radio" name="speler" id="speler4" value="4" /> -->
+      <label for="name">Name:</label>
+      <input class="js-name" type="tekst" name="name" id="name" />
+      <input type="submit" class="js-start" />
+    </form>
+  </body>
 </html>

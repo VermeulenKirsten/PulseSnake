@@ -1,6 +1,8 @@
 function Snake(name, id, tail, direction, speed, xpos, ypos, color = '#00FF00') {
-  (this.Id = id), (this.Name = name), (this.Speed = speed);
-  (this.Tail = tail),
+  (this.Id = id),
+    (this.Name = name),
+    (this.Speed = speed),
+    (this.Tail = tail),
     (this.Color = color),
     (this.Inputbuffer = [direction]),
     (this.Isalive = true),

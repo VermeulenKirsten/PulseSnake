@@ -37,19 +37,19 @@ const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
     //left arrow key pressed
     if (key.which === 37) {
-      snake1.Input('left');
+      snake2.Input('left');
     }
     //up arrow key pressed
     else if (key.which === 38) {
-      snake1.Input('up');
+      snake2.Input('up');
     }
     //right arrow key pressed
     else if (key.which === 39) {
-      snake1.Input('right');
+      snake2.Input('right');
     }
     //down arrow key pressed
     else if (key.which === 40) {
-      snake1.Input('down');
+      snake2.Input('down');
     }
     //space bar pressed
     else if (key.which === 32) {
