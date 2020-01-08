@@ -28,25 +28,14 @@ const onMessageArrived = function(msg) {
   switch (incommingMessage.type) {
     case 'player':
       {
-        newplayer = incommingMessage.message;
+        let newplayer = incommingMessage.message;
         if (roomInfo.players.length < 4) {
-          let count = 0;
-          for (player of roomInfo.players) {
-            if (player.name == newplayer.name) {
-              count++;
-            }
-          }
-          if (count == 0) {
-            roomInfo.players.push(newplayer);
-            message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
-            message.destinationName = '0001';
-            mqtt.send(message);
-            console.table(roomInfo);
-          } else {
-            message = new Paho.MQTT.Message(JSON.stringify(new Message('error', 'Name already used')));
-            message.destinationName = '0001';
-            mqtt.send(message);
-          }
+          roomInfo.addPlayer(newplayer);
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
+          message.destinationName = '0001';
+          mqtt.send(message);
+          console.table(roomInfo);
+          showplayers();
         } else {
           message = new Paho.MQTT.Message(JSON.stringify(new Message('error', 'room full')));
           message.destinationName = '0001';
@@ -57,12 +46,13 @@ const onMessageArrived = function(msg) {
     case 'disconnect':
       {
         console.log('disconnect', incommingMessage.message);
-        for (let i = 0; i < roomInfo.players.length; i++) {
-          if (roomInfo.players[i].name == incommingMessage.message) {
-            console.log('delete', roomInfo.players[i]);
-            roomInfo.players.pop(i);
-          }
-        }
+        roomInfo.removePlayer(incommingMessage.message);
+        // for (let i = 0; i < roomInfo.players.length; i++) {
+        //   if (roomInfo.players[i].name == incommingMessage.message) {
+        //     console.log('delete', roomInfo.players[i]);
+        //     roomInfo.players.pop(i);
+        //   }
+        // }
       }
       break;
     case 'roominfo': {
