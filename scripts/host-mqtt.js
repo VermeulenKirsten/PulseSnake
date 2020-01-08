@@ -25,32 +25,51 @@ const onFailure = function() {
 const onMessageArrived = function(msg) {
   console.log('message:', msg.payloadString);
   let incommingMessage = JSON.parse(msg.payloadString);
-  if (incommingMessage.type == 'player') {
-    if (roomInfo.players.length < 4) {
-      let count = 0;
-      for (player of roomInfo.players) {
-        console.log(player);
-        if (player.name == newplayer.name) {
-          count++;
+  switch (incommingMessage.type) {
+    case 'player':
+      {
+        newplayer = incommingMessage.message;
+        if (roomInfo.players.length < 4) {
+          let count = 0;
+          for (player of roomInfo.players) {
+            if (player.name == newplayer.name) {
+              count++;
+            }
+          }
+          if (count == 0) {
+            roomInfo.players.push(newplayer);
+            message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
+            message.destinationName = '0001';
+            mqtt.send(message);
+            console.table(roomInfo);
+          } else {
+            message = new Paho.MQTT.Message(JSON.stringify(new Message('error', 'Name already used')));
+            message.destinationName = '0001';
+            mqtt.send(message);
+          }
+        } else {
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('error', 'room full')));
+          message.destinationName = '0001';
+          mqtt.send(message);
         }
       }
-      if (count == 0) {
-        roomInfo.players.push(newplayer);
-        message = new Paho.MQTT.Message(new Message('roominfo', JSON.stringify(roomInfo)));
-        message.destinationName = '0001';
-        mqtt.send(message);
-      } else {
-        message = new Paho.MQTT.Message(new Message('error', 'Name already used'));
-        message.destinationName = '0001';
-        mqtt.send(message);
+      break;
+    case 'disconnect':
+      {
+        console.log('disconnect', incommingMessage.message);
+        for (let i = 0; i < roomInfo.players.length; i++) {
+          if (roomInfo.players[i].name == incommingMessage.message) {
+            console.log('delete', roomInfo.players[i]);
+            roomInfo.players.pop(i);
+          }
+        }
       }
-    } else {
-      message = new Paho.MQTT.Message(new Message('error', 'room full'));
-      message.destinationName = '0001';
-      mqtt.send(message);
+      break;
+    case 'roominfo': {
     }
+    default:
+      console.log('not existing type:', incommingMessage);
   }
-  console.log(roomInfo);
 };
 
 const MQTTconnect = function(name) {
