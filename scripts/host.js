@@ -2,6 +2,17 @@ let roomId = '';
 let name;
 let form;
 let buttonStart;
+let playerId;
+let playerList;
+
+const showplayers = function() {
+  let output = '';
+  for (player of roomInfo.players) {
+    output += `<li>${player.name}</li>`;
+  }
+  playerList.innerHTML = output;
+};
+
 // ***********  start the game ***********
 
 const startGame = function() {
@@ -13,10 +24,13 @@ const startGame = function() {
 // ***********  generate room ***********
 const generateRoom = function() {
   MQTTconnect(name.value);
-  let host = new Player(name.value);
+  playerId = createUuid();
+  let host = new Player(playerId);
+  host.name = 'Speler 1';
+  // console.log(host);
   roomInfo = new room(roomId);
-  roomInfo.players.push(host);
-  console.table(roomInfo);
+  roomInfo.addPlayer(host);
+  showplayers();
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
@@ -39,6 +53,7 @@ const generateDOMelements = function() {
   form = document.querySelector('.js-form');
   name = document.querySelector('.js-name');
   buttonStart = document.querySelector('.js-startGame');
+  playerList = document.querySelector('#playerListjs');
   addListener();
 };
 
