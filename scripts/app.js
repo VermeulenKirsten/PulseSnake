@@ -1,6 +1,3 @@
-// const ip = "127.0.0.1:5000";
-// const socketio = io.connect(ip);
-
 // let inputbuffer = ['right'];
 let gamefield = [[]];
 let stop = false;
@@ -153,10 +150,19 @@ const generatecandy = function() {
   // }
 };
 
+// ***********  generate candy ***********
+const Generatesnakes = function() {
+  
+
+};
+
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
+  Generatesnakes();
+
   MQTTconnect();
+
   let xpos = 5;
   let ypos = 5;
   let tail = [
