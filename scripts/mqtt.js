@@ -39,6 +39,9 @@ const onMessageArrived = function(msg) {
         // console.log('fruit  message received ');
         // console.log  (message.message);
         fruit = message.message;
+        //show the fruit
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
       }
       break;
     case 'candy':
@@ -46,6 +49,9 @@ const onMessageArrived = function(msg) {
         // console.log('candy message received ');
         // console.log(message.message);
         candy = message.message;
+        // show the candy
+        ctx.fillStyle = '#FF00FF';
+        ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
       }
       break;
     default: {
