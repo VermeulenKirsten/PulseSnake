@@ -18,7 +18,7 @@ window.onbeforeunload = function() {
 const onConnect = function() {
   console.log('Connected');
   //   mqtt.subscribe(roomId);
-  mqtt.subscribe('0001');
+  mqtt.subscribe(roomId);
   let guest = new Player(playerId);
   console.log('send: ', JSON.stringify(new Message('player', guest)));
   message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));

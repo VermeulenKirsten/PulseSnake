@@ -4,10 +4,13 @@ let buttonStart;
 // ***********  initiate game ***********
 
 const startGame = function() {
-  console.log('start');
-  //   message = new Paho.MQTT.Message(JSON.stringify(roomInfo));
-  //   message.destinationName = '0000';
-  //   mqtt.send('0001', '{"test":"sdf"}', 1, false);
+  let startTime = new Date(Date.now() + 10000).getTime();
+  message = new Paho.MQTT.Message(JSON.stringify(new Message(startGame, startTime)));
+  message.destinationName = roomInfo.roomId;
+  // mqtt.send('0001', '{"test":"sdf"}', 1, false);
+  sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+  sessionStorage.setItem('startTime', startTime);
+  //window.location.href = 'http://127.0.0.1:5500/game.html';
 };
 // ***********  show players in loby ***********
 
@@ -25,8 +28,10 @@ const loadRoomInfo = function() {
   oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
   roomInfo = new room(oldRoom.roomId);
   roomInfo.players = oldRoom.players;
-  MQTTconnect('0001');
+  MQTTconnect(playerId);
   showplayers();
+
+  document.querySelector('.js-roomid').innerHTML = roomInfo.roomId;
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
