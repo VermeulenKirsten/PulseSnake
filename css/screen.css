@@ -388,7 +388,7 @@ input::placeholder {
 }
 
 /* ---------------- Create ---------------- */
-.c-create {
+.c-baselayout {
   display: flex;
   flex-direction: column;
   justify-content: center;
