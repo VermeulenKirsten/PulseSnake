@@ -59,9 +59,9 @@ const handleData = async function(url, callback, method = 'GET', body = null) {
 //event that triggers when keyboard buttons are pressed
 const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
-    console.log('key pressed');
-    console.log(playerNr);
-    console.log(snakes[playerNr]);
+    // console.log('key pressed');
+    // console.log(playerNr);
+    // console.log(snakes[playerNr]);
     //left arrow key pressed
     if (key.which === 37) {
       snakes[playerNr].Input('left');
@@ -135,10 +135,10 @@ const gametick = function() {
 
 // ***********  generate fruit ***********
 const generatefruit = function() {
-  console.log('generating fruit');
+  // console.log('generating fruit');
   x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
   y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
-  console.log('x: ', x, ' y: ', y);
+  // console.log('x: ', x, ' y: ', y);
   if (candy[0] != y && candy[1] != x)
     for (let player of snakes) {
       for (tailpiece of player.Tail) {
@@ -156,10 +156,10 @@ const generatefruit = function() {
 };
 // ***********  generate candy ***********
 const generatecandy = function() {
-  console.log('generating candy');
+  // console.log('ge  nerating candy');
   x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
   y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
-  console.log('x: ', x, ' y: ', y);
+  // console.log('x: ', x, ' y: ', y);
   if (fruit[0] != y && fruit[1] != x)
     for (player of snakes) {
       for (tailpiece of player.Tail) {
