@@ -8,7 +8,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     (this.Isalive = true),
     (this.Input = function(direction) {
       let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
-      console.log(this.Inputbuffer);
+      // console.log(this.Inputbuffer);
       if (lastkey != direction) {
         if (lastkey != 'right' && direction == 'left') {
           this.Inputbuffer.push('left');
@@ -19,8 +19,8 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         } else if (lastkey != 'up' && direction == 'down') {
           this.Inputbuffer.push('down');
         }
-        console.log(roomInfo.roomId);
-        console.log(this);
+        // console.log(roomInfo.roomId);
+        // console.log(this);
         let snakemessage = new Message('snake', this);
         let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
         message.destinationName = roomInfo.roomId;
@@ -28,7 +28,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
       }
     });
   this.Movesnake = function() {
-    console.log('moving: ', this);
     let tailend;
     let newhead;
     let direction = this.Inputbuffer[0];
@@ -57,6 +56,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
       this.Tail.push(tailend);
       generatefruit();
+      console.log(`${this.name} ate fruit, new length: ${this.Tail.length}`);
     }
 
     // check if the snake ate the candy
@@ -65,6 +65,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         this.Tail.pop();
       }
       generatecandy();
+      console.log(`${this.name} ate candy, new length: ${this.Tail.length}`);
     }
 
     // check if the snake ate himself
