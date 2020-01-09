@@ -197,7 +197,7 @@ const getSessionData = function() {
 
 const beginGame = function() {
   console.log('begin the game');
-  checkPlayer();
+  setTimeout(checkPlayer, 1000);
 };
 
 const checkPlayer = function() {
