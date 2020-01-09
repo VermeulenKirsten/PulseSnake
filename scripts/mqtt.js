@@ -16,24 +16,30 @@ const onFailure = function() {
 
 const onMessageArrived = function(msg) {
   console.log('message:', msg.payloadString);
-  snakemessage = JSON.parse(msg.payloadString);
-  for (let t = 0; t < snakes.length; t++) {
-    if (snakes[t].Name == snakemessage.Name) {
-      snakes[t].Id = snakemessage.Id;
-      snakes[t].Name = snakemessage.Name;
-      snakes[t].Speed = snakemessage.Speed;
-      snakes[t].Tail = snakemessage.Tail;
-      snakes[t].Color = snakemessage.Color;
-      snakes[t].Inputbuffer = snakemessage.Inputbuffer;
-      snakes[t].Isalive = snakemessage.Isalive;
-      console.log('this snake got replaced', snakes[t]);
+  message = JSON.parse(msg.payloadString);
+  switch (message.type) {
+    case 'snake': {
+      for (let t = 0; t < snakes.length; t++) {
+        if (snakes[t].Id == message.Id) {
+          snakes[t].Name = message.Name;
+          snakes[t].Speed = message.Speed;
+          snakes[t].Tail = message.Tail;
+          snakes[t].Color = message.Color;
+          snakes[t].Inputbuffer = message.Inputbuffer;
+          snakes[t].Isalive = message.Isalive;
+          console.log('this snake got replaced', snakes[t]);
+        }
+      }
+    }
+    default: {
+      console.log('unknown message');
     }
   }
 };
 
 const MQTTconnect = function() {
   console.log('connecting to ' + host);
-  mqtt = new Paho.MQTT.Client(host, Number(port), 'robbe');
+  mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
   let options = {
     timeout: 0,
     onSuccess: onConnect,
