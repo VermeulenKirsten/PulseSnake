@@ -388,7 +388,28 @@ input::placeholder {
 }
 
 /* ---------------- Create ---------------- */
+.c-create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  max-height: 100vh;
+  height: 100vh;
+  background-image: url('/img/png/background.png');
+  background-size: cover;
+  background-position: center center;
+  background-color: #ffffff;
+  overflow: hidden;
+}
 
+.c-form {
+  text-align: center;
+}
+
+.c-form__element {
+  margin-bottom: var(--global-whitespace-md);
+}
 /* ---------------- Join ---------------- */
 
 /* ---------------- Game ---------------- */

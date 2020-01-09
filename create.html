@@ -13,26 +13,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
 
     <title>Pulse Snake 2.0</title>
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/screen.css" />
   </head>
-  <body>
-    <p>roomid: <span class="js-roomid"></span></p>
-    <form class="js-form" id="form" onsubmit="return false;">
-      <!-- <label for="speler1">Speler 1</label>
-      <input type="radio" name="speler" id="speler1" value="1" />
-      <label for="speler2">Speler 2</label>
-      <input type="radio" name="speler" id="speler2" value="2" />
-      <label for="speler3">Speler 3</label>
-      <input type="radio" name="speler" id="speler3" value="3" /> -->
-      <label for="speed">snelheid</label>
-      <select class="js-speed" name="speler" id="speed">
+  <body class="c-create">
+    <form class="c-form js-form" id="form" onsubmit="return false;">
+
+      <label for="speed" class="c-lead-md c-form__element">Snelheid</label>
+
+      <select class="js-speed c-form__element" name="speler" id="speed">
         <option>traag</option
         ><option>normaal</option
-        ><option>snel</option></select
-      >
-      <label for="playtime">spelduur</label>
-      <input class="js-time" type="number" name="name" id="name" />
-      <input type="submit" class="js-start" />
+        ><option>snel</option>
+      </select>
+
+      <label for="playtime" class="c-lead-md c-form__element">Spelduur</label>
+
+      <input class="js-time c-form__element" type="number" name="name" id="name" />
+
+      <p>Code: <span class="js-roomid"></span></p>
+      <button type="submit" class="o-button-reset c-button js-start">
+        <div class="c-button__base">
+          <div class="c-button__outerhead">
+            <div class="c-button__innerhead">
+              <p class="c-button__text">Ga Verder</p>
+            </div>
+          </div>
+        </div>
+      </button type="submit">
     </form>
-    <ol id="playerListjs"></ol>
+
+    
+    <!-- <ol id="playerListjs"></ol> -->
   </body>
 </html>
