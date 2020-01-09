@@ -34,6 +34,20 @@ const onMessageArrived = function(msg) {
         }
       }
       break;
+    case 'fruit':
+      {
+        console.log('fruit  message received ');
+        console.log(message.message);
+        fruit = message.message;
+      }
+      break;
+    case 'candy':
+      {
+        console.log('candy message received ');
+        console.log(message.message);
+        candy = message.message;
+      }
+      break;
     default: {
       console.log('unknown message');
     }

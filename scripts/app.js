@@ -8,8 +8,8 @@ let fruit = [null, null];
 let candy = [null, null];
 let canvas;
 let ctx;
-let gamewidth = 533;
-let gameheight = 533;
+let gamewidth = 500;
+let gameheight = 500;
 let scalefactor = 20;
 
 let snakePositions = [
@@ -135,6 +135,7 @@ const gametick = function() {
 
 // ***********  generate fruit ***********
 const generatefruit = function() {
+  console.log('generating fruit');
   x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
   y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   console.log('x: ', x, ' y: ', y);
@@ -148,9 +149,14 @@ const generatefruit = function() {
       }
     }
   fruit = [y, x];
+  let fruitmessage = new Message('fruit', fruit);
+  let message = new Paho.MQTT.Message(JSON.stringify(fruitmessage));
+  message.destinationName = roomInfo.roomId;
+  mqtt.send(message);
 };
 // ***********  generate candy ***********
 const generatecandy = function() {
+  console.log('generating candy');
   x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
   y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   console.log('x: ', x, ' y: ', y);
@@ -158,15 +164,16 @@ const generatecandy = function() {
     for (player of snakes) {
       for (tailpiece of player.Tail) {
         if (tailpiece[0] == x && tailpiece[1] == y) {
-          generatefruit();
+          generatecandy();
           break;
         }
       }
     }
   candy = [y, x];
-  // } else {
-  //   generatecandy();
-  // }
+  let candymessage = new Message('fruit', fruit);
+  let message = new Paho.MQTT.Message(JSON.stringify(candymessage));
+  message.destinationName = roomInfo.roomId;
+  mqtt.send(message);
 };
 
 // ***********  generate snake objects ***********
@@ -190,18 +197,20 @@ const getSessionData = function() {
 const beginGame = function() {
   console.log('begin the game');
   checkPlayer();
-  generatefruit();
-  generatecandy();
+
   gametick();
 };
 
 const checkPlayer = function() {
   console.log('checkplayer');
   //check if you are the host or not
-  if (playerId == roomInfo.players[0]) {
+  if (playerId == roomInfo.players[0].id) {
     console.log('you are the host');
     playerNr = 0;
     // setTimeout(beginGame, 3);
+    //admin maakt fruit en candy aan
+    generatefruit();
+    generatecandy();
   } else {
     //check wich player you are
     for (let nr in roomInfo.players) {

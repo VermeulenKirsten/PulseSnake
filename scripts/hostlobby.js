@@ -12,7 +12,7 @@ const startGame = function() {
   sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
   sessionStorage.setItem('startTime', startTime);
   console.log(roomInfo);
-  //window.location.href = 'game.html';
+  window.location.href = 'game.html';
 };
 // ***********  show players in loby ***********
 

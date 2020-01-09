@@ -79,10 +79,10 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     try {
       // console.log('he should die right here: ', gamewidth / scalefactor - 1);
       // console.log(this.Tail[0][1]);
-      if (this.Tail[0][0] <= 0 || this.Tail[0][0] > gameheight / scalefactor - 1) {
+      if (this.Tail[0][0] <= -1 || this.Tail[0][0] > gameheight / scalefactor - 1) {
         console.log('u dead boi');
         throw 'u dead';
-      } else if (this.Tail[0][1] <= 0 || this.Tail[0][1] > gamewidth / scalefactor - 1) {
+      } else if (this.Tail[0][1] <= -1 || this.Tail[0][1] > gamewidth / scalefactor - 1) {
         console.log('u dead boi');
         throw 'u dead';
       }
