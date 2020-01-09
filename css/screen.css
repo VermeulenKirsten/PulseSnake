@@ -2,16 +2,22 @@
 #FONTS
 \*------------------------------------*/
 
+/* baloo-regular - latin */
+@font-face {
+  font-family: 'Baloo';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
+}
+
 /*------------------------------------*\
 #Variables
 \*------------------------------------*/
 
 :root {
   /* colors */
-  --global-color-alpha: #0076bc;
-  --global-color-alpha-light: #ebf7ff;
-
-  --global-color-neutral: #f5f7fb;
+  --global-color-alpha-gradient: linear-gradient(#62c236, #a8e063);
+  --global-color-beta-gradient: linear-gradient(#77a143, #64cf33);
 
   /* Whitespace */
   --global-baseline: 8px;
@@ -24,15 +30,16 @@
   --global-whitespace-xl: calc(var(--global-baseline) * 5);
   --global-whitespace-xxl: calc(var(--global-baseline) * 6);
 
-  /* Shadows */
-  --global-boxshadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-
   /* border */
+  --global-border-color: linear-gradient(#f9d976, #f39f86);
+  --global-border-boxshadow-light: 0 10px 0 0 #b14727;
+  --global-border-boxshadow-dark: 0 5px 0 0 #883939;
+  --global-border-boxshadow-dark-sm: 0 1px 0 0 #883939;
   --global-border-width: 1px;
-  --global-border-radius: 8px;
+  --global-border-radius: 35px;
 
   /* transitions */
-  --global-transition-alpha: 0.1s;
+  --global-transition-alpha: 0.05s;
   --global-transition-beta: 0.5s;
 
   /* Grid */
@@ -52,7 +59,7 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: Helvetica, arial, sans-serif;
+  font-family: 'Baloo', Helvetica, arial, sans-serif;
   color: #222222;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -309,54 +316,75 @@ input::placeholder {
 
 /* ---------------- General ---------------- */
 
+.c-lead-sm {
+  color: #535353;
+  font-size: 40px;
+  line-height: 40px;
+}
+
+.c-lead-md {
+  color: #535353;
+  font-size: 48px;
+  line-height: 48px;
+}
+
 .c-button {
-  position: relative;
-  display: inline-block;
-  margin: 20px;
+  margin-bottom: calc(var(--global-whitespace-sm) + 10px);
+  width: 300px;
 }
 
-.c-button__inner {
-  margin: 5px;
-  background-color: green;
-}
-
-.c-button .c-button__inner a {
-  margin: 5px;
-  color: white;
-  font-family: Helvetica, sans-serif;
-  font-weight: bold;
-  font-size: 36px;
-  text-align: center;
-  text-decoration: none;
-  background-color: #ffa12b;
+.c-button__base {
+  z-index: 1;
+  padding: var(--global-baseline) calc(var(--global-baseline) * 1.5) calc(var(--global-baseline) * 1.5) calc(var(--global-baseline) * 1.5);
   display: block;
-  position: relative;
-  padding: 20px 40px;
-
-  -webkit-box-shadow: 0 10px 0 #915100;
-  -moz-box-shadow: 0 10px 0 #915100;
-  box-shadow: 0 10px 0 #915100;
-
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
+  border-radius: var(--global-border-radius);
+  background-image: var(--global-border-color);
+  box-shadow: var(--global-border-boxshadow-light);
 }
 
-.c-button a:active {
-  top: 10px;
-  background-color: #f78900;
+.c-button__outerhead {
+  z-index: 2;
+  padding: calc(var(--global-baseline) * 0.75) calc(var(--global-baseline) * 1.5);
+  display: block;
+  border-radius: var(--global-border-radius);
+  background-image: var(--global-color-alpha-gradient);
+  box-shadow: var(--global-border-boxshadow-dark);
+}
+.c-button__innerhead {
+  z-index: 3;
+  padding: 4px 16px;
+  display: block;
+  border-radius: var(--global-border-radius);
+  background-image: var(--global-color-beta-gradient);
+}
 
-  -webkit-box-shadow: inset 0 1px 0 #ffe5c4, inset 0 -3px 0 #915100;
-  -moz-box-shadow: inset 0 1px 0 #ffe5c4, inset 0 -3pxpx 0 #915100;
-  box-shadow: inset 0 1px 0 #ffe5c4, inset 0 -3px 0 #915100;
+.c-button__text {
+  color: white;
+  margin: 4px 24px;
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.c-button:active .c-button__base .c-button__outerhead {
+  box-shadow: var(--global-border-boxshadow-dark-sm);
+  transition: var(--global-transition-alpha);
+  transform: translateY(4px);
 }
 
 /* ---------------- Index ---------------- */
 .c-index {
-  height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 2;
+  max-height: 100vh;
+  height: 100vh;
+  background-image: url('/img/png/landingpage.png');
+  background-size: cover;
+  background-position: center center;
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
 /* ---------------- Create ---------------- */
@@ -923,18 +951,18 @@ input::placeholder {
     text-decoration: underline;
   }
   a[href]:after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
   }
   abbr[title]:after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
   /*
       * Don't show links that are fragment identifiers,
       * or use the `javascript:` pseudo protocol
       */
-  a[href^="#"]:after,
-  a[href^="javascript:"]:after {
-    content: "";
+  a[href^='#']:after,
+  a[href^='javascript:']:after {
+    content: '';
   }
   pre {
     white-space: pre-wrap !important;
