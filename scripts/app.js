@@ -2,28 +2,6 @@ let playerId;
 let playerNr;
 let roomInfo;
 
-let gamefield = [
-  [
-    [3,0],
-    [2,0],
-    [1,0]
-  ], 
-  [
-    [4,0],
-    [5,0],
-    [6,0]
-  ], 
-  [
-    [4,5],
-    [5,5],
-    [6,5]
-  ], 
-  [
-    [3,5],
-    [2,5],
-    [1,5]
-  ],
-];
 let stop = false;
 let snakes = [];
 let fruit = [null, null];
@@ -34,8 +12,29 @@ let gamewidth = 533;
 let gameheight = 533;
 let scalefactor = 20;
 
-let snakePositions [[]];
-
+let snakePositions = [
+  [
+    [3, 0],
+    [2, 0],
+    [1, 0]
+  ],
+  [
+    [4, 5],
+    [5, 5],
+    [6, 5]
+  ],
+  [
+    [4, 5],
+    [5, 5],
+    [6, 5]
+  ],
+  [
+    [3, 5],
+    [2, 5],
+    [1, 5]
+  ]
+];
+let snakeColors = ['#00FF00', '#FF0000', '#0000FF', '#00FFFF'];
 
 // ***********  DOM references ***********
 const getdomelements = function() {
@@ -60,6 +59,9 @@ const handleData = async function(url, callback, method = 'GET', body = null) {
 //event that triggers when keyboard buttons are pressed
 const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
+    console.log('key pressed');
+    console.log(playerNr);
+    console.log(snakes[playerNr]);
     //left arrow key pressed
     if (key.which === 37) {
       snakes[playerNr].Input('left');
@@ -118,12 +120,12 @@ const gametick = function() {
   ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
 
   // move the snake
-  for (player of snakes) {
+  for (let player of snakes) {
     player.Movesnake();
   }
 
   //display the snake
-  for (player of snakes) {
+  for (let player of snakes) {
     displaysnake(player);
   }
   if (!stop) {
@@ -137,7 +139,7 @@ const generatefruit = function() {
   y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   console.log('x: ', x, ' y: ', y);
   if (candy[0] != x && candy[1] != y)
-    for (player of snakes) {
+    for (let player of snakes) {
       for (tailpiece of player.Tail) {
         if (tailpiece[0] == x && tailpiece[1] == y) {
           generatefruit();
@@ -170,7 +172,7 @@ const generatecandy = function() {
 // ***********  generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, playerId, snakePositions[i], 'right', 1);
+    newsnake = new Snake(roomInfo.players[i].name, playerId, snakePositions[i], 'right', 1, snakeColors[i]);
     snakes.push(newsnake);
   }
   handlekeydowns();
@@ -197,12 +199,11 @@ const checkPlayer = function() {
   } else {
     //check wich player you are
     for (let nr in roomInfo.players) {
-      if (playerId == roomInfo.players[nr]) {
+      if (playerId == roomInfo.players[nr].id) {
         playerNr = nr;
-        break;
       }
+      console.log('you are a player');
     }
-    console.log('you are a player');
   }
   generateSnakes();
 };
@@ -212,8 +213,8 @@ const init = function() {
   console.log('init');
   getSessionData();
   checkPlayer();
-  generateSnakes();
-  beginGame;
+  //generateSnakes();
+  // beginGame;
 
   MQTTconnect();
 
