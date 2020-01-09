@@ -7,7 +7,7 @@ let roomId;
 let playerId;
 // let playerName;
 let playerList;
-let roominfo = null;
+let roomInfo;
 
 window.onbeforeunload = function() {
   message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
@@ -16,7 +16,7 @@ window.onbeforeunload = function() {
 };
 
 const roomNotFound = function() {
-  if (roominfo == null) {
+  if (!roomInfo) {
     console.log('room not found, redirecting');
     window.location.href = 'join.html?error=roomNotFound';
   }
@@ -46,21 +46,37 @@ const onMessageArrived = function(msg) {
   let message = JSON.parse(msg.payloadString);
   console.log(message);
   switch (message.type) {
-    case 'roominfo': {
-      console.log('roominfo received');
-      roominfo = message.message;
-      showplayers(roominfo);
-    }
-    case 'error': {
-      // message: {"type":"error","message":{"toId":"884203de-c6b6-41c9-92ad-c7c473773ed3","message":"room full"}}
-      if (message.message.errorMessage == 'room full' && message.message.toId == playerId) {
-        console.log('room is full redirecting');
-        window.location.href = 'join.html?error=roomFull';
+    case 'roomInfo':
+      {
+        console.log('roomInfo received');
+        roomInfo = message.message;
+        console.log('roominfo', roomInfo);
+        showplayers(roomInfo);
       }
-      console.log(message.message);
-    }
+      break;
+    // {"type":"startGame","message":{"startTime":1578565869942,"roomInfo":{"roomId":"6039","players":[{"id":"6f19fc4a-cd28-4180-8ee8-544aedc8d3c9","color":"#FF0000","name":"Speler 1"},{"id":"f44f189a-f1c7-4e61-a9c1-b3437f35ed7e","color":"#FF0000","name":"Speler 2"}],"maxplayers":4}}}
+    case 'startGame':
+      {
+        roomInfo = JSON.stringify(message.message.roomInfo);
+        sessionStorage.setItem('roomInfo', roomInfo);
+        sessionStorage.setItem('startTime', message.message.startTime);
+        sessionStorage.setItem('playerId', playerId);
+        console.log('startgame received', message);
+        window.location.href = 'game.html';
+      }
+      break;
+    case 'error':
+      {
+        // message: {"type":"error","message":{"toId":"884203de-c6b6-41c9-92ad-c7c473773ed3","message":"room full"}}
+        if (message.message.errorMessage == 'room full' && message.message.toId == playerId) {
+          console.log('room is full redirecting');
+          window.location.href = 'join.html?error=roomFull';
+        }
+        console.log(message.message);
+      }
+      break;
     default:
-      console.log('nonexisting type');
+      console.log('nonexisting type:', message.type);
   }
 };
 
@@ -75,10 +91,10 @@ const MQTTconnect = function() {
   mqtt.onMessageArrived = onMessageArrived;
   mqtt.connect(options);
 };
-const showplayers = function(roominfo) {
-  console.log(roominfo);
+const showplayers = function(roomInfo) {
+  console.log(roomInfo);
   let output = '';
-  for (player of roominfo.players) {
+  for (player of roomInfo.players) {
     output += `<li>${player.name}</li>`;
   }
   playerList.innerHTML = output;

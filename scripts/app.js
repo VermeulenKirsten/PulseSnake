@@ -1,4 +1,6 @@
-// let inputbuffer = ['right'];
+let playerId;
+let roomInfo;
+
 let gamefield = [[]];
 let stop = false;
 let snakes = [];
@@ -153,9 +155,23 @@ const generatecandy = function() {
 // ***********  generate candy ***********
 const Generatesnakes = function() {};
 
+const getSessionData = function() {
+  playerId = sessionStorage.getItem('playerId');
+  roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+  let startTime = sessionStorage.getItem('startTime');
+  console.log(playerId);
+  console.log(roomInfo);
+  console.log(startTime);
+  console.log(Date.now());
+  let timeDiff = startTime - Date.now();
+  console.log('starting in:', timeDiff);
+  // settimeout(startGame, timeDiff);
+};
+
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
+  getSessionData();
   Generatesnakes();
 
   MQTTconnect();
