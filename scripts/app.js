@@ -170,7 +170,7 @@ const generatecandy = function() {
       }
     }
   candy = [y, x];
-  let candymessage = new Message('fruit', fruit);
+  let candymessage = new Message('candy', fruit);
   let message = new Paho.MQTT.Message(JSON.stringify(candymessage));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
