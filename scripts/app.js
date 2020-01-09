@@ -88,6 +88,7 @@ const handlekeydowns = function() {
       gametick();
     }
   });
+  gametick();
 };
 
 // ***********  Core Game Mechanics ***********
@@ -197,8 +198,6 @@ const getSessionData = function() {
 const beginGame = function() {
   console.log('begin the game');
   checkPlayer();
-
-  gametick();
 };
 
 const checkPlayer = function() {
