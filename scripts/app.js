@@ -172,7 +172,7 @@ const generatecandy = function() {
 // ***********  generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, playerId, snakePositions[i], 'right', 1, snakeColors[i]);
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', 1, snakeColors[i]);
     snakes.push(newsnake);
   }
   handlekeydowns();
