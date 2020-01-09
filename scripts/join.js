@@ -14,8 +14,20 @@ const getdom = function() {
   document.querySelector('#js-form').addEventListener('submit', joinroom);
 };
 
+//check if there are errors that need to be displayed
+const checkErrors = function() {
+  var url = new URL(window.location.href);
+  let error = url.searchParams.get('error');
+  if (error == 'roomNotFound') {
+    console.log('room was not found');
+  } else if (error == 'roomFull') {
+    console.log('room was full');
+  }
+};
+
 const init = function() {
   getdom();
+  checkErrors();
 };
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -7,6 +7,7 @@ let roomId;
 let playerId;
 // let playerName;
 let playerList;
+let roominfo = null;
 
 window.onbeforeunload = function() {
   message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
@@ -14,16 +15,24 @@ window.onbeforeunload = function() {
   mqtt.send(message);
 };
 
+const roomNotFound = function() {
+  if (roominfo == null) {
+    console.log('room not found, redirecting');
+    window.location.href = 'join.html?error=roomNotFound';
+  }
+};
+
 //mqtt
 const onConnect = function() {
   console.log('Connected');
-  //   mqtt.subscribe(roomId);
-  mqtt.subscribe('0001');
+  mqtt.subscribe(roomId);
   let guest = new Player(playerId);
   console.log('send: ', JSON.stringify(new Message('player', guest)));
   message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
   message.destinationName = roomId;
   mqtt.send(message);
+
+  setTimeout(roomNotFound, 3000);
 };
 
 const onFailure = function() {
@@ -41,6 +50,14 @@ const onMessageArrived = function(msg) {
       console.log('roominfo received');
       roominfo = message.message;
       showplayers(roominfo);
+    }
+    case 'error': {
+      // message: {"type":"error","message":{"toId":"884203de-c6b6-41c9-92ad-c7c473773ed3","message":"room full"}}
+      if (message.message.errorMessage == 'room full' && message.message.toId == playerId) {
+        console.log('room is full redirecting');
+        window.location.href = 'join.html?error=roomFull';
+      }
+      console.log(message.message);
     }
     default:
       console.log('nonexisting type');
