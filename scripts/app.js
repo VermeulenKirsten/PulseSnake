@@ -204,7 +204,7 @@ const beginGame = function() {
 const checkPlayer = function() {
   console.log('checkplayer');
   //check if you are the host or not
-  if (playerId == roomInfo.players[0]) {
+  if (playerId == roomInfo.players[0].id) {
     console.log('you are the host');
     playerNr = 0;
     // setTimeout(beginGame, 3);
