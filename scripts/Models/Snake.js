@@ -1,4 +1,4 @@
-function Snake(name, id, tail, direction, speed, xpos, ypos, color = '#00FF00') {
+function Snake(name, id, tail, direction, speed, color = '#00FF00') {
   (this.Id = id),
     (this.Name = name),
     (this.Speed = speed),

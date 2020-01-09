@@ -1,7 +1,29 @@
 let playerId;
+let playerNr;
 let roomInfo;
 
-let gamefield = [[]];
+let gamefield = [
+  [
+    [3,0],
+    [2,0],
+    [1,0]
+  ], 
+  [
+    [4,0],
+    [5,0],
+    [6,0]
+  ], 
+  [
+    [4,5],
+    [5,5],
+    [6,5]
+  ], 
+  [
+    [3,5],
+    [2,5],
+    [1,5]
+  ],
+];
 let stop = false;
 let snakes = [];
 let fruit = [null, null];
@@ -11,6 +33,10 @@ let ctx;
 let gamewidth = 533;
 let gameheight = 533;
 let scalefactor = 20;
+
+let snakePositions [[]];
+
+
 // ***********  DOM references ***********
 const getdomelements = function() {
   canvas = document.querySelector('.c-gameboard');
@@ -36,19 +62,19 @@ const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
     //left arrow key pressed
     if (key.which === 37) {
-      snake1.Input('left');
+      snakes[playerNr].Input('left');
     }
     //up arrow key pressed
     else if (key.which === 38) {
-      snake1.Input('up');
+      snakes[playerNr].Input('up');
     }
     //right arrow key pressed
     else if (key.which === 39) {
-      snake1.Input('right');
+      snakes[playerNr].Input('right');
     }
     //down arrow key pressed
     else if (key.which === 40) {
-      snake1.Input('down');
+      snakes[playerNr].Input('down');
     }
     //space bar pressed
     else if (key.which === 32) {
@@ -64,14 +90,6 @@ const handlekeydowns = function() {
 
 // ***********  Core Game Mechanics ***********
 const createfield = function() {
-  // console.log('create field');
-  // gamefield = [];
-  // for (let x = 0; x < gamewidth; x++) {
-  //   gamefield.push([]);
-  //   for (let y = 0; y < gameheight; y++) {
-  //     gamefield[x].push(0);
-  //   }
-  // }
   ctx.clearRect(0, 0, gamewidth, gameheight);
 };
 
@@ -79,7 +97,6 @@ const displaysnake = function(snakeobj) {
   // console.log('snakeopbject: ', snakeobj);
   try {
     for (let piece of snakeobj.Tail) {
-      // gamefield[piece[0]][piece[1]] = 1;
       ctx.fillStyle = snakeobj.Color;
       ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
     }
@@ -94,11 +111,9 @@ const gametick = function() {
   createfield();
 
   // show the fruit we created before
-  // gamefield[fruit[0]][fruit[1]] = 2;
   ctx.fillStyle = '#FF0000';
   ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
   // show the candy
-  // gamefield[candy[0]][candy[1]] = 3;
   ctx.fillStyle = '#FF00FF';
   ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
 
@@ -152,8 +167,14 @@ const generatecandy = function() {
   // }
 };
 
-// ***********  generate candy ***********
-const Generatesnakes = function() {};
+// ***********  generate snake objects ***********
+const generateSnakes = function() {
+  for (let i in roomInfo.players) {
+    newsnake = new Snake(roomInfo.players[i].name, playerId, snakePositions[i], 'right', 1);
+    snakes.push(newsnake);
+  }
+  handlekeydowns();
+};
 
 const getSessionData = function() {
   playerId = sessionStorage.getItem('playerId');
@@ -161,44 +182,40 @@ const getSessionData = function() {
   let startTime = sessionStorage.getItem('startTime');
   console.log(playerId);
   console.log(roomInfo);
-  console.log(startTime);
-  console.log(Date.now());
-  let timeDiff = startTime - Date.now();
-  console.log('starting in:', timeDiff);
-  // settimeout(startGame, timeDiff);
+};
+
+const beginGame = function() {
+  console.log('begin the game');
+};
+
+const checkPlayer = function() {
+  //check if you are the host or not
+  if (playerId == roomInfo.players[0]) {
+    console.log('you are the host');
+    playerNr = 0;
+    setTimeout(beginGame, 3);
+  } else {
+    //check wich player you are
+    for (let nr in roomInfo.players) {
+      if (playerId == roomInfo.players[nr]) {
+        playerNr = nr;
+        break;
+      }
+    }
+    console.log('you are a player');
+  }
+  generateSnakes();
 };
 
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
   getSessionData();
-  Generatesnakes();
+  checkPlayer();
+  generateSnakes();
+  beginGame;
 
   MQTTconnect();
-
-  let xpos = 5;
-  let ypos = 5;
-  let tail = [
-    [xpos, ypos],
-    [xpos - 1, ypos],
-    [xpos - 2, ypos],
-    [xpos - 3, ypos],
-    [xpos - 4, ypos]
-  ];
-
-  snake1 = new Snake('bob', 1, tail, 'right', 1, 5, 5);
-  xpos = 4;
-  ypos = 5;
-  tail = [
-    [xpos, ypos],
-    [xpos - 1, ypos],
-    [xpos - 2, ypos],
-    [xpos - 3, ypos],
-    [xpos - 4, ypos]
-  ];
-  snake2 = new Snake('gorge', 2, tail, 'left', 1, 4, 4, '#0000FF');
-  snakes.push(snake1);
-  // snakes.push(snake2);
 
   getdomelements();
 
@@ -207,7 +224,6 @@ const init = function() {
   generatefruit();
   generatecandy();
 
-  handlekeydowns();
   gametick();
 };
 
