@@ -34,19 +34,19 @@ const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
     //left arrow key pressed
     if (key.which === 37) {
-      snake2.Input('left');
+      snake1.Input('left');
     }
     //up arrow key pressed
     else if (key.which === 38) {
-      snake2.Input('up');
+      snake1.Input('up');
     }
     //right arrow key pressed
     else if (key.which === 39) {
-      snake2.Input('right');
+      snake1.Input('right');
     }
     //down arrow key pressed
     else if (key.which === 40) {
-      snake2.Input('down');
+      snake1.Input('down');
     }
     //space bar pressed
     else if (key.which === 32) {
@@ -151,10 +151,7 @@ const generatecandy = function() {
 };
 
 // ***********  generate candy ***********
-const Generatesnakes = function() {
-  
-
-};
+const Generatesnakes = function() {};
 
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
