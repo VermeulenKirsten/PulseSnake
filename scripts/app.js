@@ -184,6 +184,8 @@ const getSessionData = function() {
   let startTime = sessionStorage.getItem('startTime');
   console.log(playerId);
   console.log(roomInfo);
+  checkPlayer();
+  MQTTconnect();
 };
 
 const beginGame = function() {
@@ -212,11 +214,9 @@ const checkPlayer = function() {
 const init = function() {
   console.log('init');
   getSessionData();
-  checkPlayer();
+
   //generateSnakes();
   // beginGame;
-
-  MQTTconnect();
 
   getdomelements();
 
