@@ -149,6 +149,9 @@ const generatefruit = function() {
       }
     }
   fruit = [y, x];
+  //show the fruit
+  ctx.fillStyle = '#FF0000';
+  ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
   let fruitmessage = new Message('fruit', fruit);
   let message = new Paho.MQTT.Message(JSON.stringify(fruitmessage));
   message.destinationName = roomInfo.roomId;
@@ -170,6 +173,9 @@ const generatecandy = function() {
       }
     }
   candy = [y, x];
+  // show the candy
+  ctx.fillStyle = '#FF00FF';
+  ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
   let candymessage = new Message('candy', candy);
   let message = new Paho.MQTT.Message(JSON.stringify(candymessage));
   message.destinationName = roomInfo.roomId;
