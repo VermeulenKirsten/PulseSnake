@@ -18,19 +18,22 @@ const onMessageArrived = function(msg) {
   console.log('message:', msg.payloadString);
   message = JSON.parse(msg.payloadString);
   switch (message.type) {
-    case 'snake': {
-      for (let t = 0; t < snakes.length; t++) {
-        if (snakes[t].Id == message.Id) {
-          snakes[t].Name = message.Name;
-          snakes[t].Speed = message.Speed;
-          snakes[t].Tail = message.Tail;
-          snakes[t].Color = message.Color;
-          snakes[t].Inputbuffer = message.Inputbuffer;
-          snakes[t].Isalive = message.Isalive;
-          console.log('this snake got replaced', snakes[t]);
+    case 'snake':
+      {
+        console.log('snake message received ');
+        for (let t in snakes) {
+          if (snakes[t].Id == message.message.Id) {
+            snakes[t].Name = message.message.Name;
+            snakes[t].Speed = message.message.Speed;
+            snakes[t].Tail = message.message.Tail;
+            snakes[t].Color = message.message.Color;
+            snakes[t].Inputbuffer = message.message.Inputbuffer;
+            snakes[t].Isalive = message.message.Isalive;
+            console.log('this snake got replaced', snakes[t]);
+          }
         }
       }
-    }
+      break;
     default: {
       console.log('unknown message');
     }
