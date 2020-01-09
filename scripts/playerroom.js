@@ -8,12 +8,14 @@ let playerId;
 // let playerName;
 let playerList;
 let roomInfo;
+// ***********  page reload ***********
 
 window.onbeforeunload = function() {
   message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
   message.destinationName = roomId;
   mqtt.send(message);
 };
+// ***********  room doesn't exist ***********
 
 const roomNotFound = function() {
   if (!roomInfo) {
@@ -22,7 +24,8 @@ const roomNotFound = function() {
   }
 };
 
-//mqtt
+// ***********  when succesfully connected to broker ***********
+
 const onConnect = function() {
   console.log('Connected');
   mqtt.subscribe(roomId);
@@ -35,10 +38,14 @@ const onConnect = function() {
   setTimeout(roomNotFound, 3000);
 };
 
+// ***********  not succesfully connected to broker ***********
+
 const onFailure = function() {
   console.log('connection lost, reconnecting');
   setTimeout(MQTTconnect, reconnectTimeout);
 };
+
+// ***********  when a message arrives ***********
 
 const onMessageArrived = function(msg) {
   console.log(msg);
@@ -80,6 +87,8 @@ const onMessageArrived = function(msg) {
   }
 };
 
+// ***********  connect to broker ***********
+
 const MQTTconnect = function() {
   console.log('connecting to ' + host);
   mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
@@ -99,10 +108,13 @@ const showplayers = function(roomInfo) {
   }
   playerList.innerHTML = output;
 };
+// ***********  generate dom elements ***********
 
 const getDomelements = function() {
   playerList = document.querySelector('#playerListjs');
 };
+
+// ***********  init ***********
 
 const init = function() {
   var url = new URL(window.location.href);

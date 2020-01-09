@@ -8,11 +8,12 @@ const generateRoom = function() {
   host.name = 'Speler 1';
   roomInfo = new room(roomId);
   roomInfo.addPlayer(host);
-
+  roomInfo.defaultSpeed = speed.value;
+  roomInfo.gameDuration = duration.value;
   //store gameinfo in sessionstorage and go to lobby
   sessionStorage.setItem('playerId', playerId);
   sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-  window.location.href = 'http://127.0.0.1:5500/hostlobby.html';
+  window.location.href = 'hostlobby.html';
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
@@ -32,6 +33,8 @@ const generateRoomId = function() {
 
 const generateDOMelements = function() {
   form = document.querySelector('.js-form');
+  speed = document.querySelector('.js-speed');
+  duration = document.querySelector('.js-time');
   addListener();
 };
 
