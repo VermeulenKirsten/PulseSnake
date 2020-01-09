@@ -36,7 +36,7 @@ const onMessageArrived = function(msg) {
       break;
     case 'fruit':
       {
-        // console.log('fruit  message received ');
+        console.log('fruit  message received ', message.message);
         // console.log  (message.message);
         fruit = message.message;
         //show the fruit
@@ -46,7 +46,7 @@ const onMessageArrived = function(msg) {
       break;
     case 'candy':
       {
-        // console.log('candy message received ');
+        console.log('candy message received ', message.message);
         // console.log(message.message);
         candy = message.message;
         // show the candy
