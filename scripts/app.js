@@ -8,8 +8,8 @@ let fruit = [null, null];
 let candy = [null, null];
 let canvas;
 let ctx;
-let gamewidth = 533;
-let gameheight = 533;
+let gamewidth = 500;
+let gameheight = 500;
 let scalefactor = 20;
 
 let snakePositions = [
@@ -148,6 +148,10 @@ const generatefruit = function() {
       }
     }
   fruit = [y, x];
+  let fruitmessage = new Message('fruit', fruit);
+  let message = new Paho.MQTT.Message(JSON.stringify(fruitmessage));
+  message.destinationName = roomInfo.roomId;
+  mqtt.send(message);
 };
 // ***********  generate candy ***********
 const generatecandy = function() {
@@ -190,8 +194,7 @@ const getSessionData = function() {
 const beginGame = function() {
   console.log('begin the game');
   checkPlayer();
-  generatefruit();
-  generatecandy();
+
   gametick();
 };
 
@@ -202,6 +205,9 @@ const checkPlayer = function() {
     console.log('you are the host');
     playerNr = 0;
     // setTimeout(beginGame, 3);
+    //admin maakt fruit en candy aan
+    generatefruit();
+    generatecandy();
   } else {
     //check wich player you are
     for (let nr in roomInfo.players) {
