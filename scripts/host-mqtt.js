@@ -4,6 +4,8 @@ let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
 let roomInfo;
 
+// ***********  when succesfully connected to broker ***********
+
 const onConnect = function() {
   console.log('Connected');
   let suboptions = {
@@ -11,11 +13,13 @@ const onConnect = function() {
   };
   mqtt.subscribe(roomInfo.roomId, suboptions);
 };
+// ***********  not succesfully connected to broker ***********
 
 const onFailure = function() {
   console.log('connection lost, reconnecting');
   setTimeout(MQTTconnect, reconnectTimeout);
 };
+// ***********  when a message arrives ***********
 
 const onMessageArrived = function(msg) {
   console.log('message:', msg.payloadString);
@@ -25,10 +29,8 @@ const onMessageArrived = function(msg) {
       {
         let newplayer = incommingMessage.message;
         if (roomInfo.players.length < 4) {
-          console.log(roomInfo);
           roomInfo.addPlayer(newplayer);
-          console.table(roomInfo);
-          message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
           message.destinationName = roomInfo.roomId;
           mqtt.send(message);
           showplayers();
@@ -41,7 +43,6 @@ const onMessageArrived = function(msg) {
       break;
     case 'disconnect':
       {
-        console.log('disconnect', incommingMessage.message);
         roomInfo.removePlayer(incommingMessage.message);
         showplayers();
         // for (let i = 0; i < roomInfo.players.length; i++) {
@@ -58,6 +59,7 @@ const onMessageArrived = function(msg) {
       console.log('not existing type:', incommingMessage);
   }
 };
+// ***********  connect to broker ***********
 
 const MQTTconnect = function(name) {
   console.log('connecting to ' + host);
