@@ -4,17 +4,12 @@ let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
 let roomInfo;
 
-const checkGame = function() {
-  if (roomId) {
-  }
-};
-
 const onConnect = function() {
   console.log('Connected');
   let suboptions = {
     qos: 1
   };
-  mqtt.subscribe('0001', suboptions);
+  mqtt.subscribe(roomInfo.roomId, suboptions);
 };
 
 const onFailure = function() {
@@ -30,15 +25,16 @@ const onMessageArrived = function(msg) {
       {
         let newplayer = incommingMessage.message;
         if (roomInfo.players.length < 4) {
+          console.log(roomInfo);
           roomInfo.addPlayer(newplayer);
-          message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
-          message.destinationName = '0001';
-          mqtt.send(message);
           console.table(roomInfo);
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roominfo', roomInfo)));
+          message.destinationName = roomInfo.roomId;
+          mqtt.send(message);
           showplayers();
         } else {
-          message = new Paho.MQTT.Message(JSON.stringify(new Message('error', 'room full')));
-          message.destinationName = '0001';
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('error', { toId: newplayer.id, errorMessage: 'room full' })));
+          message.destinationName = roomInfo.roomId;
           mqtt.send(message);
         }
       }
@@ -47,6 +43,7 @@ const onMessageArrived = function(msg) {
       {
         console.log('disconnect', incommingMessage.message);
         roomInfo.removePlayer(incommingMessage.message);
+        showplayers();
         // for (let i = 0; i < roomInfo.players.length; i++) {
         //   if (roomInfo.players[i].name == incommingMessage.message) {
         //     console.log('delete', roomInfo.players[i]);
@@ -64,7 +61,6 @@ const onMessageArrived = function(msg) {
 
 const MQTTconnect = function(name) {
   console.log('connecting to ' + host);
-  console.log(typeof name);
   mqtt = new Paho.MQTT.Client(host, Number(port), name);
   let options = {
     timeout: 0,
