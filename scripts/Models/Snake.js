@@ -20,8 +20,9 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
           this.Inputbuffer.push('down');
         }
         let jsonstring = JSON.stringify(this);
-        let message = new Paho.MQTT.Message(jsonstring, 2);
-        message.destinationName = 'ktest';
+        let snakemessage = new Message('snake', jsonstring);
+        let message = new Paho.MQTT.Message(snakemessage);
+        message.destinationName = roomInfo.roomId;
         mqtt.send(message);
       }
     });
