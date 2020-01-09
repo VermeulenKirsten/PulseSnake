@@ -2,11 +2,11 @@ let mqtt;
 let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
-let roomcode;
 
 const onConnect = function() {
   console.log('Connected');
-  mqtt.subscribe(roomcode);
+  mqtt.subscribe(roomInfo.roomId);
+  beginGame();
 };
 
 const onFailure = function() {
@@ -39,6 +39,7 @@ const onMessageArrived = function(msg) {
 
 const MQTTconnect = function() {
   console.log('connecting to ' + host);
+  console.log('mqqtt id: ', playerId);
   mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
   let options = {
     timeout: 0,
@@ -48,8 +49,3 @@ const MQTTconnect = function() {
   mqtt.onMessageArrived = onMessageArrived;
   mqtt.connect(options);
 };
-
-document.addEventListener('DOMContentLoaded', function() {
-  roomcode = 'ktest';
-  MQTTconnect();
-});

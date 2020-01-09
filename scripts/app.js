@@ -184,18 +184,24 @@ const getSessionData = function() {
   let startTime = sessionStorage.getItem('startTime');
   console.log(playerId);
   console.log(roomInfo);
+  MQTTconnect();
 };
 
 const beginGame = function() {
   console.log('begin the game');
+  checkPlayer();
+  generatefruit();
+  generatecandy();
+  gametick();
 };
 
 const checkPlayer = function() {
+  console.log('checkplayer');
   //check if you are the host or not
   if (playerId == roomInfo.players[0]) {
     console.log('you are the host');
     playerNr = 0;
-    setTimeout(beginGame, 3);
+    // setTimeout(beginGame, 3);
   } else {
     //check wich player you are
     for (let nr in roomInfo.players) {
@@ -211,21 +217,13 @@ const checkPlayer = function() {
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
-  getSessionData();
-  checkPlayer();
-  //generateSnakes();
-  // beginGame;
-
-  MQTTconnect();
-
   getdomelements();
-
   createfield();
 
-  generatefruit();
-  generatecandy();
+  getSessionData();
 
-  gametick();
+  //generateSnakes();
+  // beginGame;
 };
 
 document.addEventListener('DOMContentLoaded', function() {
