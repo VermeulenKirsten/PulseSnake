@@ -1,15 +1,13 @@
 function room(roomId) {
-  (this.roomId = roomId), (this.players = []), (this.maxplayers = 4);
+  (this.roomId = roomId), (this.players = []), (this.maxplayers = 4), this.defaultSpeed, this.gameDuration;
 
   this.addPlayer = function(newplayer) {
     let length = this.players.length;
     console.log(length);
     if (length < this.maxplayers) {
       newplayer.name = `Speler ${length + 1}`;
-      console.log('ok');
       this.players.push(newplayer);
     } else {
-      console.log('niet ok');
     }
   };
   this.removePlayer = function(id) {
@@ -25,8 +23,6 @@ function room(roomId) {
             this.players[t].name = `Speler ${t + 1}`;
           }
         }
-
-        console.log(this.players);
       }
     }
   };
