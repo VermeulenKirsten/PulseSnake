@@ -19,6 +19,8 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         } else if (lastkey != 'up' && direction == 'down') {
           this.Inputbuffer.push('down');
         }
+        console.log(roomInfo.roomId);
+        console.log(this);
         let snakemessage = new Message('snake', this);
         let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
         message.destinationName = roomInfo.roomId;
