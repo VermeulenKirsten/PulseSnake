@@ -5,14 +5,14 @@ let buttonStart;
 
 const startGame = function() {
   let startTime = new Date(Date.now() + 10000).getTime();
-  message = new Paho.MQTT.Message(JSON.stringify(new Message('startGame', { startTime: startTime, roomInfo: roomInfo })));
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('startGame', { roomInfo: roomInfo })));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
   // mqtt.send('0001', '{"test":"sdf"}', 1, false);
   sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
   sessionStorage.setItem('startTime', startTime);
   console.log(roomInfo);
-  //window.location.href = 'game.html';
+  window.location.href = 'game.html';
 };
 // ***********  show players in loby ***********
 
