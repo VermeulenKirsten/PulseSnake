@@ -366,7 +366,7 @@ input::placeholder {
 }
 
 .c-button__base-round {
-  padding: 12px 14px 16px;
+  padding: 8px 12px 12px;
   border-radius: var(--global-border-radius-lg);
 }
 
@@ -380,7 +380,7 @@ input::placeholder {
 }
 
 .c-button__outerhead-round {
-  padding: 10px;
+  padding: 8px;
   border-radius: var(--global-border-radius-lg);
 }
 
@@ -388,13 +388,13 @@ input::placeholder {
   z-index: 3;
   padding: 4px 16px;
   display: block;
-  height: 100%;
+  height: calc(var(--global-whitespace-md) + 20px);
   border-radius: var(--global-border-radius);
   background-image: var(--global-color-beta-gradient);
 }
 
 .c-button__innerhead-round {
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: var(--global-border-radius-lg);
 }
 
@@ -414,6 +414,8 @@ input::placeholder {
 
 .c-form {
   text-align: center;
+  max-width: 750px;
+  width: 100%;
 }
 
 .c-form__element {
@@ -443,8 +445,8 @@ input::placeholder {
 
 .c-icon {
   fill: white;
-  height: var(--global-whitespace-lg);
-  width: var(--global-whitespace-lg);
+  height: var(--global-whitespace-md);
+  width: var(--global-whitespace-md);
 }
 
 /* ---------------- Index ---------------- */
