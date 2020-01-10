@@ -54,6 +54,17 @@ const onMessageArrived = function(msg) {
         ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
       }
       break;
+    case 'gameOver':
+      {
+        console.log('gameOver message received ', message.message);
+        console.log('spel gedaan:' + message.message.snake.Name + 'heeft' + message.message.method);
+        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${
+          message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'
+        }<br>`;
+        document.querySelector('.js-lobby').style.display = 'block';
+      }
+      break;
+
     default: {
       console.log('unknown message');
     }
