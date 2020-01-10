@@ -14,24 +14,24 @@ let scalefactor = 20;
 
 let snakePositions = [
   [
-    [3, 0],
-    [2, 0],
-    [1, 0]
+    [6, 3],
+    [6, 2],
+    [6, 1]
   ],
   [
-    [4, 5],
-    [5, 5],
-    [6, 5]
+    [9, 3],
+    [9, 2],
+    [9, 1]
   ],
   [
-    [4, 5],
-    [5, 5],
-    [6, 5]
+    [12, 3],
+    [12, 2],
+    [12, 1]
   ],
   [
-    [3, 5],
-    [2, 5],
-    [1, 5]
+    [15, 3],
+    [15, 2],
+    [15, 1]
   ]
 ];
 let snakeColors = ['#00FF00', '#FF0000', '#0000FF', '#00FFFF'];
@@ -40,6 +40,18 @@ let snakeColors = ['#00FF00', '#FF0000', '#0000FF', '#00FFFF'];
 const getdomelements = function() {
   canvas = document.querySelector('.c-gameboard');
   ctx = canvas.getContext('2d');
+
+  //needs to be moved
+  document.querySelector('.js-lobby').addEventListener('click', function() {
+    if (playerNr != 0) {
+      message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+      message.destinationName = roomInfo.roomId;
+      mqtt.send(message);
+      window.location.href = 'playerroom.html?roomId=' + roomInfo.roomId;
+    } else {
+      window.location.href = 'hostlobby.html';
+    }
+  });
 };
 
 // ***********  HTML Generation ***********

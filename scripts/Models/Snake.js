@@ -82,6 +82,9 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
       if (Tailpiece[0] == newhead[0] && Tailpiece[1] == newhead[1]) {
         stop = true;
         console.log('u dead boi!!');
+        let message = new Paho.MQTT.Message(JSON.stringify(new Message('gameOver', { snake: this, method: 'ate himself' })));
+        message.destinationName = roomInfo.roomId;
+        mqtt.send(message);
       }
     }
     // check if the snake went off screen and should die
@@ -98,6 +101,10 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     } catch {
       this.Isalive = false;
       console.log('u dead boi');
+      let message = new Paho.MQTT.Message(JSON.stringify(new Message('gameOver', { snake: this, method: 'went off screen' })));
+      message.destinationName = roomInfo.roomId;
+      mqtt.send(message);
+
       stop = true;
     }
   };
