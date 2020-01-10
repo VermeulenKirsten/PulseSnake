@@ -10,7 +10,7 @@ let canvas;
 let ctx;
 let gamewidth = 800;
 let gameheight = 800;
-let scalefactor = 30;
+let scalefactor = 40;
 
 let snakePositions = [
   [
