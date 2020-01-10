@@ -4,10 +4,10 @@
 
 /* baloo-regular - latin */
 @font-face {
-  font-family: 'Baloo';
+  font-family: "Baloo";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
+  src: url("../fonts/baloo-v5-latin-regular.woff2") format("woff2"), url("../fonts/baloo-v5-latin-regular.woff") format("woff");
 }
 
 /*------------------------------------*\
@@ -16,8 +16,14 @@
 
 :root {
   /* colors */
+  --global-color-alpha: #62c236;
   --global-color-alpha-gradient: linear-gradient(#62c236, #a8e063);
+
   --global-color-beta-gradient: linear-gradient(#77a143, #64cf33);
+
+  --global-color-gamma: #883939;
+  --global-color-gamma-gradient: linear-gradient(#723030, #883939);
+  --global-color-gamma-dark: #441d1d;
 
   /* Whitespace */
   --global-baseline: 8px;
@@ -33,10 +39,12 @@
   /* border */
   --global-border-color: linear-gradient(#f9d976, #f39f86);
   --global-border-boxshadow-light: 0 10px 0 0 #b14727;
-  --global-border-boxshadow-dark: 0 5px 0 0 #883939;
-  --global-border-boxshadow-dark-sm: 0 1px 0 0 #883939;
+  --global-border-boxshadow-dark: 0 5px 0 0 var(--global-color-gamma);
+  --global-border-boxshadow-dark-sm: 0 1px 0 0 var(--global-color-gamma);
+  --global-border-boxshadow-dark-inset: inset 0 5px 0 0 var(--global-color-gamma-dark);
   --global-border-width: 1px;
   --global-border-radius: 35px;
+  --global-border-radius-lg: 100%;
 
   /* transitions */
   --global-transition-alpha: 0.05s;
@@ -59,8 +67,8 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: 'Baloo', Helvetica, arial, sans-serif;
-  color: #222222;
+  font-family: "Baloo", Helvetica, arial, sans-serif;
+  color: #535353;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -221,8 +229,8 @@ select {
 }
 
 input::placeholder {
-  color: black;
-  opacity: 0.7;
+  color: white;
+  opacity: 0.75;
 }
 
 /*------------------------------------*\
@@ -317,20 +325,35 @@ input::placeholder {
 /* ---------------- General ---------------- */
 
 .c-lead-sm {
-  color: #535353;
   font-size: 40px;
   line-height: 40px;
 }
 
 .c-lead-md {
-  color: #535353;
   font-size: 48px;
   line-height: 48px;
+}
+
+.c-baselayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  max-height: 100vh;
+  height: 100vh;
+  background: white url("/img/png/background.png") center no-repeat;
+  background-size: cover;
+  overflow: hidden;
 }
 
 .c-button {
   margin-bottom: calc(var(--global-whitespace-sm) + 10px);
   width: 300px;
+}
+
+.c-button__responsive {
+  margin-bottom: calc(var(--global-whitespace-sm) + 10px);
 }
 
 .c-button__base {
@@ -342,6 +365,11 @@ input::placeholder {
   box-shadow: var(--global-border-boxshadow-light);
 }
 
+.c-button__base-round {
+  padding: 12px 14px 16px;
+  border-radius: var(--global-border-radius-lg);
+}
+
 .c-button__outerhead {
   z-index: 2;
   padding: calc(var(--global-baseline) * 0.75) calc(var(--global-baseline) * 1.5);
@@ -350,12 +378,24 @@ input::placeholder {
   background-image: var(--global-color-alpha-gradient);
   box-shadow: var(--global-border-boxshadow-dark);
 }
+
+.c-button__outerhead-round {
+  padding: 10px;
+  border-radius: var(--global-border-radius-lg);
+}
+
 .c-button__innerhead {
   z-index: 3;
   padding: 4px 16px;
   display: block;
+  height: 100%;
   border-radius: var(--global-border-radius);
   background-image: var(--global-color-beta-gradient);
+}
+
+.c-button__innerhead-round {
+  padding: 10px 14px;
+  border-radius: var(--global-border-radius-lg);
 }
 
 .c-button__text {
@@ -365,10 +405,46 @@ input::placeholder {
   line-height: 32px;
 }
 
-.c-button:active .c-button__base .c-button__outerhead {
+.c-button:active .c-button__base .c-button__outerhead,
+.c-button__responsive:active .c-button__base .c-button__outerhead {
   box-shadow: var(--global-border-boxshadow-dark-sm);
   transition: var(--global-transition-alpha);
   transform: translateY(4px);
+}
+
+.c-form {
+  text-align: center;
+}
+
+.c-form__element {
+  margin-bottom: var(--global-whitespace-md);
+}
+.c-form__element-xxl {
+  margin-bottom: var(--global-whitespace-xxl);
+}
+
+.c-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  font: inherit;
+  color: white;
+  text-align: center;
+  padding: calc(var(--global-baseline) * 1.5) var(--global-whitespace-md);
+  border: none;
+  border-radius: var(--global-border-radius);
+  outline: none;
+  background-image: var(--global-color-gamma-gradient);
+  box-shadow: var(--global-border-boxshadow-dark-inset);
+  transition: border var(--global-transition-timing-alpha);
+}
+
+.c-icon {
+  fill: white;
+  height: var(--global-whitespace-lg);
+  width: var(--global-whitespace-lg);
 }
 
 /* ---------------- Index ---------------- */
@@ -380,36 +456,18 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background-image: url('/img/png/landingpage.png');
+  background: white url("/img/png/landingpage.png") center no-repeat;
   background-size: cover;
-  background-position: center center;
-  background-color: #ffffff;
   overflow: hidden;
 }
 
 /* ---------------- Create ---------------- */
-.c-baselayout {
+.c-setting {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  z-index: 2;
-  max-height: 100vh;
-  height: 100vh;
-  background-image: url('/img/png/background.png');
-  background-size: cover;
-  background-position: center center;
-  background-color: #ffffff;
-  overflow: hidden;
 }
 
-.c-form {
-  text-align: center;
-}
-
-.c-form__element {
-  margin-bottom: var(--global-whitespace-md);
-}
 /* ---------------- Join ---------------- */
 
 /* ---------------- Game ---------------- */
@@ -972,18 +1030,18 @@ input::placeholder {
     text-decoration: underline;
   }
   a[href]:after {
-    content: ' (' attr(href) ')';
+    content: " (" attr(href) ")";
   }
   abbr[title]:after {
-    content: ' (' attr(title) ')';
+    content: " (" attr(title) ")";
   }
   /*
       * Don't show links that are fragment identifiers,
       * or use the `javascript:` pseudo protocol
       */
-  a[href^='#']:after,
-  a[href^='javascript:']:after {
-    content: '';
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
   }
   pre {
     white-space: pre-wrap !important;

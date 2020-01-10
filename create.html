@@ -19,21 +19,63 @@
   </head>
   <body class="c-baselayout">
     <form class="c-form js-form" id="form" onsubmit="return false;">
+      <label class="c-label c-form__element c-lead-sm" for="speed">
+        Snelheid
+      </label>
 
-      <label for="speed" class="c-lead-md c-form__element">Snelheid</label>
+      <div class="c-setting">
+        <button type="submit" class="o-button-reset c-button__responsive js-start">
+          <div class="c-button__base">
+            <div class="c-button__outerhead">
+              <div class="c-button__innerhead">
+                <svg class="c-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </button>
+        <div class="c-button__base c-form__element-xxl">
+          <input class="c-input c-lead-sm js-speed" type="text" name="speed" id="speed" value="Normaal" disabled required />
+        </div>
+        <button class="o-button-reset c-button__responsive">
+          <div class="c-button__base c-button__base-round">
+            <div class="c-button__outerhead c-button__outerhead-round">
+              <div class="c-button__innerhead c-button__innerhead-round">
+                <svg class="c-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </button>
+      </div>
 
-      <select class="js-speed c-form__element" name="speler" id="speed">
-        <option>traag</option
-        ><option>normaal</option
-        ><option>snel</option>
-      </select>
+      <label class="c-label c-form__element c-lead-sm" for="playtime">
+        Spelduur
+      </label>
+      <div class="c-setting">
+        <button type="submit" class="o-button-reset c-button__responsive js-start">
+          <div class="c-button__base">
+            <div class="c-button__outerhead">
+              <div class="c-button__innerhead">
+                <svg class="c-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </button>
 
-      <label for="playtime" class="c-lead-md c-form__element">Spelduur</label>
+        <div class="c-button__base c-form__element-xxl">
+          <input class="c-input c-lead-sm js-time" type="text" name="playtime" id="playtime" value="5 min" disabled required />
+        </div>
 
-      <input class="js-time c-form__element" type="number" name="name" id="name" />
-
-      <p>Code: <span class="js-roomid"></span></p>
-      <button type="submit" class="o-button-reset c-button js-start">
+        <button class="o-button-reset c-button__responsive">
+          <div class="c-button__base c-button__base-round">
+            <div class="c-button__outerhead c-button__outerhead-round">
+              <div class="c-button__innerhead c-button__innerhead-round">
+                <svg class="c-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </button>
+      </div>
+      <button type="submit" class="o-button-reset c-button__responsive js-start">
         <div class="c-button__base">
           <div class="c-button__outerhead">
             <div class="c-button__innerhead">
@@ -43,8 +85,5 @@
         </div>
       </button>
     </form>
-
-    
-    <!-- <ol id="playerListjs"></ol> -->
   </body>
 </html>
