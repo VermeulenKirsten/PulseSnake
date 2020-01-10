@@ -8,9 +8,9 @@ let fruit = [null, null];
 let candy = [null, null];
 let canvas;
 let ctx;
-let gamewidth = 500;
-let gameheight = 500;
-let scalefactor = 20;
+let gamewidth = 800;
+let gameheight = 800;
+let scalefactor = 30;
 
 let snakePositions = [
   [
@@ -142,7 +142,7 @@ const gametick = function() {
     displaysnake(player);
   }
   if (!stop) {
-    setTimeout(gametick, 200);
+    setTimeout(gametick, 500);
   }
 };
 
