@@ -97,25 +97,35 @@ const createfield = function() {
   ctx.clearRect(0, 0, gamewidth, gameheight);
 };
 
-const displaysnake = function(snakeobj) {
-  createfield();
+const gameTick = function(snakeobj) {
+  console.log('tick');
   snakeobj.Movesnake();
+  if (!stop) {
+    setTimeout(function() {
+      gameTick(snakeobj);
+    }, 100 * snakeobj.Speed);
+  }
+};
 
-  // console.log('snakeopbject: ', snakeobj);
-  try {
-    for (let piece of snakeobj.Tail) {
-      ctx.fillStyle = snakeobj.Color;
-      ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+const displaysnakes = function() {
+  createfield();
+  console.log('snakeopbject: ');
+  for (let snake of snakes) {
+    try {
+      for (let piece of snake.Tail) {
+        ctx.fillStyle = snake.Color;
+        ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+      }
+    } catch {
+      snake.isalive = false;
+      console.log('u dead boi');
+      stop = true;
     }
-  } catch {
-    snakeobj.isalive = false;
-    console.log('u dead boi');
-    stop = true;
   }
   if (!stop) {
     setTimeout(function() {
-      displaysnake(snakeobj);
-    }, 100 * snakeobj.Speed);
+      displaysnakes();
+    }, 200);
   }
 };
 
@@ -188,8 +198,9 @@ const beginGame = function() {
   generateSnakes();
   handlekeydowns();
   for (let snake of snakes) {
-    displaysnake(snake);
+    gameTick(snake);
   }
+  displaysnakes();
 };
 
 const checkPlayer = function() {
