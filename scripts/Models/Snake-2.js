@@ -8,7 +8,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     (this.Isalive = true),
     (this.Input = function(direction) {
       let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
-      console.log(this.Inputbuffer);
       if (lastkey != direction) {
         if (lastkey != 'right' && direction == 'left') {
           this.Inputbuffer.push('left');
@@ -21,8 +20,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         } else if (direction == 'slow') {
           this.Speed -= 1;
         }
-        // console.log(roomInfo.roomId);
-        // console.log(this);
         let snakemessage = new Message('snake', this);
         let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
         message.destinationName = roomInfo.roomId;
@@ -33,11 +30,9 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     let tailend;
     let newhead;
     let direction = this.Inputbuffer[0];
-    console.log(this.Inputbuffer);
     if (this.Inputbuffer.length > 1) {
       this.Inputbuffer.shift();
       direction = this.Inputbuffer[0];
-      console.log(direction);
       if (direction == 'down') {
         newhead = [this.Tail[0][0] + 1, this.Tail[0][1]];
         tailend = this.Tail.pop();
@@ -56,8 +51,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         this.Tail.unshift(newhead);
       }
     } else {
-      console.log(this.Inputbuffer);
-
       if (direction == 'down') {
         newhead = [this.Tail[0][0] + 1, this.Tail[0][1]];
         tailend = this.Tail.pop();
