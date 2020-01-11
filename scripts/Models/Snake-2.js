@@ -19,9 +19,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         } else if (lastkey != 'up' && direction == 'down') {
           this.Inputbuffer.push('down');
         } else if (direction == 'slow') {
-          this.Inputbuffer.push('down');
           this.Speed -= 1;
-          console.log(this.Speed);
         }
         // console.log(roomInfo.roomId);
         // console.log(this);
