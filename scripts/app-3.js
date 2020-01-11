@@ -11,7 +11,7 @@ let ctx;
 let gamewidth = 800;
 let gameheight = 800;
 let scalefactor = 40;
-let framerate = 60;
+let framerate = 100;
 
 let snakePositions = [
   [
@@ -67,9 +67,6 @@ const getdomelements = function() {
 //event that triggers when keyboard buttons are pressed
 const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
-    // console.log('key pressed');
-    // console.log(playerNr);
-    console.log(snakes[playerNr]);
     //left arrow key pressed
     if (key.which === 37) {
       snakes[playerNr].Input('left');
@@ -89,6 +86,9 @@ const handlekeydowns = function() {
     //space bar pressed
     else if (key.which === 32) {
       snakes[playerNr].Input('slow');
+    } else if (key.which === 70) {
+      stop = true;
+      console.log(stop);
     }
   });
 };
@@ -179,7 +179,7 @@ const generatecandy = function() {
 // ***********  generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', 5.5, snakeColors[i]);
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', 5.4, snakeColors[i]);
     snakes.push(newsnake);
   }
 };

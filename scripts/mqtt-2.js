@@ -20,7 +20,6 @@ const onMessageArrived = function(msg) {
   switch (message.type) {
     case 'snake':
       {
-        console.log('snake message received ');
         for (let t in snakes) {
           if (snakes[t].Id == message.message.Id) {
             snakes[t].Name = message.message.Name;
