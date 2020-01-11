@@ -11,6 +11,7 @@ let ctx;
 let gamewidth = 800;
 let gameheight = 800;
 let scalefactor = 40;
+let framerate = 60;
 
 let snakePositions = [
   [
@@ -98,7 +99,6 @@ const createfield = function() {
 };
 
 const gameTick = function(snakeobj) {
-  console.log('tick');
   snakeobj.Movesnake();
   if (!stop) {
     setTimeout(function() {
@@ -109,13 +109,17 @@ const gameTick = function(snakeobj) {
 
 const displaysnakes = function() {
   createfield();
-  console.log('snakeopbject: ');
   for (let snake of snakes) {
     try {
       for (let piece of snake.Tail) {
         ctx.fillStyle = snake.Color;
         ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
       }
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+      // show the candy
+      ctx.fillStyle = '#FF00FF';
+      ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
     } catch {
       snake.isalive = false;
       console.log('u dead boi');
@@ -125,7 +129,7 @@ const displaysnakes = function() {
   if (!stop) {
     setTimeout(function() {
       displaysnakes();
-    }, 200);
+    }, 1000 / framerate);
   }
 };
 
@@ -175,7 +179,7 @@ const generatecandy = function() {
 // ***********  generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', 5, snakeColors[i]);
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', 5.5, snakeColors[i]);
     snakes.push(newsnake);
   }
 };
@@ -197,6 +201,8 @@ const beginGame = function() {
   checkPlayer();
   generateSnakes();
   handlekeydowns();
+  generatefruit();
+  generatecandy();
   for (let snake of snakes) {
     gameTick(snake);
   }
