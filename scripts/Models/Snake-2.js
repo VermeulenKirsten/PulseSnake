@@ -43,11 +43,12 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     } else if (direction == 'right') {
       newhead = [this.Tail[0][0], this.Tail[0][1] + 1];
     }
-    // this.Tail.unshift(newhead);
+    this.Tail.unshift(newhead);
 
     // check if the snake ate the fruit
     if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
       this.Tail.push(tailend);
+      console.log('tail: ', this.Tail, 'tailend', tailend);
       generatefruit();
       console.log(`${this.Name} ate fruit, new length: ${this.Tail.length}`);
       let snakemessage = new Message('snake', this);
@@ -89,23 +90,16 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     // } else if (this.Tail[0][1] <= -1 || this.Tail[0][1] > gamewidth / scalefactor - 1) {
     //   console.log('u dead boi');
     // }
-    console.log(this.Tail[0]);
-    if (this.Tail[0][0] <= 0 && this.Inputbuffer[0] == 'up') {
+    if (this.Tail[0][0] < 0 && this.Inputbuffer[0] == 'up') {
       newhead[0] = gameheight / scalefactor - 1;
-      console.log('if 1 onderaan');
-      console.log(this.Tail[0]);
-    } else if (this.Tail[0][0] >= gameheight / scalefactor - 1 && this.Inputbuffer[0] == 'down') {
+    } else if (this.Tail[0][0] >= gameheight / scalefactor && this.Inputbuffer[0] == 'down') {
       newhead[0] = 0;
-      console.log('if 2 bovenaan');
-      console.log(this.Tail[0]);
-    } else if (this.Tail[0][1] <= 0 && this.Inputbuffer[0] == 'left') {
+    } else if (this.Tail[0][1] < 0 && this.Inputbuffer[0] == 'left') {
       newhead[1] = gamewidth / scalefactor - 1;
-      console.log('if 3 links');
-    } else if (this.Tail[0][1] >= gamewidth / scalefactor - 1 && this.Inputbuffer[0] == 'right') {
+    } else if (this.Tail[0][1] >= gamewidth / scalefactor && this.Inputbuffer[0] == 'right') {
       newhead[1] = 0;
-      console.log('if 4 rechts');
     }
-    this.Tail.unshift(newhead);
+    // this.Tail.unshift(newhead);
     // this.Isalive = false;
     // console.log('u dead boi');
     // let message = new Paho.MQTT.Message(JSON.stringify(new Message('gameOver', { snake: this, method: 'went off screen' })));
