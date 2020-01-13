@@ -99,8 +99,8 @@ const createfield = function() {
 };
 
 const gameTick = function(snakeobj) {
-  snakeobj.Movesnake();
   if (!stop) {
+    snakeobj.Movesnake();
     setTimeout(function() {
       gameTick(snakeobj);
     }, 100 * snakeobj.Speed);
