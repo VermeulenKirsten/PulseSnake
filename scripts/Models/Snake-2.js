@@ -45,19 +45,30 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     }
     this.Tail.unshift(newhead);
 
-    // check if the snake ate the fruit
-    if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
-      this.Tail.push(tailend);
-      console.log('tail: ', this.Tail, 'tailend', tailend);
-      generatefruit();
-    }
-
-    // check if the snake ate the candy
-    if (candy[0] == newhead[0] && candy[1] == newhead[1]) {
-      if (this.Tail.length > 3) {
-        this.Tail.pop();
+    // host will check if the snake ate the fruit
+    if (playerNr == 0) {
+      let eaten = false;
+      if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
+        this.Tail.push(tailend);
+        console.log('tail: ', this.Tail, 'tailend', tailend);
+        generatefruit();
+        eaten = true;
       }
-      generatecandy();
+
+      // check if the snake ate the candy
+      if (candy[0] == newhead[0] && candy[1] == newhead[1]) {
+        if (this.Tail.length > 3) {
+          this.Tail.pop();
+        }
+        generatecandy();
+        eaten = true;
+      }
+
+      if (eaten) {
+        let message = new Paho.MQTT.Message(JSON.stringify(new Message('snake', this)));
+        message.destinationName = roomInfo.roomId;
+        mqtt.send(message);
+      }
     }
 
     // check if the snake ate himself
