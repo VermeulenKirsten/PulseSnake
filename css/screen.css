@@ -4,10 +4,10 @@
 
 /* baloo-regular - latin */
 @font-face {
-  font-family: "Baloo";
+  font-family: 'Baloo';
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/baloo-v5-latin-regular.woff2") format("woff2"), url("../fonts/baloo-v5-latin-regular.woff") format("woff");
+  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
 }
 
 /*------------------------------------*\
@@ -67,7 +67,7 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: "Baloo", Helvetica, arial, sans-serif;
+  font-family: 'Baloo', Helvetica, arial, sans-serif;
   color: #535353;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -342,7 +342,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/background.png") center no-repeat;
+  background: white url('/img/png/background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -413,6 +413,10 @@ input::placeholder {
 }
 
 .c-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   text-align: center;
   max-width: 750px;
   width: 100%;
@@ -449,6 +453,16 @@ input::placeholder {
   width: var(--global-whitespace-md);
 }
 
+.c-icon__mirror {
+  transform: rotate(180deg);
+}
+
+.c-nav {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  grid-column-gap: var(--global-whitespace-md);
+}
+
 /* ---------------- Index ---------------- */
 .c-index {
   display: flex;
@@ -458,16 +472,26 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/landingpage.png") center no-repeat;
+  background: white url('/img/png/landingpage.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
 
 /* ---------------- Create ---------------- */
-.c-setting {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.c-create {
+  display: grid;
+  grid-template: repeat(4, auto) / 88px 1fr 1fr 88px;
+  column-gap: var(--global-whitespace-md);
+}
+
+.c-create__speed {
+  grid-row: 1;
+  grid-column: span 4;
+}
+
+.c-create__playtime {
+  grid-row: 3;
+  grid-column: span 4;
 }
 
 /* ---------------- Join ---------------- */
@@ -1032,18 +1056,18 @@ input::placeholder {
     text-decoration: underline;
   }
   a[href]:after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
   }
   abbr[title]:after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
   /*
       * Don't show links that are fragment identifiers,
       * or use the `javascript:` pseudo protocol
       */
-  a[href^="#"]:after,
-  a[href^="javascript:"]:after {
-    content: "";
+  a[href^='#']:after,
+  a[href^='javascript:']:after {
+    content: '';
   }
   pre {
     white-space: pre-wrap !important;
