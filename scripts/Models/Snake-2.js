@@ -50,11 +50,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
       this.Tail.push(tailend);
       console.log('tail: ', this.Tail, 'tailend', tailend);
       generatefruit();
-      console.log(`${this.Name} ate fruit, new length: ${this.Tail.length}`);
-      let snakemessage = new Message('snake', this);
-      let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
-      message.destinationName = roomInfo.roomId;
-      mqtt.send(message);
     }
 
     // check if the snake ate the candy
@@ -63,11 +58,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         this.Tail.pop();
       }
       generatecandy();
-      console.log(`${this.Name} ate candy, new length: ${this.Tail.length}`);
-      let snakemessage = new Message('snake', this);
-      let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
-      message.destinationName = roomInfo.roomId;
-      mqtt.send(message);
     }
 
     // check if the snake ate himself
