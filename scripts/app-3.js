@@ -6,6 +6,7 @@ let stop = false;
 let snakes = [];
 let fruit = [null, null];
 let candy = [null, null];
+
 let canvas;
 let ctx;
 let gamewidth = 800;
