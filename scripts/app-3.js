@@ -6,7 +6,6 @@ let stop = false;
 let snakes = [];
 let fruit = [null, null];
 let candy = [null, null];
-
 let canvas;
 let ctx;
 let gamewidth = 800;
@@ -36,7 +35,7 @@ let snakePositions = [
     [15, 1]
   ]
 ];
-let snakeColors = ['#00FF00', '#FF0000', '#0000FF', '#00FFFF'];
+let snakeColors = ['#00FF00', '#FFFF00', '#0000FF', '#00FFFF'];
 
 // ***********  DOM references ***********
 const getdomelements = function() {
@@ -137,19 +136,30 @@ const displaysnakes = function() {
 // ***********  generate fruit ***********
 const generatefruit = function() {
   // console.log('generating fruit');
-  x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
-  y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
-  // console.log('x: ', x, ' y: ', y);
-  if (candy[0] != y && candy[1] != x)
-    for (let player of snakes) {
-      for (tailpiece of player.Tail) {
-        if (tailpiece[0] == x && tailpiece[1] == y) {
-          generatefruit();
-          break;
-        }
-      }
-    }
+  let x = Math.ceil(Math.random() * (gamewidth / scalefactor)) - 1;
+  let y = Math.ceil(Math.random() * (gameheight / scalefactor)) - 1;
   fruit = [y, x];
+  let alltails = [];
+  for (let player of snakes) {
+    alltails = alltails.concat(player.Tail);
+  }
+  alltails.push(candy);
+
+  if (alltails.length == (gamewidth / scalefactor) * (gameheight / scalefactor)) {
+    console.log('game finished');
+    fruit = [-100, -100];
+    stop = false;
+    throw 'error';
+    return;
+  }
+
+  for (let tail of alltails) {
+    if (tail[0] == fruit[0] && tail[1] == fruit[1]) {
+      console.log('fruit het zit er in');
+      generatefruit();
+    }
+  }
+
   let fruitmessage = new Message('fruit', fruit);
   let message = new Paho.MQTT.Message(JSON.stringify(fruitmessage));
   message.destinationName = roomInfo.roomId;
@@ -158,19 +168,21 @@ const generatefruit = function() {
 // ***********  generate candy ***********
 const generatecandy = function() {
   // console.log('ge  nerating candy');
-  x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
-  y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
-  // console.log('x: ', x, ' y: ', y);
-  if (fruit[0] != y && fruit[1] != x)
-    for (player of snakes) {
-      for (tailpiece of player.Tail) {
-        if (tailpiece[0] == x && tailpiece[1] == y) {
-          generatecandy();
-          break;
-        }
-      }
-    }
+  let x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
+  let y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   candy = [y, x];
+  let alltails = [];
+  for (let player of snakes) {
+    alltails = alltails.concat(player.Tail);
+  }
+  alltails.push(fruit);
+  for (let tail of alltails) {
+    if (tail[0] == candy[0] && tail[1] == candy[1]) {
+      console.log('candy het zit er in');
+      generatecandy();
+    }
+  }
+
   let candymessage = new Message('candy', candy);
   let message = new Paho.MQTT.Message(JSON.stringify(candymessage));
   message.destinationName = roomInfo.roomId;
