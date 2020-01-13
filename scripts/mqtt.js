@@ -2,11 +2,18 @@ let mqtt;
 let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
+let loadedPlayers = {};
 
 const onConnect = function() {
   console.log('Connected');
+  console.log(roomInfo);
   mqtt.subscribe(roomInfo.roomId);
-  beginGame();
+
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('playerLoaded', playerId)));
+  message.destinationName = roomInfo.roomId;
+  mqtt.send(message);
+  console.log('message send');
+  // beginGame();
 };
 
 const onFailure = function() {
@@ -15,9 +22,30 @@ const onFailure = function() {
 };
 
 const onMessageArrived = function(msg) {
-  // console.log('message:', msg.payloadString);
+  console.log('message:', msg.payloadString);
   message = JSON.parse(msg.payloadString);
   switch (message.type) {
+    case 'playerLoaded':
+      {
+        if (playerNr == 0) {
+          loadedPlayers[message.message] = true;
+
+          if (new Set(Object.values(loadedPlayers)).size === 1) {
+            console.log('all players are loaded');
+
+            message = new Paho.MQTT.Message(JSON.stringify(new Message('startGame', '')));
+            message.destinationName = roomInfo.roomId;
+            mqtt.send(message);
+          }
+        }
+        console.log(loadedPlayers);
+      }
+      break;
+    case 'startGame':
+      {
+        beginGame();
+      }
+      break;
     case 'snake':
       {
         // console.log('snake message received ');
@@ -58,9 +86,7 @@ const onMessageArrived = function(msg) {
       {
         console.log('gameOver message received ', message.message);
         console.log('spel gedaan:' + message.message.snake.Name + 'heeft' + message.message.method);
-        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${
-          message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'
-        }<br>`;
+        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'}<br>`;
         document.querySelector('.js-lobby').style.display = 'block';
       }
       break;
