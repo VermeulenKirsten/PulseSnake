@@ -20,11 +20,11 @@
   <body class="c-baselayout">
     <p class="c-lead-md u-mb-xl">Instellingen</p>
     <form class="c-form js-form" id="form" onsubmit="return false;">
-      <label class="c-label c-form__element c-lead-sm" for="speed">
-        Snelheid
-      </label>
+      <div class="c-create">
+        <label class="c-label c-form__element c-create__speed c-lead-sm" for="speed">
+          Snelheid
+        </label>
 
-      <div class="c-setting">
         <button type="button" class="o-button-reset c-button__responsive u-mb-clear">
           <div class="c-button__base c-button__base-round c-form__element-xxl">
             <div class="c-button__outerhead c-button__outerhead-round">
@@ -34,7 +34,7 @@
             </div>
           </div>
         </button>
-        <div class="c-button__base c-form__element-xxl">
+        <div class="c-button__base c-form__element-xxl u-column-2">
           <input class="c-input c-lead-sm js-speed" type="text" name="speed" id="speed" value="Normaal" disabled required />
         </div>
         <button type="button" class="o-button-reset c-button__responsive u-mb-clear">
@@ -46,12 +46,10 @@
             </div>
           </div>
         </button>
-      </div>
 
-      <label class="c-label c-form__element c-lead-sm" for="playtime">
-        Spelduur
-      </label>
-      <div class="c-setting">
+        <label class="c-label c-form__element c-lead-sm c-create__playtime" for="playtime">
+          Spelduur
+        </label>
         <button type="button" class="o-button-reset c-button__responsive u-mb-clear">
           <div class="c-button__base c-button__base-round c-form__element-xxl">
             <div class="c-button__outerhead c-button__outerhead-round">
@@ -62,7 +60,7 @@
           </div>
         </button>
 
-        <div class="c-button__base c-form__element-xxl">
+        <div class="c-button__base c-form__element-xxl u-column-2">
           <input class="c-input c-lead-sm js-time" type="text" name="playtime" id="playtime" value="5 min" disabled required />
         </div>
 
@@ -76,15 +74,28 @@
           </div>
         </button>
       </div>
-      <button type="submit" class="o-button-reset c-button__responsive js-start">
-        <div class="c-button__base">
-          <div class="c-button__outerhead">
-            <div class="c-button__innerhead">
-              <p class="c-button__text">Ga Verder</p>
+      <div class="c-nav">
+        <a href="index.html">
+          <button type="button" class="o-button-reset c-button__responsive">
+            <div class="c-button__base c-button__base-round">
+              <div class="c-button__outerhead c-button__outerhead-round">
+                <div class="c-button__innerhead c-button__innerhead-round">
+                  <svg aria-hidden="true" focusable="false" class="c-icon c-icon__mirror" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"></path></svg>
+                </div>
+              </div>
+            </div>
+          </button>
+        </a>
+        <button type="submit" class="o-button-reset c-button__responsive js-start">
+          <div class="c-button__base">
+            <div class="c-button__outerhead">
+              <div class="c-button__innerhead">
+                <p class="c-button__text">Ga Verder</p>
+              </div>
             </div>
           </div>
-        </div>
-      </button>
+        </button>
+      </div>
     </form>
   </body>
 </html>
