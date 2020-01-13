@@ -193,6 +193,7 @@ const getSessionData = function() {
   let startTime = sessionStorage.getItem('startTime');
   console.log(playerId);
   console.log(roomInfo);
+  checkPlayer();
   MQTTconnect();
 };
 
@@ -215,6 +216,10 @@ const checkPlayer = function() {
   if (playerId == roomInfo.players[0].id) {
     console.log('you are the host');
     playerNr = 0;
+    for (player in roomInfo.players) {
+      loadedPlayers[playerId] = false;
+    }
+    console.log(loadedPlayers);
     // setTimeout(beginGame, 3);
     //admin maakt fruit en candy aan
   } else {
