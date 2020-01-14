@@ -12,6 +12,11 @@ let gamewidth = 800;
 let gameheight = 800;
 let scalefactor = 40;
 let framerate = 100;
+let tijd;
+let tijdHTML;
+let lobbyButton;
+let gameOverTekst;
+let interval;
 
 let snakePositions = [
   [
@@ -41,8 +46,22 @@ let snakeColors = ['#00FF00', '#FFFF00', '#0000FF', '#00FFFF'];
 const getdomelements = function() {
   canvas = document.querySelector('.c-gameboard');
   ctx = canvas.getContext('2d');
+  tijdHTML = document.querySelector('.js-tijd');
+  lobbyButton = document.querySelector('.js-lobby');
+  gameOverTekst = document.querySelector('.js-gameOver');
+};
 
-  //needs to be moved
+// ***********  HTML Generation ***********
+
+// ***********  Callback ***********
+
+// ***********  Data Access ***********
+
+// ***********  Objects ***********
+
+// ***********  Event Listeners ***********
+
+const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
       message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
@@ -55,16 +74,8 @@ const getdomelements = function() {
   });
 };
 
-// ***********  HTML Generation ***********
-
-// ***********  Callback ***********
-
-// ***********  Data Access ***********
-
-// ***********  Objects ***********
-
-// ***********  Event Listeners ***********
 //event that triggers when keyboard buttons are pressed
+
 const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
     //left arrow key pressed
@@ -93,10 +104,11 @@ const handlekeydowns = function() {
   });
 };
 
-// ***********  Core Game Mechanics ***********
+// ***********  generate a black field ***********
 const createfield = function() {
   ctx.clearRect(0, 0, gamewidth, gameheight);
 };
+// ***********  Move the snakes according to their speed ***********
 
 const gameTick = function(snakeobj) {
   if (!stop) {
@@ -106,6 +118,7 @@ const gameTick = function(snakeobj) {
     }, 100 * snakeobj.Speed);
   }
 };
+// ***********  refresh the display ***********
 
 const displaysnakes = function() {
   createfield();
@@ -114,6 +127,10 @@ const displaysnakes = function() {
       for (let piece of snake.Tail) {
         ctx.fillStyle = snake.Color;
         ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        if (piece == snake.Tail[0]) {
+          ctx.fillStyle = '#006600';
+          ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        }
       }
       ctx.fillStyle = '#FF0000';
       ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
@@ -134,6 +151,7 @@ const displaysnakes = function() {
 };
 
 // ***********  generate fruit ***********
+
 const generatefruit = function() {
   // console.log('generating fruit');
   let x = Math.ceil(Math.random() * (gamewidth / scalefactor)) - 1;
@@ -146,7 +164,6 @@ const generatefruit = function() {
   alltails.push(candy);
 
   if (alltails.length == (gamewidth / scalefactor) * (gameheight / scalefactor)) {
-    console.log('game finished');
     fruit = [-100, -100];
     stop = false;
     throw 'error';
@@ -155,7 +172,6 @@ const generatefruit = function() {
 
   for (let tail of alltails) {
     if (tail[0] == fruit[0] && tail[1] == fruit[1]) {
-      console.log('fruit het zit er in');
       generatefruit();
     }
   }
@@ -165,9 +181,10 @@ const generatefruit = function() {
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
 };
+
 // ***********  generate candy ***********
+
 const generatecandy = function() {
-  // console.log('ge  nerating candy');
   let x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
   let y = Math.ceil((Math.random() * gameheight) / scalefactor - 1);
   candy = [y, x];
@@ -178,7 +195,6 @@ const generatecandy = function() {
   alltails.push(fruit);
   for (let tail of alltails) {
     if (tail[0] == candy[0] && tail[1] == candy[1]) {
-      console.log('candy het zit er in');
       generatecandy();
     }
   }
@@ -196,19 +212,43 @@ const generateSnakes = function() {
     snakes.push(newsnake);
   }
 };
+// ***********  Get Session Data ***********
 
 const getSessionData = function() {
   playerId = sessionStorage.getItem('playerId');
-  console.log(playerId);
   roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
-  console.log(roomInfo);
-
-  let startTime = sessionStorage.getItem('startTime');
-  console.log(playerId);
-  console.log(roomInfo);
   checkPlayer();
   MQTTconnect();
 };
+
+const startCountDown = function() {
+  tijd = roomInfo.gameDuration * 60 + 3;
+  tijdHTML.innerHTML = tijd;
+  console.log('tijd:', tijd);
+  interval = setInterval(countDown, 1000);
+  setTimeout(startMovement, 3000);
+  setTimeout(gameOver, tijd * 1000);
+};
+
+const countDown = function() {
+  tijd -= 1;
+  tijdHTML.innerHTML = tijd;
+};
+const startMovement = function() {
+  for (let snake of snakes) {
+    gameTick(snake);
+  }
+};
+
+const gameOver = function() {
+  stop = true;
+  clearInterval(interval);
+  gameOverTekst.innerHTML = 'Tijd is om, het spel is gedaan';
+  if (playerNr == 0) {
+    lobbyButton.style.display = 'block';
+  }
+};
+// ***********  Begin Game ***********
 
 const beginGame = function() {
   console.log('begin the game');
@@ -219,31 +259,25 @@ const beginGame = function() {
     generatefruit();
     generatecandy();
   }
-  for (let snake of snakes) {
-    gameTick(snake);
-  }
   displaysnakes();
+  startCountDown();
 };
+// ***********  CheckPlayer ***********
 
 const checkPlayer = function() {
-  console.log('checkplayer');
   //check if you are the host or not
   if (playerId == roomInfo.players[0].id) {
-    console.log('you are the host');
     playerNr = 0;
-    for (player in roomInfo.players) {
-      loadedPlayers[playerId] = false;
+    for (player of roomInfo.players) {
+      console.log('p:', player);
+      loadedPlayers[player.id] = false;
     }
-    console.log(loadedPlayers);
-    // setTimeout(beginGame, 3);
-    //admin maakt fruit en candy aan
   } else {
     //check wich player you are
     for (let nr in roomInfo.players) {
       if (playerId == roomInfo.players[nr].id) {
         playerNr = nr;
       }
-      console.log('you are a player');
     }
   }
 };
@@ -251,6 +285,7 @@ const checkPlayer = function() {
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
+  listener();
   getdomelements();
   getSessionData();
 

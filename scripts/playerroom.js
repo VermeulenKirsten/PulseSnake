@@ -5,7 +5,6 @@ let port = 80;
 
 let roomId;
 let playerId;
-// let playerName;
 let playerList;
 let roomInfo;
 // ***********  page reload ***********
@@ -19,7 +18,6 @@ window.onbeforeunload = function() {
 
 const roomNotFound = function() {
   if (!roomInfo) {
-    console.log('room not found, redirecting');
     window.location.href = 'join.html?error=roomNotFound';
   }
 };
@@ -27,10 +25,8 @@ const roomNotFound = function() {
 // ***********  when succesfully connected to broker ***********
 
 const onConnect = function() {
-  console.log('Connected');
   mqtt.subscribe(roomId);
   let guest = new Player(playerId);
-  console.log('send: ', JSON.stringify(new Message('player', guest)));
   message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
   message.destinationName = roomId;
   mqtt.send(message);
@@ -48,10 +44,7 @@ const onFailure = function() {
 // ***********  when a message arrives ***********
 
 const onMessageArrived = function(msg) {
-  console.log(msg);
-  console.log('message:', msg.payloadString);
   let message = JSON.parse(msg.payloadString);
-  console.log(message);
   switch (message.type) {
     case 'roomInfo':
       {
@@ -61,7 +54,6 @@ const onMessageArrived = function(msg) {
         showplayers(roomInfo);
       }
       break;
-    // {"type":"startGame","message":{"startTime":1578565869942,"roomInfo":{"roomId":"6039","players":[{"id":"6f19fc4a-cd28-4180-8ee8-544aedc8d3c9","color":"#FF0000","name":"Speler 1"},{"id":"f44f189a-f1c7-4e61-a9c1-b3437f35ed7e","color":"#FF0000","name":"Speler 2"}],"maxplayers":4}}}
     case 'startGame':
       {
         roomInfo = JSON.stringify(message.message.roomInfo);
@@ -74,7 +66,6 @@ const onMessageArrived = function(msg) {
       break;
     case 'error':
       {
-        // message: {"type":"error","message":{"toId":"884203de-c6b6-41c9-92ad-c7c473773ed3","message":"room full"}}
         if (message.message.errorMessage == 'room full' && message.message.toId == playerId) {
           console.log('room is full redirecting');
           window.location.href = 'join.html?error=roomFull';
@@ -100,6 +91,9 @@ const MQTTconnect = function() {
   mqtt.onMessageArrived = onMessageArrived;
   mqtt.connect(options);
 };
+
+// ***********  Show connected players in html ***********
+
 const showplayers = function(roomInfo) {
   console.log(roomInfo);
   let output = '';
@@ -121,9 +115,6 @@ const init = function() {
   roomId = url.searchParams.get('roomId');
 
   playerId = createUuid();
-
-  //   playerName = url.searchParams.get('playerName');
-  console.log(roomId, playerId);
 
   getDomelements();
   MQTTconnect();

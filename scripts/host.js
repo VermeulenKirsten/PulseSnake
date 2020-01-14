@@ -10,7 +10,9 @@ const generateRoom = function() {
   roomInfo.addPlayer(host);
   roomInfo.defaultSpeed = speed.value;
   roomInfo.gameDuration = duration.value;
+
   //store gameinfo in sessionstorage and go to lobby
+
   sessionStorage.setItem('playerId', playerId);
   sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
   window.location.href = 'hostlobby.html';
@@ -26,7 +28,6 @@ const generateRoomId = function() {
   for (let i = 1; i <= 4; i++) {
     roomId += Math.floor(Math.random() * 10);
   }
-  document.querySelector('.js-roomid').innerHTML = roomId;
 };
 
 // ***********  generate dom elements ***********

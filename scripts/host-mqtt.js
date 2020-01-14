@@ -12,6 +12,9 @@ const onConnect = function() {
     qos: 1
   };
   mqtt.subscribe(roomInfo.roomId, suboptions);
+  let message = new Paho.MQTT.Message(JSON.stringify(new Message('lobbyReady', '')));
+  message.destinationName = roomInfo.roomId;
+  mqtt.send(message);
 };
 // ***********  not succesfully connected to broker ***********
 

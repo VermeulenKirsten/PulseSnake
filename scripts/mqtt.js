@@ -13,7 +13,6 @@ const onConnect = function() {
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
   console.log('message send');
-  // beginGame();
 };
 
 const onFailure = function() {
@@ -29,7 +28,8 @@ const onMessageArrived = function(msg) {
       {
         if (playerNr == 0) {
           loadedPlayers[message.message] = true;
-
+          console.log(loadedPlayers);
+          console.log(new Set(Object.values(loadedPlayers)).size === 1);
           if (new Set(Object.values(loadedPlayers)).size === 1) {
             console.log('all players are loaded');
 
@@ -38,7 +38,6 @@ const onMessageArrived = function(msg) {
             mqtt.send(message);
           }
         }
-        console.log(loadedPlayers);
       }
       break;
     case 'startGame':
@@ -86,8 +85,15 @@ const onMessageArrived = function(msg) {
       {
         console.log('gameOver message received ', message.message);
         console.log('spel gedaan:' + message.message.snake.Name + 'heeft' + message.message.method);
-        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'}<br>`;
+        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${
+          message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'
+        }<br>`;
         document.querySelector('.js-lobby').style.display = 'block';
+      }
+      break;
+    case 'lobbyReady':
+      {
+        lobbyButton.style.display = 'block';
       }
       break;
 
