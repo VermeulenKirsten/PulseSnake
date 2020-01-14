@@ -4,10 +4,10 @@
 
 /* baloo-regular - latin */
 @font-face {
-  font-family: 'Baloo';
+  font-family: "Baloo";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
+  src: url("../fonts/baloo-v5-latin-regular.woff2") format("woff2"), url("../fonts/baloo-v5-latin-regular.woff") format("woff");
 }
 
 /*------------------------------------*\
@@ -67,7 +67,7 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: 'Baloo', Helvetica, arial, sans-serif;
+  font-family: "Baloo", Helvetica, arial, sans-serif;
   color: #535353;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -334,6 +334,11 @@ input::placeholder {
   line-height: 48px;
 }
 
+.c-lead-lg {
+  font-size: 56px;
+  line-height: 56px;
+}
+
 .c-baselayout {
   display: flex;
   flex-direction: column;
@@ -342,18 +347,24 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/background.png') center no-repeat;
+  background: white url("/img/png/background.png") center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
 
 .c-button {
   margin-bottom: calc(var(--global-whitespace-sm) + 10px);
-  width: 300px;
+  width: 100%;
 }
 
-.c-button__responsive {
+.c-button__round {
   margin-bottom: calc(var(--global-whitespace-sm) + 10px);
+}
+
+.c-button__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .c-button__base {
@@ -472,9 +483,17 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/landingpage.png') center no-repeat;
+  background: white url("/img/png/landingpage.png") center no-repeat;
   background-size: cover;
   overflow: hidden;
+}
+
+.c-index__buttons {
+  max-width: 350px;
+}
+
+.c-index__credits {
+  margin-right: var(--global-whitespace-sm);
 }
 
 /* ---------------- Create ---------------- */
@@ -1056,18 +1075,18 @@ input::placeholder {
     text-decoration: underline;
   }
   a[href]:after {
-    content: ' (' attr(href) ')';
+    content: " (" attr(href) ")";
   }
   abbr[title]:after {
-    content: ' (' attr(title) ')';
+    content: " (" attr(title) ")";
   }
   /*
       * Don't show links that are fragment identifiers,
       * or use the `javascript:` pseudo protocol
       */
-  a[href^='#']:after,
-  a[href^='javascript:']:after {
-    content: '';
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
   }
   pre {
     white-space: pre-wrap !important;
