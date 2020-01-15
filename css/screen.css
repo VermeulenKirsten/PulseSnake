@@ -417,7 +417,7 @@ input::placeholder {
 }
 
 .c-button:active .c-button__base .c-button__outerhead,
-.c-button__responsive:active .c-button__base .c-button__outerhead {
+.c-button__round:active .c-button__base .c-button__outerhead {
   box-shadow: var(--global-border-boxshadow-dark-sm);
   transition: var(--global-transition-alpha);
   transform: translateY(4px);
@@ -494,6 +494,11 @@ input::placeholder {
 
 .c-index__credits {
   margin-right: var(--global-whitespace-sm);
+}
+
+/* ---------------- Play ---------------- */
+.c-play {
+  max-width: 350px;
 }
 
 /* ---------------- Create ---------------- */
