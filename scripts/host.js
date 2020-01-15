@@ -1,4 +1,4 @@
-let roomId = '';
+let roomId = "";
 let form;
 let speed;
 let duration;
@@ -10,14 +10,14 @@ let durationTime = 5;
 let moreTimeTimer;
 let lessTimeTimer;
 let mouseDownMore;
-let speedOptions = { 'Heel traag': 6, Traag: 5, Normaal: 4, Snel: 3.5, 'Heel snel': 3 };
+let speedOptions = { "Heel traag": 6, Traag: 5, Normaal: 4, Snel: 3.5, "Heel snel": 3 };
 let currentSpeedOption = 2;
 
 // ***********  generate room ***********
 const generateRoom = function() {
   playerId = createUuid();
   let host = new Player(playerId);
-  host.name = 'Speler 1';
+  host.name = "Speler 1";
   roomInfo = new room(roomId);
   roomInfo.addPlayer(host);
   roomInfo.defaultSpeed = speedOptions[Object.keys(speedOptions)[currentSpeedOption]];
@@ -25,21 +25,28 @@ const generateRoom = function() {
 
   //store gameinfo in sessionstorage and go to lobby
 
-  sessionStorage.setItem('playerId', playerId);
-  sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-  window.location.href = 'hostlobby.html';
+  sessionStorage.setItem("playerId", playerId);
+  sessionStorage.setItem("roomInfo", JSON.stringify(roomInfo));
+  window.location.href = "hostlobby.html";
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
-  form.addEventListener('submit', generateRoom);
-  lessTime.addEventListener('mousedown', startLessTime);
-  lessTime.addEventListener('mouseup', stopLessTime);
-  moreTime.addEventListener('mousedown', startMoreTime);
-  moreTime.addEventListener('mouseup', stopMoreTime);
-  lessSpeed.addEventListener('click', removeSpeed);
-  moreSpeed.addEventListener('click', addSpeed);
+  form.addEventListener("submit", generateRoom);
+  lessTime.addEventListener("mousedown", startLessTime);
+  lessTime.addEventListener("mouseup", stopLessTime);
+  moreTime.addEventListener("mousedown", startMoreTime);
+  moreTime.addEventListener("mouseup", stopMoreTime);
+  lessSpeed.addEventListener("click", removeSpeed);
+  moreSpeed.addEventListener("click", addSpeed);
+  domBack.addEventListener("click", goToPlay);
 };
+
+// *********** Navigation ***********
+const goToPlay = function() {
+  window.location.href = "play.html";
+};
+
 // ***********  generate a roomId ***********
 
 const generateRoomId = function() {
@@ -59,9 +66,9 @@ const startLessTime = function() {
   mouseDownLess = true;
   durationTime = durationTime == 1 ? 1 : durationTime - 1;
   if (durationTime == 1) {
-    duration.value = durationTime + ' minuut';
+    duration.value = durationTime + " minuut";
   } else {
-    duration.value = durationTime + ' minuten';
+    duration.value = durationTime + " minuten";
   }
 
   setTimeout(fastLessTime, 500);
@@ -71,9 +78,9 @@ const fastLessTime = function() {
   if (mouseDownLess) {
     durationTime = durationTime == 1 ? 1 : durationTime - 1;
     if (durationTime == 1) {
-      duration.value = durationTime + ' minuut';
+      duration.value = durationTime + " minuut";
     } else {
-      duration.value = durationTime + ' minuten';
+      duration.value = durationTime + " minuten";
     }
     if (mouseDownLess) {
       setTimeout(fastLessTime, 50);
@@ -86,14 +93,14 @@ const stopLessTime = function() {
 const startMoreTime = function() {
   mouseDownMore = true;
   durationTime = durationTime == 99 ? 99 : durationTime + 1;
-  duration.value = durationTime + ' minuten';
+  duration.value = durationTime + " minuten";
   setTimeout(fastMoreTime, 500);
 };
 
 const fastMoreTime = function() {
   if (mouseDownMore) {
     durationTime = durationTime == 99 ? 99 : durationTime + 1;
-    duration.value = durationTime + ' minuten';
+    duration.value = durationTime + " minuten";
     if (mouseDownMore) {
       setTimeout(fastMoreTime, 50);
     }
@@ -107,26 +114,26 @@ const stopMoreTime = function() {
 // ***********  generate dom elements ***********
 
 const generateDOMelements = function() {
-  form = document.querySelector('.js-form');
-  speed = document.querySelector('.js-speed');
+  form = document.querySelector(".js-form");
+  speed = document.querySelector(".js-speed");
   speed.value = Object.keys(speedOptions)[currentSpeedOption];
-
-  duration = document.querySelector('.js-time');
-  duration.value = durationTime + ' minuten';
-  lessTime = document.querySelector('.js-lessTime');
-  moreTime = document.querySelector('.js-moreTime');
-  lessSpeed = document.querySelector('.js-lessSpeed');
-  moreSpeed = document.querySelector('.js-moreSpeed');
-  addListener();
+  domBack = document.querySelector(".js-back");
+  duration = document.querySelector(".js-time");
+  duration.value = durationTime + " minuten";
+  lessTime = document.querySelector(".js-lessTime");
+  moreTime = document.querySelector(".js-moreTime");
+  lessSpeed = document.querySelector(".js-lessSpeed");
+  moreSpeed = document.querySelector(".js-moreSpeed");
 };
 
 // ***********  init ***********
 
 const init = function() {
   generateDOMelements();
+  addListener();
   generateRoomId();
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
   init();
 });

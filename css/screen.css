@@ -559,7 +559,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/simple_background.png") center no-repeat;
+  background: white url("/img/png/background.png") center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
