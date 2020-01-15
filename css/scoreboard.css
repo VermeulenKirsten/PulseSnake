@@ -564,6 +564,19 @@ input::placeholder {
   background-color: #222222;
 }
 
+/* ---------------- Credits ---------------- */
+
+.c-logo {
+  width: 200px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.c-logo-layout {
+  display: flex;
+  align-items: center;
+  margin-bottom: 48px;
+}
 /* ---------------- Scoreboard ---------------- */
 
 .c-scoreboard {
