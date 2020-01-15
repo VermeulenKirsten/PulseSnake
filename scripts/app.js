@@ -11,7 +11,7 @@ let ctx;
 let gamewidth = 700;
 let gameheight = 700;
 let scalefactor = 35;
-let framerate = 100;
+let framerate = 50;
 let tijd;
 let tijdHTML;
 let lobbyButton;
@@ -110,13 +110,91 @@ const createfield = function() {
 };
 // ***********  Move the snakes according to their speed ***********
 
-const gameTick = function(snakeobj) {
+const gameTick = function(snakeObj) {
   if (!stop) {
-    snakeobj.Movesnake();
+    let oldTail = [];
+    for (let tailPiece of snakeObj.Tail) {
+      let x = tailPiece[0] * scalefactor;
+      let y = tailPiece[1] * scalefactor;
+      let array = [x, y];
+      oldTail.push(array);
+    }
+    //move the snake
+    snakeObj.Movesnake();
+
+    // console.log('available: ', availableFrames);
+    let startTime = Date.now();
+    let frame = 0;
+    // drawSnake(snakeObj, oldTail, frame, startTime);
+
     setTimeout(function() {
-      gameTick(snakeobj);
-    }, 100 * snakeobj.Speed);
+      gameTick(snakeObj);
+    }, 100 * snakeObj.Speed);
   }
+};
+
+// ***********  display the snake ***********
+const drawSnake = function(snake, oldTail, frame, startTime) {
+  // console.log('draw snake, frame: ', frame);
+  let availableFrames = (100 * snake.Speed) / (1000 / framerate);
+  //amount of pixels are moved at once
+  let pixelJump = scalefactor / availableFrames;
+  //mss moeten waarden afgerond worden
+  //make the snake disappear
+  for (let tailPiece of oldTail) {
+    // ctx.fillStyle = '#000000';
+    ctx.clearRect(tailPiece[1] - 1, tailPiece[0] - 1, scalefactor + 2, scalefactor + 2);
+    // ctx.clearRect(0, 0, gamewidth, gameheight);
+  }
+  //move the snaketail a few pixels
+  // console.log('old tail: ', oldTail);
+  for (let piece in oldTail) {
+    let destinationX = snake.Tail[piece][1] * scalefactor;
+    let destinationY = snake.Tail[piece][0] * scalefactor;
+
+    let oldX = oldTail[piece][1];
+    let oldY = oldTail[piece][0];
+    // console.log('from ', [oldX, oldY], 'to', [destinationX, destinationY]);
+    // console.log('old offset: ', oldTail[piece]);
+    let offsetX = 0;
+    if (oldX < destinationX || destinationX == 0) {
+      offsetX = pixelJump;
+    } else if (destinationX < oldX || destinationX == 800) {
+      offsetX = -pixelJump;
+    }
+
+    offsetX = offsetX * frame;
+    // console.log(offsetX);
+    let offsetY = 0;
+    if (oldY < destinationY || destinationY == 0) {
+      offsetY = pixelJump;
+    } else if (destinationY < oldY) {
+      offsetY = -pixelJump;
+    }
+    offsetY = offsetY * frame;
+    // console.log(offsetY);
+
+    // console.log('drawing x: ', oldX + offsetX, 'y: ', oldY + offsetY);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(oldX + offsetX, oldY + offsetY, scalefactor, scalefactor);
+  }
+
+  //tijd om de hele animatie uit te voeren
+  let animationTime = 100 * snake.Speed;
+  //tijd die je krijgt om een animatie frame te tekenen
+  let timeBetweenFrames = animationTime / (1000 / framerate);
+  //wanneer de huidige frame ten vroegste uitegevoerd mag worden
+  // let timeWindowCurrentFrame = timeBetweenFrames * frame;
+  //animate the movement
+  let newFrame = frame + 1;
+  if (newFrame <= availableFrames) {
+    let excecuteTime = startTime + timeBetweenFrames * frame;
+    let timeDiff = excecuteTime - Date.now();
+    setTimeout(function() {
+      drawSnake(snake, oldTail, newFrame, startTime);
+    }, timeDiff);
+  }
+  return;
 };
 // ***********  refresh the display ***********
 
