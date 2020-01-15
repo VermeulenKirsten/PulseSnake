@@ -254,6 +254,9 @@ const gameOver = function() {
   if (playerNr == 0) {
     lobbyButton.style.display = 'block';
   }
+  for (let snake of snakes) {
+    console.log(snake.Name + ' score: ' + snake.score);
+  }
 };
 // ***********  Begin Game ***********
 

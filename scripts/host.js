@@ -8,8 +8,9 @@ let lessSpeed;
 let moreSpeed;
 let durationTime = 5;
 let moreTimeTimer;
+let lessTimeTimer;
 let mouseDownMore;
-let speedOptions = { 'Heel traag': 6, Traag: 5, Normaal: 4, Snel: 3.5, Heelsnel: 3 };
+let speedOptions = { 'Heel traag': 6, Traag: 5, Normaal: 4, Snel: 3.5, 'Heel snel': 3 };
 let currentSpeedOption = 2;
 
 // ***********  generate room ***********
@@ -56,43 +57,42 @@ const removeSpeed = function() {
 };
 const startLessTime = function() {
   mouseDownLess = true;
-  durationTime = durationTime == 0 ? 0 : durationTime - 1;
+  durationTime = durationTime == 1 ? 1 : durationTime - 1;
   duration.value = durationTime + ' minuten';
+  setTimeout(fastLessTime, 500);
+};
 
-  setTimeout(function() {
+const fastLessTime = function() {
+  if (mouseDownLess) {
+    durationTime = durationTime == 1 ? 1 : durationTime - 1;
+    duration.value = durationTime + ' minuten';
     if (mouseDownLess) {
-      lessTimeTimer = setInterval(function() {
-        if (mouseDownLess) {
-          durationTime = durationTime == 0 ? 0 : durationTime - 1;
-          duration.value = durationTime + ' minuten';
-        }
-      }, 50);
+      setTimeout(fastLessTime, 50);
     }
-  }, 500);
+  }
 };
 const stopLessTime = function() {
   mouseDownLess = false;
-  clearInterval(lessTimeTimer);
 };
-
 const startMoreTime = function() {
   mouseDownMore = true;
   durationTime = durationTime == 99 ? 99 : durationTime + 1;
   duration.value = durationTime + ' minuten';
-  setTimeout(function() {
-    if (mouseDownMore) {
-      moreTimeTimer = setInterval(function() {
-        if (mouseDownMore) {
-          durationTime = durationTime == 99 ? 99 : durationTime + 1;
-          duration.value = durationTime + ' minuten';
-        }
-      }, 50);
-    }
-  }, 500);
+  setTimeout(fastMoreTime, 500);
 };
+
+const fastMoreTime = function() {
+  if (mouseDownMore) {
+    durationTime = durationTime == 99 ? 99 : durationTime + 1;
+    duration.value = durationTime + ' minuten';
+    if (mouseDownMore) {
+      setTimeout(fastMoreTime, 50);
+    }
+  }
+};
+
 const stopMoreTime = function() {
   mouseDownMore = false;
-  clearInterval(moreTimeTimer);
 };
 
 // ***********  generate dom elements ***********
