@@ -228,6 +228,10 @@ select {
   width: 100%;
 }
 
+button {
+  outline: none;
+}
+
 input::placeholder {
   color: white;
   opacity: 0.75;
@@ -367,6 +371,10 @@ input::placeholder {
   justify-content: space-between;
 }
 
+.c-button__gap {
+  margin-right: var(--global-whitespace-sm);
+}
+
 .c-button__base {
   z-index: 1;
   padding: var(--global-baseline) calc(var(--global-baseline) * 1.5) calc(var(--global-baseline) * 1.5) calc(var(--global-baseline) * 1.5);
@@ -464,14 +472,17 @@ input::placeholder {
   width: var(--global-whitespace-md);
 }
 
-.c-icon__mirror {
-  transform: rotate(180deg);
+.c-icon__gap {
+  margin-right: var(--global-baseline);
 }
 
-.c-nav {
-  display: grid;
-  grid-template-columns: 88px 1fr;
-  grid-column-gap: var(--global-whitespace-md);
+.c-icon-lg {
+  height: var(--global-whitespace-xxl);
+  width: var(--global-whitespace-xxl);
+}
+
+.c-icon__mirror {
+  transform: rotate(180deg);
 }
 
 /* ---------------- Index ---------------- */
@@ -490,10 +501,6 @@ input::placeholder {
 
 .c-index__buttons {
   max-width: 350px;
-}
-
-.c-index__credits {
-  margin-right: var(--global-whitespace-sm);
 }
 
 /* ---------------- Play ---------------- */
@@ -519,6 +526,34 @@ input::placeholder {
 }
 
 /* ---------------- Join ---------------- */
+
+/* ---------------- Lobby ---------------- */
+.c-lobby {
+  display: grid;
+  grid-template: auto 1fr auto / repeat(2, 1fr);
+  column-gap: 96px;
+}
+
+.c-lobby__card {
+  position: relative;
+}
+
+.c-lobby__img {
+  max-width: 100%;
+  margin: var(--global-whitespace-md);
+}
+
+.c-lobby__arrow-right {
+  position: absolute;
+  top: 45%;
+  right: 5%;
+}
+
+.c-lobby__arrow-left {
+  position: absolute;
+  top: 45%;
+  left: 5%;
+}
 
 /* ---------------- Game ---------------- */
 
