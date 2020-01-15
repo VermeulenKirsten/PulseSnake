@@ -17,22 +17,57 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/screen.css" />
   </head>
-  <body class="c-baselayout">
-    <div>
-      <canvas width="700" height="700" class="c-gameboard"></canvas>
-      <p class="js-tijd" style="font-size: 72px; float: right;"></p>
-    </div>
-    <button class="o-button-reset c-button js-lobby" style="display:none">
+  <body class="c-game o-layout__center">
+    <div class="c-game__grid">
       <div class="c-button__base">
-        <div class="c-button__outerhead">
-          <div class="c-button__innerhead">
-            <p class="c-button__text">Terug naar menu</p>
+        <div class="c-game__scoreboard c-input">
+          <p class="c-lead-md">Scorebord</p>
+          <p class="js-tijd">12 min 20 sec</p>
+
+          <div class="c-game__player">
+            <p>1.</p>
+            <p class="u-align-text-left">Kirsten</p>
+            <p>120</p>
+          </div>
+
+          <div class="c-game__player">
+            <p>2.</p>
+            <p class="u-align-text-left">Zarin</p>
+            <p>110</p>
+          </div>
+          <div class="c-game__player">
+            <p>3.</p>
+            <p class="u-align-text-left">Kevin</p>
+            <p>95</p>
+          </div>
+
+          <div class="c-game__player">
+            <p>4.</p>
+            <p class="u-align-text-left">Robbe<br />4 punten</p>
+            <p>90</p>
+          </div>
+
+          <div class="c-game__posbutton">
+            <button class="o-button-reset c-button c-game__button o-layout__center u-mb-clear js-lobby">
+              <div class="c-button__base">
+                <div class="c-button__outerhead">
+                  <div class="c-button__innerhead">
+                    <p class="c-button__text o-layout__center">Stoppen</p>
+                  </div>
+                </div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
-    </button>
 
-    <p class="js-gameOver"></p>
-    <ol id="playerListjs"></ol>
+      <div class="c-button__base u-column-2">
+        <div class="c-game__scoreboard c-input o-layout__center">
+          <canvas width="900" height="700" class="c-game__gamefield"></canvas>
+        </div>
+      </div>
+
+      <!-- <p class="js-gameOver"></p> -->
+    </div>
   </body>
 </html>
