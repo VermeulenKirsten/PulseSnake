@@ -8,7 +8,7 @@ let fruit = [null, null];
 let candy = [null, null];
 let canvas;
 let ctx;
-let gamewidth = 700;
+let gamewidth = 900;
 let gameheight = 700;
 let scalefactor = 35;
 let framerate = 50;
@@ -44,7 +44,7 @@ let snakeColors = ['#00FF00', '#FFFF00', '#0000FF', '#00FFFF'];
 
 // ***********  DOM references ***********
 const getdomelements = function() {
-  canvas = document.querySelector('.c-gameboard');
+  canvas = document.querySelector('.js-gameboard');
   ctx = canvas.getContext('2d');
   tijdHTML = document.querySelector('.js-tijd');
   lobbyButton = document.querySelector('.js-lobby');
@@ -328,7 +328,7 @@ const startMovement = function() {
 const gameOver = function() {
   stop = true;
   clearInterval(interval);
-  gameOverTekst.innerHTML = 'Tijd is om, het spel is gedaan';
+  //gameOverTekst.innerHTML = 'Tijd is om, het spel is gedaan';
   if (playerNr == 0) {
     lobbyButton.style.display = 'block';
   }
