@@ -241,6 +241,12 @@ input::placeholder {
   #OBJECTS
   \*------------------------------------*/
 
+.o-layout__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /*
       Objects: Row
       ---
@@ -344,10 +350,7 @@ input::placeholder {
 }
 
 .c-baselayout {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
@@ -418,9 +421,6 @@ input::placeholder {
 }
 
 .c-button__text {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: white;
   margin: 4px 24px;
   font-size: 32px;
@@ -435,10 +435,8 @@ input::placeholder {
 }
 
 .c-form {
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   text-align: center;
   max-width: 750px;
   width: 100%;
@@ -490,10 +488,7 @@ input::placeholder {
 
 /* ---------------- Index ---------------- */
 .c-index {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
@@ -559,8 +554,45 @@ input::placeholder {
 }
 
 /* ---------------- Game ---------------- */
+.c-game {
+  flex-direction: column;
+  z-index: 2;
+  max-height: 100vh;
+  height: 100vh;
+  background: white url("/img/png/simple_background.png") center no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
 
-.c-gameboard {
+.c-game__grid {
+  display: grid;
+  grid-template: 1fr / repeat(3, 1fr);
+  grid-column-gap: var(--global-whitespace-xxl);
+}
+
+.c-game__scoreboard {
+  display: grid;
+  grid-template-rows: repeat(2, auto) 1fr 1fr 1fr 1fr auto;
+  padding: var(--global-whitespace-md);
+  height: 100%;
+}
+
+.c-game__player {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: var(--global-whitespace-xxl);
+}
+
+.c-game__posbutton {
+  height: 100%;
+  grid-row: 7;
+}
+
+.c-game__button {
+  grid-row: 7;
+}
+
+.c-game__gamefield {
   background-color: #222222;
 }
 
@@ -654,6 +686,14 @@ input::placeholder {
 
 .u-align-text-center {
   text-align: center;
+}
+
+.u-align-text-left {
+  text-align: left;
+}
+
+.u-align-text-right {
+  text-align: right;
 }
 
 .u-align-center {
