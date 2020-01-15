@@ -1,11 +1,11 @@
-let roomId = '';
+let roomId = "";
 let form;
 
 // ***********  generate room ***********
 const generateRoom = function() {
   playerId = createUuid();
   let host = new Player(playerId);
-  host.name = 'Speler 1';
+  host.name = "Speler 1";
   roomInfo = new room(roomId);
   roomInfo.addPlayer(host);
   roomInfo.defaultSpeed = speed.value;
@@ -13,14 +13,14 @@ const generateRoom = function() {
 
   //store gameinfo in sessionstorage and go to lobby
 
-  sessionStorage.setItem('playerId', playerId);
-  sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-  window.location.href = 'hostlobby.html';
+  sessionStorage.setItem("playerId", playerId);
+  sessionStorage.setItem("roomInfo", JSON.stringify(roomInfo));
+  window.location.href = "hostlobby.html";
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
-  form.addEventListener('submit', generateRoom);
+  form.addEventListener("submit", generateRoom);
 };
 // ***********  generate a roomId ***********
 
@@ -33,9 +33,9 @@ const generateRoomId = function() {
 // ***********  generate dom elements ***********
 
 const generateDOMelements = function() {
-  form = document.querySelector('.js-form');
-  speed = document.querySelector('.js-speed');
-  duration = document.querySelector('.js-time');
+  form = document.querySelector(".js-form");
+  speed = document.querySelector(".js-speed");
+  duration = document.querySelector(".js-time");
   addListener();
 };
 
@@ -46,6 +46,6 @@ const init = function() {
   generateRoomId();
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
   init();
 });
