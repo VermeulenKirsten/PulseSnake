@@ -1,26 +1,43 @@
-let roomId = "";
+let roomId = '';
 let form;
+let speed;
+let duration;
+let lessTime;
+let moreTime;
+let lessSpeed;
+let moreSpeed;
+let durationTime = 5;
+let moreTimeTimer;
+let mouseDownMore;
+let speedOptions = { 'Heel traag': 6, Traag: 5, Normaal: 4, Snel: 3.5, Heelsnel: 3 };
+let currentSpeedOption = 2;
 
 // ***********  generate room ***********
 const generateRoom = function() {
   playerId = createUuid();
   let host = new Player(playerId);
-  host.name = "Speler 1";
+  host.name = 'Speler 1';
   roomInfo = new room(roomId);
   roomInfo.addPlayer(host);
-  roomInfo.defaultSpeed = speed.value;
-  roomInfo.gameDuration = duration.value;
+  roomInfo.defaultSpeed = speedOptions[Object.keys(speedOptions)[currentSpeedOption]];
+  roomInfo.gameDuration = durationTime;
 
   //store gameinfo in sessionstorage and go to lobby
 
-  sessionStorage.setItem("playerId", playerId);
-  sessionStorage.setItem("roomInfo", JSON.stringify(roomInfo));
-  window.location.href = "hostlobby.html";
+  sessionStorage.setItem('playerId', playerId);
+  sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+  window.location.href = 'hostlobby.html';
 };
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
-  form.addEventListener("submit", generateRoom);
+  form.addEventListener('submit', generateRoom);
+  lessTime.addEventListener('mousedown', startLessTime);
+  lessTime.addEventListener('mouseup', stopLessTime);
+  moreTime.addEventListener('mousedown', startMoreTime);
+  moreTime.addEventListener('mouseup', stopMoreTime);
+  lessSpeed.addEventListener('click', removeSpeed);
+  moreSpeed.addEventListener('click', addSpeed);
 };
 // ***********  generate a roomId ***********
 
@@ -29,13 +46,68 @@ const generateRoomId = function() {
     roomId += Math.floor(Math.random() * 10);
   }
 };
+const addSpeed = function() {
+  currentSpeedOption = currentSpeedOption == Object.keys(speedOptions).length - 1 ? currentSpeedOption : currentSpeedOption + 1;
+  speed.value = Object.keys(speedOptions)[currentSpeedOption];
+};
+const removeSpeed = function() {
+  currentSpeedOption = currentSpeedOption == 0 ? currentSpeedOption : currentSpeedOption - 1;
+  speed.value = Object.keys(speedOptions)[currentSpeedOption];
+};
+const startLessTime = function() {
+  mouseDownLess = true;
+  durationTime = durationTime == 0 ? 0 : durationTime - 1;
+  duration.value = durationTime + ' minuten';
+
+  setTimeout(function() {
+    if (mouseDownLess) {
+      lessTimeTimer = setInterval(function() {
+        if (mouseDownLess) {
+          durationTime = durationTime == 0 ? 0 : durationTime - 1;
+          duration.value = durationTime + ' minuten';
+        }
+      }, 50);
+    }
+  }, 500);
+};
+const stopLessTime = function() {
+  mouseDownLess = false;
+  clearInterval(lessTimeTimer);
+};
+
+const startMoreTime = function() {
+  mouseDownMore = true;
+  durationTime = durationTime == 99 ? 99 : durationTime + 1;
+  duration.value = durationTime + ' minuten';
+  setTimeout(function() {
+    if (mouseDownMore) {
+      moreTimeTimer = setInterval(function() {
+        if (mouseDownMore) {
+          durationTime = durationTime == 99 ? 99 : durationTime + 1;
+          duration.value = durationTime + ' minuten';
+        }
+      }, 50);
+    }
+  }, 500);
+};
+const stopMoreTime = function() {
+  mouseDownMore = false;
+  clearInterval(moreTimeTimer);
+};
 
 // ***********  generate dom elements ***********
 
 const generateDOMelements = function() {
-  form = document.querySelector(".js-form");
-  speed = document.querySelector(".js-speed");
-  duration = document.querySelector(".js-time");
+  form = document.querySelector('.js-form');
+  speed = document.querySelector('.js-speed');
+  speed.value = Object.keys(speedOptions)[currentSpeedOption];
+
+  duration = document.querySelector('.js-time');
+  duration.value = durationTime + ' minuten';
+  lessTime = document.querySelector('.js-lessTime');
+  moreTime = document.querySelector('.js-moreTime');
+  lessSpeed = document.querySelector('.js-lessSpeed');
+  moreSpeed = document.querySelector('.js-moreSpeed');
   addListener();
 };
 
@@ -46,6 +118,6 @@ const init = function() {
   generateRoomId();
 };
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
   init();
 });
