@@ -418,6 +418,9 @@ input::placeholder {
 }
 
 .c-button__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
   margin: 4px 24px;
   font-size: 32px;
