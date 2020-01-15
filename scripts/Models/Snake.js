@@ -107,7 +107,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     this.distanceMoved += 1;
     this.score += 1;
     if (this.Tail.length > this.topLength) this.topLength = this.Tail.length;
-    if (this.speed > this.topSpeed) this.topSpeed = this.speed;
+    if (this.Speed < this.topSpeed) this.topSpeed = this.Speed;
     if (this.score < 0) this.score = 0;
   };
 }

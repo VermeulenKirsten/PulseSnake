@@ -8,7 +8,7 @@ let fruit = [null, null];
 let candy = [null, null];
 let canvas;
 let ctx;
-let gamewidth = 900;
+let gamewidth = 910;
 let gameheight = 700;
 let scalefactor = 35;
 let framerate = 50;

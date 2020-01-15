@@ -28,8 +28,6 @@ const onMessageArrived = function(msg) {
       {
         if (playerNr == 0) {
           loadedPlayers[message.message] = true;
-          console.log(loadedPlayers);
-          console.log(new Set(Object.values(loadedPlayers)).size === 1);
           if (new Set(Object.values(loadedPlayers)).size === 1) {
             console.log('all players are loaded');
 
@@ -56,7 +54,11 @@ const onMessageArrived = function(msg) {
             snakes[t].Color = message.message.Color;
             snakes[t].Inputbuffer = message.message.Inputbuffer;
             snakes[t].Isalive = message.message.Isalive;
-            // console.log('this snake got replaced', snakes[t]);
+            snakes[t].score = message.message.score;
+            snakes[t].distanceMoved = message.message.distanceMoved;
+            snakes[t].fruitEaten = message.message.fruitEaten;
+            snakes[t].candyEaten = message.message.candyEaten;
+            snakes[t].topSpeed = message.message.topSpeed;
           }
         }
       }
