@@ -52,7 +52,7 @@ const onMessageArrived = function(msg) {
           if (snakes[t].Id == message.message.Id) {
             snakes[t].Name = message.message.Name;
             snakes[t].Speed = message.message.Speed;
-            snakes[t].Tail = message.message.Tail;
+            //snakes[t].Tail = message.message.Tail;
             snakes[t].Color = message.message.Color;
             snakes[t].Inputbuffer = message.message.Inputbuffer;
             snakes[t].Isalive = message.message.Isalive;
@@ -64,7 +64,6 @@ const onMessageArrived = function(msg) {
     case 'fruit':
       {
         console.log('fruit  message received ', message.message);
-        // console.log  (message.message);
         fruit = message.message;
         //show the fruit
         ctx.fillStyle = '#FF0000';
@@ -74,7 +73,6 @@ const onMessageArrived = function(msg) {
     case 'candy':
       {
         console.log('candy message received ', message.message);
-        // console.log(message.message);
         candy = message.message;
         // show the candy
         ctx.fillStyle = '#FF00FF';
