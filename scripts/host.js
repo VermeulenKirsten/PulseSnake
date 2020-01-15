@@ -58,14 +58,23 @@ const removeSpeed = function() {
 const startLessTime = function() {
   mouseDownLess = true;
   durationTime = durationTime == 1 ? 1 : durationTime - 1;
-  duration.value = durationTime + ' minuten';
+  if (durationTime == 1) {
+    duration.value = durationTime + ' minuut';
+  } else {
+    duration.value = durationTime + ' minuten';
+  }
+
   setTimeout(fastLessTime, 500);
 };
 
 const fastLessTime = function() {
   if (mouseDownLess) {
     durationTime = durationTime == 1 ? 1 : durationTime - 1;
-    duration.value = durationTime + ' minuten';
+    if (durationTime == 1) {
+      duration.value = durationTime + ' minuut';
+    } else {
+      duration.value = durationTime + ' minuten';
+    }
     if (mouseDownLess) {
       setTimeout(fastLessTime, 50);
     }
