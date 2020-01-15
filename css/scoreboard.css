@@ -1,0 +1,1205 @@
+/*------------------------------------*\
+#FONTS
+\*------------------------------------*/
+
+/* baloo-regular - latin */
+@font-face {
+  font-family: 'Baloo';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
+}
+
+/*------------------------------------*\
+  #Variables
+  \*------------------------------------*/
+
+:root {
+  /* colors */
+  --global-color-alpha: #62c236;
+  --global-color-alpha-gradient: linear-gradient(#62c236, #a8e063);
+  --global-color-delta: #f9d976;
+  --global-color-beta-gradient: linear-gradient(#77a143, #64cf33);
+
+  --global-color-gamma: #883939;
+  --global-color-gamma-gradient: linear-gradient(#723030, #883939);
+  --global-color-gamma-dark: #441d1d;
+
+  /* Whitespace */
+  --global-baseline: 8px;
+
+  --global-whitespace-xxs: calc(var(--global-baseline) / 4);
+  --global-whitespace-xs: calc(var(--global-baseline) / 2);
+  --global-whitespace-sm: calc(var(--global-baseline) * 2);
+  --global-whitespace-md: calc(var(--global-baseline) * 3);
+  --global-whitespace-lg: calc(var(--global-baseline) * 4);
+  --global-whitespace-xl: calc(var(--global-baseline) * 5);
+  --global-whitespace-xxl: calc(var(--global-baseline) * 6);
+
+  /* border */
+  --global-border-color: linear-gradient(#f9d976, #f39f86);
+  --global-border-boxshadow-light: 0 10px 0 0 #b14727;
+  --global-border-boxshadow-dark: 0 5px 0 0 var(--global-color-gamma);
+  --global-border-boxshadow-dark-sm: 0 1px 0 0 var(--global-color-gamma);
+  --global-border-boxshadow-dark-inset: inset 0 5px 0 0 var(--global-color-gamma-dark);
+  --global-border-width: 1px;
+  --global-border-radius: 35px;
+  --global-border-radius-lg: 100%;
+
+  /* transitions */
+  --global-transition-alpha: 0.05s;
+  --global-transition-beta: 0.5s;
+
+  /* Grid */
+  --global-topbar-height: calc(var(--global-baseline) * 10);
+}
+
+/*------------------------------------*\
+    #GENERIC
+    \*------------------------------------*/
+
+/*
+        Generic: Page
+        ---
+        Global page styles + universal box-sizing:
+    */
+
+html {
+  font-size: var(--global-whitespace-md);
+  line-height: 1.5;
+  font-family: 'Baloo', Helvetica, arial, sans-serif;
+  color: #535353;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: white;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/*
+    * Remove text-shadow in selection highlight:
+    * https://twitter.com/miketaylr/status/12228805301
+    *
+    * Customize the background color to match your design.
+    */
+
+::-moz-selection {
+  background: var(--global-color-alpha);
+  color: white;
+  text-shadow: none;
+}
+
+::selection {
+  background: var(--global-color-alpha);
+  color: white;
+  text-shadow: none;
+}
+
+/*------------------------------------*\
+    #Elements
+    \*------------------------------------*/
+
+/*
+    Elements: Images
+    ---
+    Default markup for images to make them responsive
+    */
+
+img {
+  max-width: 100%;
+  vertical-align: top;
+}
+
+/*
+        Elements: typography
+        ---
+        Default markup for typographic elements
+    */
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 40px;
+  line-height: 48px;
+  margin: 0 0 24px;
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 40px;
+  margin: 0 0 24px;
+}
+
+h3 {
+  font-size: 26px;
+  line-height: 32px;
+  margin: 0 0 24px;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  margin: 0 0 24px;
+}
+
+p,
+ol,
+ul,
+dl,
+table,
+address,
+figure {
+  margin: 0 0 24px;
+}
+
+ul,
+ol {
+  padding-left: 24px;
+}
+
+li ul,
+li ol {
+  margin-bottom: 0;
+}
+
+blockquote {
+  font-style: normal;
+  font-size: 23px;
+  line-height: 32px;
+  margin: 0 0 24px;
+}
+
+blockquote * {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+figcaption {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 8px;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: LightGrey;
+  margin: 0 0 24px;
+}
+
+a {
+  text-decoration: none;
+  transition: all var(--transition-alpha);
+  color: var(--color-alpha);
+  outline-color: var(--color-alpha);
+  outline-width: medium;
+  outline-offset: 2px;
+}
+
+a:visited,
+a:active {
+  color: var(--global-color-alpha);
+}
+
+a:hover,
+a:focus {
+  color: var(--global-color-alpha-light);
+}
+
+label,
+input {
+  display: block;
+}
+
+select {
+  width: 100%;
+}
+
+button {
+  outline: none;
+}
+
+input::placeholder {
+  color: white;
+  opacity: 0.75;
+}
+
+/*------------------------------------*\
+    #OBJECTS
+    \*------------------------------------*/
+
+/*
+        Objects: Row
+        ---
+        Creates a horizontal row that stretches the viewport and adds padding around children
+  */
+
+.o-row {
+  position: relative;
+  padding: 24px 24px 0;
+}
+
+/*
+        Objects: Container
+        ---
+        Creates a horizontal container that sets de global max-width
+  */
+
+.o-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 79.5em; /* 79.5 * 16px = 1272 */
+  width: 100%;
+}
+
+/*
+        Objects: List
+        ---
+        Small reusable object to remove default list styling from lists
+  */
+
+.o-list {
+  list-style: none;
+  padding: 0;
+}
+
+/*
+        Object: Button reset
+        ---
+        Small button reset object
+  */
+
+.o-button-reset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+
+  /* inherit font & color from ancestor */
+  color: inherit;
+  font: inherit;
+
+  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+  line-height: normal;
+
+  /* Corrects font smoothing for webkit */
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+
+  /* Corrects inability to style clickable `input` types in iOS */
+  -webkit-appearance: none;
+}
+
+/*
+        Object: Hide accessible
+        ---
+        Accessibly hide any element
+  */
+
+.o-hide-accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/*------------------------------------*\
+    #COMPONENTS
+  \*------------------------------------*/
+
+/* ---------------- General ---------------- */
+
+.c-lead-sm {
+  font-size: 40px;
+  line-height: 40px;
+}
+
+.c-lead-md {
+  font-size: 48px;
+  line-height: 48px;
+}
+
+.c-lead-lg {
+  font-size: 56px;
+  line-height: 56px;
+}
+
+.c-baselayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  max-height: 100vh;
+  height: 100vh;
+  background: white url('/img/png/background.png') center no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.c-button {
+  margin-bottom: calc(var(--global-whitespace-sm) + 10px);
+  width: 100%;
+}
+
+.c-button__round {
+  margin-bottom: calc(var(--global-whitespace-sm) + 10px);
+}
+
+.c-button__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c-button__gap {
+  margin-right: var(--global-whitespace-sm);
+}
+
+.c-button__base {
+  z-index: 1;
+  padding: var(--global-baseline) calc(var(--global-baseline) * 1.5) calc(var(--global-baseline) * 1.5) calc(var(--global-baseline) * 1.5);
+  display: block;
+  border-radius: var(--global-border-radius);
+  background-image: var(--global-border-color);
+  box-shadow: var(--global-border-boxshadow-light);
+}
+
+.c-button__base-round {
+  padding: 8px 12px 12px;
+  border-radius: var(--global-border-radius-lg);
+}
+
+.c-button__outerhead {
+  z-index: 2;
+  padding: calc(var(--global-baseline) * 0.75) calc(var(--global-baseline) * 1.5);
+  display: block;
+  border-radius: var(--global-border-radius);
+  background-image: var(--global-color-alpha-gradient);
+  box-shadow: var(--global-border-boxshadow-dark);
+}
+
+.c-button__outerhead-round {
+  padding: 8px;
+  border-radius: var(--global-border-radius-lg);
+}
+
+.c-button__innerhead {
+  z-index: 3;
+  padding: 4px 16px;
+  display: block;
+  height: calc(var(--global-whitespace-md) + 20px);
+  border-radius: var(--global-border-radius);
+  background-image: var(--global-color-beta-gradient);
+}
+
+.c-button__innerhead-round {
+  padding: 8px 12px;
+  border-radius: var(--global-border-radius-lg);
+}
+
+.c-button__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin: 4px 24px;
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.c-button:active .c-button__base .c-button__outerhead,
+.c-button__round:active .c-button__base .c-button__outerhead {
+  box-shadow: var(--global-border-boxshadow-dark-sm);
+  transition: var(--global-transition-alpha);
+  transform: translateY(4px);
+}
+
+.c-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  max-width: 750px;
+  width: 100%;
+}
+
+.c-form__element {
+  margin-bottom: var(--global-whitespace-md);
+}
+.c-form__element-xxl {
+  margin-bottom: var(--global-whitespace-xxl);
+}
+
+.c-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  font: inherit;
+  color: white;
+  text-align: center;
+  padding: calc(var(--global-baseline) * 1.5) var(--global-whitespace-md);
+  border: none;
+  border-radius: var(--global-border-radius);
+  outline: none;
+  background-image: var(--global-color-gamma-gradient);
+  box-shadow: var(--global-border-boxshadow-dark-inset);
+  transition: border var(--global-transition-timing-alpha);
+}
+
+.c-icon {
+  fill: white;
+  height: var(--global-whitespace-md);
+  width: var(--global-whitespace-md);
+}
+
+.c-icon__gap {
+  margin-right: var(--global-baseline);
+}
+
+.c-icon-lg {
+  height: var(--global-whitespace-xxl);
+  width: var(--global-whitespace-xxl);
+}
+
+.c-icon__mirror {
+  transform: rotate(180deg);
+}
+
+/* ---------------- Index ---------------- */
+.c-index {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  max-height: 100vh;
+  height: 100vh;
+  background: white url('/img/png/landingpage.png') center no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.c-index__buttons {
+  max-width: 350px;
+}
+
+/* ---------------- Play ---------------- */
+.c-play {
+  max-width: 350px;
+}
+
+/* ---------------- Create ---------------- */
+.c-create {
+  display: grid;
+  grid-template: repeat(4, auto) / 88px 1fr 1fr 88px;
+  column-gap: var(--global-whitespace-md);
+}
+
+.c-create__speed {
+  grid-row: 1;
+  grid-column: span 4;
+}
+
+.c-create__playtime {
+  grid-row: 3;
+  grid-column: span 4;
+}
+
+/* ---------------- Join ---------------- */
+
+/* ---------------- Lobby ---------------- */
+.c-lobby {
+  display: grid;
+  grid-template: auto 1fr auto / repeat(2, 1fr);
+  column-gap: 96px;
+}
+
+.c-lobby__card {
+  position: relative;
+}
+
+.c-lobby__img {
+  max-width: 100%;
+  margin: var(--global-whitespace-md);
+}
+
+.c-lobby__arrow-right {
+  position: absolute;
+  top: 45%;
+  right: 5%;
+}
+
+.c-lobby__arrow-left {
+  position: absolute;
+  top: 45%;
+  left: 5%;
+}
+
+/* ---------------- Game ---------------- */
+
+.c-gameboard {
+  background-color: #222222;
+}
+
+/* ---------------- Scoreboard ---------------- */
+
+.c-scoreboard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.c-scoreboard p {
+  margin-bottom: 0px;
+}
+
+/* Style the buttons inside the tab */
+.c-tab button {
+  background-color: inherit;
+  font-family: 'Baloo';
+  color: white;
+  float: left;
+  border: none;
+  border-bottom: 3px solid var(--global-color-gamma);
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.c-tab button:hover {
+  border-bottom: 3px solid white;
+}
+
+/* Create an active/current tablink class */
+.c-tab button:active {
+  color: var(--global-color-delta);
+}
+
+/* Create an active/current tablink class */
+.c-tab button:focus {
+  border-bottom: 3px solid var(--global-color-delta);
+  color: var(--global-color-delta);
+}
+
+/*------------------------------------*\
+    #UTILITIES
+  \*------------------------------------*/
+
+/*
+        Utilities: color
+        ---
+        Utility classes to put specific colors onto elements
+  */
+
+.u-color-white {
+  color: white;
+}
+
+.u-color-neutral {
+  color: var(--color-neutral);
+}
+
+.u-color-neutral-dark {
+  color: var(--color-neutral-dark);
+}
+
+/*
+        Utilities: spacing
+        ---
+        Utility classes to put specific margins and paddings onto elements
+    */
+
+.u-pt-clear {
+  padding-top: 0 !important;
+}
+
+.u-mb-clear {
+  margin-bottom: 0 !important;
+}
+
+.u-mb-xs {
+  margin-bottom: 4px !important;
+}
+
+.u-mb-sm {
+  margin-bottom: 8px !important;
+}
+
+.u-mb-md {
+  margin-bottom: 16px !important;
+}
+
+.u-mb-lg {
+  margin-bottom: 32px !important;
+}
+
+.u-mb-xl {
+  margin-bottom: 48px !important;
+}
+
+/*
+        Utilities: max-width
+        ---
+        Utility classes to put specific max widths onto elements
+    */
+
+.u-max-width-xs {
+  max-width: 27em !important;
+}
+
+.u-max-width-sm {
+  max-width: 39em !important;
+}
+
+.u-max-width-md {
+  max-width: 50em !important;
+}
+
+.u-max-width-lg {
+  max-width: 63.5em !important;
+}
+
+.u-max-width-none {
+  max-width: none !important;
+}
+
+/*
+        Utilities: align
+        ---
+        Utility classes align text or components
+    */
+
+.u-align-text-center {
+  text-align: center;
+}
+
+.u-align-center {
+  margin: 0 auto;
+}
+
+/*
+        Utilities: text
+        Utility classes to create smaller or bigger test
+    */
+
+.u-text-sm {
+  font-size: 14px;
+}
+
+/*
+        Utilities: Span Row
+  */
+
+.u-row-1 {
+  grid-row: span 1 !important;
+}
+.u-row-2 {
+  grid-row: span 2 !important;
+}
+.u-row-3 {
+  grid-row: span 3 !important;
+}
+.u-row-4 {
+  grid-row: span 4 !important;
+}
+.u-row-5 {
+  grid-row: span 5 !important;
+}
+.u-row-6 {
+  grid-row: span 6 !important;
+}
+.u-row-7 {
+  grid-row: span 7 !important;
+}
+.u-row-8 {
+  grid-row: span 8 !important;
+}
+.u-row-9 {
+  grid-row: span 9 !important;
+}
+.u-row-10 {
+  grid-row: span 10 !important;
+}
+.u-row-11 {
+  grid-row: span 11 !important;
+}
+.u-row-12 {
+  grid-row: span 12 !important;
+}
+
+@media (min-width: 576px) {
+  .u-row-1-bp1 {
+    grid-row: span 1 !important;
+  }
+  .u-row-2-bp1 {
+    grid-row: span 2 !important;
+  }
+  .u-row-3-bp1 {
+    grid-row: span 3 !important;
+  }
+  .u-row-4-bp1 {
+    grid-row: span 4 !important;
+  }
+  .u-row-5-bp1 {
+    grid-row: span 5 !important;
+  }
+  .u-row-6-bp1 {
+    grid-row: span 6 !important;
+  }
+  .u-row-7-bp1 {
+    grid-row: span 7 !important;
+  }
+  .u-row-8-bp1 {
+    grid-row: span 8 !important;
+  }
+  .u-row-9-bp1 {
+    grid-row: span 9 !important;
+  }
+  .u-row-10-bp1 {
+    grid-row: span 10 !important;
+  }
+  .u-row-11-bp1 {
+    grid-row: span 11 !important;
+  }
+  .u-row-12-bp1 {
+    grid-row: span 12 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .u-row-1-bp2 {
+    grid-row: span 1 !important;
+  }
+  .u-row-2-bp2 {
+    grid-row: span 2 !important;
+  }
+  .u-row-3-bp2 {
+    grid-row: span 3 !important;
+  }
+  .u-row-4-bp2 {
+    grid-row: span 4 !important;
+  }
+  .u-row-5-bp2 {
+    grid-row: span 5 !important;
+  }
+  .u-row-6-bp2 {
+    grid-row: span 6 !important;
+  }
+  .u-row-7-bp2 {
+    grid-row: span 7 !important;
+  }
+  .u-row-8-bp2 {
+    grid-row: span 8 !important;
+  }
+  .u-row-9-bp2 {
+    grid-row: span 9 !important;
+  }
+  .u-row-10-bp2 {
+    grid-row: span 10 !important;
+  }
+  .u-row-11-bp2 {
+    grid-row: span 11 !important;
+  }
+  .u-row-12-bp2 {
+    grid-row: span 12 !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .u-row-1-bp3 {
+    grid-row: span 1 !important;
+  }
+  .u-row-2-bp3 {
+    grid-row: span 2 !important;
+  }
+  .u-row-3-bp3 {
+    grid-row: span 3 !important;
+  }
+  .u-row-4-bp3 {
+    grid-row: span 4 !important;
+  }
+  .u-row-5-bp3 {
+    grid-row: span 5 !important;
+  }
+  .u-row-6-bp3 {
+    grid-row: span 6 !important;
+  }
+  .u-row-7-bp3 {
+    grid-row: span 7 !important;
+  }
+  .u-row-8-bp3 {
+    grid-row: span 8 !important;
+  }
+  .u-row-9-bp3 {
+    grid-row: span 9 !important;
+  }
+  .u-row-10-bp3 {
+    grid-row: span 10 !important;
+  }
+  .u-row-11-bp3 {
+    grid-row: span 11 !important;
+  }
+  .u-row-12-bp3 {
+    grid-row: span 12 !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .u-row-1-bp4 {
+    grid-row: span 1 !important;
+  }
+  .u-row-2-bp4 {
+    grid-row: span 2 !important;
+  }
+  .u-row-3-bp4 {
+    grid-row: span 3 !important;
+  }
+  .u-row-4-bp4 {
+    grid-row: span 4 !important;
+  }
+  .u-row-5-bp4 {
+    grid-row: span 5 !important;
+  }
+  .u-row-6-bp4 {
+    grid-row: span 6 !important;
+  }
+  .u-row-7-bp4 {
+    grid-row: span 7 !important;
+  }
+  .u-row-8-bp4 {
+    grid-row: span 8 !important;
+  }
+  .u-row-9-bp4 {
+    grid-row: span 9 !important;
+  }
+  .u-row-10-bp4 {
+    grid-row: span 10 !important;
+  }
+  .u-row-11-bp4 {
+    grid-row: span 11 !important;
+  }
+  .u-row-12-bp4 {
+    grid-row: span 12 !important;
+  }
+}
+
+/*
+        Utilities: Span Column
+  */
+
+.u-column-1 {
+  grid-column: span 1 !important;
+}
+.u-column-2 {
+  grid-column: span 2 !important;
+}
+.u-column-3 {
+  grid-column: span 3 !important;
+}
+.u-column-4 {
+  grid-column: span 4 !important;
+}
+.u-column-5 {
+  grid-column: span 5 !important;
+}
+.u-column-6 {
+  grid-column: span 6 !important;
+}
+.u-column-7 {
+  grid-column: span 7 !important;
+}
+.u-column-8 {
+  grid-column: span 8 !important;
+}
+.u-column-9 {
+  grid-column: span 9 !important;
+}
+.u-column-10 {
+  grid-column: span 10 !important;
+}
+.u-column-11 {
+  grid-column: span 11 !important;
+}
+.u-column-12 {
+  grid-column: span 12 !important;
+}
+
+@media (min-width: 576px) {
+  .u-column-1-bp1 {
+    grid-column: span 1 !important;
+  }
+  .u-column-2-bp1 {
+    grid-column: span 2 !important;
+  }
+  .u-column-3-bp1 {
+    grid-column: span 3 !important;
+  }
+  .u-column-4-bp1 {
+    grid-column: span 4 !important;
+  }
+  .u-column-5-bp1 {
+    grid-column: span 5 !important;
+  }
+  .u-column-6-bp1 {
+    grid-column: span 6 !important;
+  }
+  .u-column-7-bp1 {
+    grid-column: span 7 !important;
+  }
+  .u-column-8-bp1 {
+    grid-column: span 8 !important;
+  }
+  .u-column-9-bp1 {
+    grid-column: span 9 !important;
+  }
+  .u-column-10-bp1 {
+    grid-column: span 10 !important;
+  }
+  .u-column-11-bp1 {
+    grid-column: span 11 !important;
+  }
+  .u-column-12-bp1 {
+    grid-column: span 12 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .u-column-1-bp2 {
+    grid-column: span 1 !important;
+  }
+  .u-column-2-bp2 {
+    grid-column: span 2 !important;
+  }
+  .u-column-3-bp2 {
+    grid-column: span 3 !important;
+  }
+  .u-column-4-bp2 {
+    grid-column: span 4 !important;
+  }
+  .u-column-5-bp2 {
+    grid-column: span 5 !important;
+  }
+  .u-column-6-bp2 {
+    grid-column: span 6 !important;
+  }
+  .u-column-7-bp2 {
+    grid-column: span 7 !important;
+  }
+  .u-column-8-bp2 {
+    grid-column: span 8 !important;
+  }
+  .u-column-9-bp2 {
+    grid-column: span 9 !important;
+  }
+  .u-column-10-bp2 {
+    grid-column: span 10 !important;
+  }
+  .u-column-11-bp2 {
+    grid-column: span 11 !important;
+  }
+  .u-column-12-bp2 {
+    grid-column: span 12 !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .u-column-1-bp3 {
+    grid-column: span 1 !important;
+  }
+  .u-column-2-bp3 {
+    grid-column: span 2 !important;
+  }
+  .u-column-3-bp3 {
+    grid-column: span 3 !important;
+  }
+  .u-column-4-bp3 {
+    grid-column: span 4 !important;
+  }
+  .u-column-5-bp3 {
+    grid-column: span 5 !important;
+  }
+  .u-column-6-bp3 {
+    grid-column: span 6 !important;
+  }
+  .u-column-7-bp3 {
+    grid-column: span 7 !important;
+  }
+  .u-column-8-bp3 {
+    grid-column: span 8 !important;
+  }
+  .u-column-9-bp3 {
+    grid-column: span 9 !important;
+  }
+  .u-column-10-bp3 {
+    grid-column: span 10 !important;
+  }
+  .u-column-11-bp3 {
+    grid-column: span 11 !important;
+  }
+  .u-column-12-bp3 {
+    grid-column: span 12 !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .u-column-1-bp4 {
+    grid-column: span 1 !important;
+  }
+  .u-column-2-bp4 {
+    grid-column: span 2 !important;
+  }
+  .u-column-3-bp4 {
+    grid-column: span 3 !important;
+  }
+  .u-column-4-bp4 {
+    grid-column: span 4 !important;
+  }
+  .u-column-5-bp4 {
+    grid-column: span 5 !important;
+  }
+  .u-column-6-bp4 {
+    grid-column: span 6 !important;
+  }
+  .u-column-7-bp4 {
+    grid-column: span 7 !important;
+  }
+  .u-column-8-bp4 {
+    grid-column: span 8 !important;
+  }
+  .u-column-9-bp4 {
+    grid-column: span 9 !important;
+  }
+  .u-column-10-bp4 {
+    grid-column: span 10 !important;
+  }
+  .u-column-11-bp4 {
+    grid-column: span 11 !important;
+  }
+  .u-column-12-bp4 {
+    grid-column: span 12 !important;
+  }
+}
+
+/*------------------------------------*\
+    #MEDIA
+    \*------------------------------------*/
+
+/*
+        Media Queries
+        ---
+        EXAMPLE Media Queries for Responsive Design.
+        These examples override the primary ('mobile first') styles.
+        USE THEM INLINE!
+    */
+
+/* Extra small devices (portrait phones, less than 576px)
+    No media query since this is the default in mobile first design
+    */
+
+/* Small devices (landscape phones, 576px and up)
+    @media (min-width: 576px) {}
+    */
+
+/* Medium devices (tablets, 768px and up)
+    @media (min-width: 768px) {}
+    */
+
+/* Large devices (landscape tablets, desktops, 992px and up)
+    @media (min-width: 992px) {}
+    */
+
+/* Extra large devices (large desktops, 1200px and up)
+    @media (min-width: 1200px) {}
+    */
+
+/*
+        Print styles.
+        ---
+        Inlined to avoid the additional HTTP request:
+        http://www.phpied.com/delay-loading-your-print-css/
+    */
+
+@media print {
+  *,
+  *:before,
+  *:after {
+    background: transparent !important;
+    color: #000 !important;
+    /* Black prints faster:
+            http://www.sanbeiji.com/archives/953 */
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+    content: ' (' attr(href) ')';
+  }
+  abbr[title]:after {
+    content: ' (' attr(title) ')';
+  }
+  /*
+        * Don't show links that are fragment identifiers,
+        * or use the `javascript:` pseudo protocol
+        */
+  a[href^='#']:after,
+  a[href^='javascript:']:after {
+    content: '';
+  }
+  pre {
+    white-space: pre-wrap !important;
+  }
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  /*
+        * Printing Tables:
+        * http://css-discuss.incutio.com/wiki/Printing_Tables
+        */
+  thead {
+    display: table-header-group;
+  }
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
