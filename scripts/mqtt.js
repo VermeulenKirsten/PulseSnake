@@ -21,7 +21,7 @@ const onFailure = function() {
 };
 
 const onMessageArrived = function(msg) {
-  console.log('message:', msg.payloadString);
+  // console.log('message:', msg.payloadString);
   message = JSON.parse(msg.payloadString);
   switch (message.type) {
     case 'playerLoaded':
@@ -85,9 +85,7 @@ const onMessageArrived = function(msg) {
       {
         console.log('gameOver message received ', message.message);
         console.log('spel gedaan:' + message.message.snake.Name + 'heeft' + message.message.method);
-        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${
-          message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'
-        }<br>`;
+        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'}<br>`;
         document.querySelector('.js-lobby').style.display = 'block';
       }
       break;

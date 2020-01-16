@@ -125,7 +125,7 @@ const gameTick = function(snakeObj) {
     // console.log('available: ', availableFrames);
     let startTime = Date.now();
     let frame = 0;
-    // drawSnake(snakeObj, oldTail, frame, startTime);
+    drawSnake(snakeObj, oldTail, frame, startTime);
 
     setTimeout(function() {
       gameTick(snakeObj);
@@ -142,13 +142,18 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
   //mss moeten waarden afgerond worden
   //make the snake disappear
   for (let tailPiece of oldTail) {
-    // ctx.fillStyle = '#000000';
     ctx.clearRect(tailPiece[1] - 1, tailPiece[0] - 1, scalefactor + 2, scalefactor + 2);
     // ctx.clearRect(0, 0, gamewidth, gameheight);
   }
   //move the snaketail a few pixels
   // console.log('old tail: ', oldTail);
   for (let piece in oldTail) {
+    if (oldTail.length > snake.Tail.length) {
+      let removedTail = oldTail.splice(snake.Tail.length, oldTail.length - snake.Tail.length);
+      for (let piece of removedTail) {
+        ctx.clearRect(piece[1] - 1, piece[0] - 1, scalefactor + 2, scalefactor + 2);
+      }
+    }
     let destinationX = snake.Tail[piece][1] * scalefactor;
     let destinationY = snake.Tail[piece][0] * scalefactor;
 
@@ -157,25 +162,41 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
     // console.log('from ', [oldX, oldY], 'to', [destinationX, destinationY]);
     // console.log('old offset: ', oldTail[piece]);
     let offsetX = 0;
-    if (oldX < destinationX || destinationX == 0) {
+    if (oldX < destinationX) {
       offsetX = pixelJump;
-    } else if (destinationX < oldX || destinationX == 800) {
+    } else if (destinationX < oldX) {
       offsetX = -pixelJump;
     }
-
+    if (Math.abs(destinationX - oldX) != scalefactor && destinationX != oldX) {
+      if (destinationX == 0) {
+        // offscreen to the right
+        offsetX = pixelJump;
+      } else if (destinationX == gamewidth - scalefactor) {
+        // offscreen to the left
+        offsetX = -pixelJump;
+      }
+    }
     offsetX = offsetX * frame;
-    // console.log(offsetX);
+
     let offsetY = 0;
-    if (oldY < destinationY || destinationY == 0) {
+    if (oldY < destinationY) {
       offsetY = pixelJump;
     } else if (destinationY < oldY) {
       offsetY = -pixelJump;
     }
+    if (Math.abs(destinationY - oldY) != scalefactor && destinationY != oldY) {
+      if (destinationY == 0) {
+        // offscreen to the bottom
+        offsetY = pixelJump;
+      } else if (destinationY == gameheight - scalefactor) {
+        // offscreen to the top
+        offsetY = -pixelJump;
+      }
+    }
     offsetY = offsetY * frame;
-    // console.log(offsetY);
 
     // console.log('drawing x: ', oldX + offsetX, 'y: ', oldY + offsetY);
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = snake.Color;
     ctx.fillRect(oldX + offsetX, oldY + offsetY, scalefactor, scalefactor);
   }
 
@@ -347,7 +368,7 @@ const beginGame = function() {
     generatefruit();
     generatecandy();
   }
-  displaysnakes();
+  // displaysnakes();
   startCountDown();
 };
 // ***********  CheckPlayer ***********
