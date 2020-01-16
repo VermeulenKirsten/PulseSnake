@@ -40,16 +40,16 @@ let snakePositions = [
     [15, 1]
   ]
 ];
-let snakeColors = ['#00FF00', '#FFFF00', '#0000FF', '#00FFFF'];
+let snakeColors = ["#00FF00", "#FFFF00", "#0000FF", "#00FFFF"];
 
 // ***********  DOM references ***********
 const getdomelements = function() {
-  canvas = document.querySelector('.js-gameboard');
-  ctx = canvas.getContext('2d');
-  tijdHTML = document.querySelector('.js-tijd');
-  scoreHTML = document.querySelector('.js-score');
-  lobbyButton = document.querySelector('.js-lobby');
-  gameOverTekst = document.querySelector('.js-gameOver');
+  canvas = document.querySelector(".js-gameboard");
+  ctx = canvas.getContext("2d");
+  tijdHTML = document.querySelector(".js-tijd");
+  scoreHTML = document.querySelector(".js-score");
+  lobbyButton = document.querySelector(".js-lobby");
+  gameOverTekst = document.querySelector(".js-gameOver");
 };
 
 // ***********  HTML Generation ***********
@@ -63,12 +63,12 @@ const getdomelements = function() {
 // ***********  Event Listeners ***********
 
 const listener = function() {
-  document.querySelector('.js-lobby').addEventListener('click', function() {
+  document.querySelector(".js-lobby").addEventListener("click", function() {
     if (playerNr != 0) {
-      message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+      message = new Paho.MQTT.Message(JSON.stringify(new Message("disconnect", playerId)));
       message.destinationName = roomInfo.roomId;
       mqtt.send(message);
-      window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
+      window.location.href = "hostlobby.html?roomId=" + roomInfo.roomId;
     } else {
       console.log(roomInfo);
       for (let player of roomInfo.players) {
@@ -76,7 +76,7 @@ const listener = function() {
           roomInfo.removePlayer(player.id);
         }
       }
-      window.location.href = 'hostlobby.html';
+      window.location.href = "hostlobby.html";
     }
   });
 };
@@ -84,26 +84,26 @@ const listener = function() {
 //event that triggers when keyboard buttons are pressed
 
 const handlekeydowns = function() {
-  document.addEventListener('keydown', function(key) {
+  document.addEventListener("keydown", function(key) {
     //left arrow key pressed
     if (key.which === 37) {
-      snakes[playerNr].Input('left');
+      snakes[playerNr].Input("left");
     }
     //up arrow key pressed
     else if (key.which === 38) {
-      snakes[playerNr].Input('up');
+      snakes[playerNr].Input("up");
     }
     //right arrow key pressed
     else if (key.which === 39) {
-      snakes[playerNr].Input('right');
+      snakes[playerNr].Input("right");
     }
     //down arrow key pressed
     else if (key.which === 40) {
-      snakes[playerNr].Input('down');
+      snakes[playerNr].Input("down");
     }
     //space bar pressed
     else if (key.which === 32) {
-      snakes[playerNr].Input('slow');
+      snakes[playerNr].Input("slow");
     } else if (key.which === 70) {
       stop = true;
       console.log(stop);
@@ -234,18 +234,18 @@ const displaysnakes = function() {
         ctx.fillStyle = snake.Color;
         ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
         if (piece == snake.Tail[0]) {
-          ctx.fillStyle = '#006600';
+          ctx.fillStyle = "#006600";
           ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
         }
       }
-      ctx.fillStyle = '#FF0000';
+      ctx.fillStyle = "#FF0000";
       ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
       // show the candy
-      ctx.fillStyle = '#FF00FF';
+      ctx.fillStyle = "#FF00FF";
       ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
     } catch {
       snake.isalive = false;
-      console.log('u dead boi');
+      console.log("u dead boi");
       stop = true;
     }
   }
@@ -274,7 +274,7 @@ const generatefruit = function() {
   if (alltails.length == (gamewidth / scalefactor) * (gameheight / scalefactor)) {
     fruit = [-100, -100];
     stop = false;
-    throw 'error';
+    throw "error";
     return;
   }
   // check if random location is a free spot
@@ -286,7 +286,7 @@ const generatefruit = function() {
   }
   // send the new location to players
 
-  let fruitmessage = new Message('fruit', fruit);
+  let fruitmessage = new Message("fruit", fruit);
   let message = new Paho.MQTT.Message(JSON.stringify(fruitmessage));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
@@ -312,7 +312,7 @@ const generatecandy = function() {
     }
   }
   // send the new location to players
-  let candymessage = new Message('candy', candy);
+  let candymessage = new Message("candy", candy);
   let message = new Paho.MQTT.Message(JSON.stringify(candymessage));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
@@ -321,15 +321,15 @@ const generatecandy = function() {
 // ***********  generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', roomInfo.defaultSpeed, snakeColors[i]);
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], "right", roomInfo.defaultSpeed, snakeColors[i]);
     snakes.push(newsnake);
   }
 };
 // ***********  Get Session Data ***********
 
 const getSessionData = function() {
-  playerId = sessionStorage.getItem('playerId');
-  oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
+  playerId = sessionStorage.getItem("playerId");
+  oldRoom = JSON.parse(sessionStorage.getItem("roomInfo"));
   roomInfo = new room(oldRoom.roomId);
   roomInfo.players = oldRoom.players;
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
@@ -341,7 +341,7 @@ const getSessionData = function() {
 const startCountDown = function() {
   tijd = roomInfo.gameDuration * 60 + 3;
   tijdHTML.innerHTML = tijd;
-  console.log('tijd:', tijd);
+  console.log("tijd:", tijd);
   interval = setInterval(countDown, 1000);
   setTimeout(startMovement, 3000);
   setTimeout(gameOver, tijd * 1000);
@@ -362,16 +362,16 @@ const gameOver = function() {
   clearInterval(interval);
   //gameOverTekst.innerHTML = 'Tijd is om, het spel is gedaan';
   if (playerNr == 0) {
-    lobbyButton.style.display = 'block';
+    lobbyButton.style.display = "block";
   }
   for (let snake of snakes) {
-    console.log(snake.Name + ' score: ' + snake.score);
+    console.log(snake.Name + " score: " + snake.score);
   }
 };
 // ***********  Begin Game ***********
 
 const beginGame = function() {
-  console.log('begin the game');
+  console.log("begin the game");
   checkPlayer();
   generateSnakes();
   handlekeydowns();
@@ -382,10 +382,11 @@ const beginGame = function() {
   // displaysnakes();
   startCountDown();
 };
+
 // ***********  UpdateScore ***********
 const updatescore = function() {
   for (let snake of snakes) {
-    console.log(snake.Name + ' score: ' + snake.score);
+    console.log(snake.Name + " score: " + snake.score);
     scoreHTML.innerHTML(snake.score);
   }
 
@@ -403,7 +404,7 @@ const checkPlayer = function() {
   if (playerId == roomInfo.players[0].id) {
     playerNr = 0;
     for (player of roomInfo.players) {
-      console.log('p:', player);
+      console.log("p:", player);
       loadedPlayers[player.id] = false;
     }
   } else {
@@ -418,7 +419,7 @@ const checkPlayer = function() {
 
 // ***********  Init / DOMContentLoaded ***********
 const init = function() {
-  console.log('init');
+  console.log("init");
   listener();
   getdomelements();
   getSessionData();
@@ -427,6 +428,6 @@ const init = function() {
   // beginGame;
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
   init();
 });
