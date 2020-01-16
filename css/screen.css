@@ -25,6 +25,8 @@
   --global-color-gamma-gradient: linear-gradient(#723030, #883939);
   --global-color-gamma-dark: #441d1d;
 
+  --global-color-delta: #f9d976;
+
   /* Whitespace */
   --global-baseline: 8px;
 
@@ -39,6 +41,7 @@
   /* border */
   --global-border-color: linear-gradient(#f9d976, #f39f86);
   --global-border-boxshadow-light: 0 10px 0 0 #b14727;
+  --global-border-boxshadow-light-sm: 0 8px 0 0 #b14727;
   --global-border-boxshadow-dark: 0 5px 0 0 var(--global-color-gamma);
   --global-border-boxshadow-dark-sm: 0 1px 0 0 var(--global-color-gamma);
   --global-border-boxshadow-dark-inset: inset 0 5px 0 0 var(--global-color-gamma-dark);
@@ -48,7 +51,7 @@
 
   /* transitions */
   --global-transition-alpha: 0.05s;
-  --global-transition-beta: 0.5s;
+  --global-transition-beta: 0.3s;
 
   /* Grid */
   --global-topbar-height: calc(var(--global-baseline) * 10);
@@ -387,6 +390,10 @@ input::placeholder {
   box-shadow: var(--global-border-boxshadow-light);
 }
 
+.c-button__base-sm {
+  box-shadow: var(--global-border-boxshadow-light-sm);
+}
+
 .c-button__base-round {
   padding: 8px 12px 12px;
   border-radius: var(--global-border-radius-lg);
@@ -596,6 +603,49 @@ input::placeholder {
   background-color: #222222;
 }
 
+/* ---------------- Scoreboard ---------------- */
+
+.c-scoreboard {
+  width: 50%;
+}
+
+.c-scoreboard__item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.c-scoreboard p {
+  margin-bottom: 0px;
+}
+
+.c-tab {
+  position: relative;
+  width: 50%;
+}
+
+.c-tab__item:hover {
+  color: var(--global-color-delta);
+}
+
+.c-tab__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.c-tab__selector {
+  position: absolute;
+  top: -8%;
+  left: 0%;
+  width: 20%;
+  transition: var(--global-transition-beta);
+}
+
+.c-tab__input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /*------------------------------------*\
   #UTILITIES
 \*------------------------------------*/
@@ -608,6 +658,14 @@ input::placeholder {
 
 .u-color-white {
   color: white;
+}
+
+.u-color-transparant {
+  opacity: 0;
+}
+
+.u-color-delta {
+  color: var(--global-color-delta);
 }
 
 .u-color-neutral {

@@ -4,10 +4,10 @@
 
 /* baloo-regular - latin */
 @font-face {
-  font-family: 'Baloo';
+  font-family: "Baloo";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
+  src: url("../fonts/baloo-v5-latin-regular.woff2") format("woff2"), url("../fonts/baloo-v5-latin-regular.woff") format("woff");
 }
 
 /*------------------------------------*\
@@ -18,12 +18,14 @@
   /* colors */
   --global-color-alpha: #62c236;
   --global-color-alpha-gradient: linear-gradient(#62c236, #a8e063);
-  --global-color-delta: #f9d976;
+
   --global-color-beta-gradient: linear-gradient(#77a143, #64cf33);
 
   --global-color-gamma: #883939;
   --global-color-gamma-gradient: linear-gradient(#723030, #883939);
   --global-color-gamma-dark: #441d1d;
+
+  --global-color-delta: #f9d976;
 
   /* Whitespace */
   --global-baseline: 8px;
@@ -67,7 +69,7 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: 'Baloo', Helvetica, arial, sans-serif;
+  font-family: "Baloo", Helvetica, arial, sans-serif;
   color: #535353;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -351,7 +353,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/background.png') center no-repeat;
+  background: white url("/img/png/background.png") center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -497,7 +499,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/landingpage.png') center no-repeat;
+  background: white url("/img/png/landingpage.png") center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -602,7 +604,7 @@ input::placeholder {
 /* Style the buttons inside the tab */
 .c-tab button {
   background-color: inherit;
-  font-family: 'Baloo';
+  font-family: "Baloo";
   color: white;
   float: left;
   border: none;
@@ -642,6 +644,10 @@ input::placeholder {
 
 .u-color-white {
   color: white;
+}
+
+.u-color-delta {
+  color: var(--global-color-delta);
 }
 
 .u-color-neutral {
@@ -1184,18 +1190,18 @@ input::placeholder {
     text-decoration: underline;
   }
   a[href]:after {
-    content: ' (' attr(href) ')';
+    content: " (" attr(href) ")";
   }
   abbr[title]:after {
-    content: ' (' attr(title) ')';
+    content: " (" attr(title) ")";
   }
   /*
         * Don't show links that are fragment identifiers,
         * or use the `javascript:` pseudo protocol
         */
-  a[href^='#']:after,
-  a[href^='javascript:']:after {
-    content: '';
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
   }
   pre {
     white-space: pre-wrap !important;
