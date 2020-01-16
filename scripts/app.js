@@ -132,7 +132,9 @@ const gameTick = function(snakeObj) {
     // console.log('available: ', availableFrames);
     let startTime = Date.now();
     let frame = 0;
-    drawSnake(snakeObj, oldTail, frame, startTime);
+    requestAnimationFrame(function() {
+      drawSnake(snakeObj, oldTail, frame, startTime);
+    });
 
     setTimeout(function() {
       gameTick(snakeObj);
@@ -150,10 +152,8 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
   //make the snake disappear
   for (let tailPiece of oldTail) {
     ctx.clearRect(tailPiece[1] - 1, tailPiece[0] - 1, scalefactor + 2, scalefactor + 2);
-    // ctx.clearRect(0, 0, gamewidth, gameheight);
   }
   //move the snaketail a few pixels
-  // console.log('old tail: ', oldTail);
   for (let piece in oldTail) {
     if (oldTail.length > snake.Tail.length) {
       let removedTail = oldTail.splice(snake.Tail.length, oldTail.length - snake.Tail.length);
@@ -166,8 +166,7 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
 
     let oldX = oldTail[piece][1];
     let oldY = oldTail[piece][0];
-    // console.log('from ', [oldX, oldY], 'to', [destinationX, destinationY]);
-    // console.log('old offset: ', oldTail[piece]);
+
     let offsetX = 0;
     if (oldX < destinationX) {
       offsetX = pixelJump;
@@ -202,7 +201,6 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
     }
     offsetY = offsetY * frame;
 
-    // console.log('drawing x: ', oldX + offsetX, 'y: ', oldY + offsetY);
     ctx.fillStyle = snake.Color;
     ctx.fillRect(oldX + offsetX, oldY + offsetY, scalefactor, scalefactor);
   }
@@ -219,7 +217,9 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
     let excecuteTime = startTime + timeBetweenFrames * frame;
     let timeDiff = excecuteTime - Date.now();
     setTimeout(function() {
-      drawSnake(snake, oldTail, newFrame, startTime);
+      requestAnimationFrame(function() {
+        drawSnake(snake, oldTail, newFrame, startTime);
+      });
     }, timeDiff);
   }
   return;
