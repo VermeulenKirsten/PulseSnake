@@ -28,15 +28,15 @@ const onFailure = function() {
 };
 
 const onMessageArrived = function(msg) {
-  // console.log('message:', msg.payloadString);
+  console.log('message:', msg.payloadString);
   message = JSON.parse(msg.payloadString);
   switch (message.type) {
     case 'playerLoaded':
       {
         if (playerNr == 0) {
-          console.log('new');
+          console.log('send ok to ', message.message);
           loadedPlayers[message.message] = true;
-          message = new Paho.MQTT.Message(JSON.stringify(new Message('playerOk', '')));
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('playerOk', message.message)));
           message.destinationName = roomInfo.roomId;
           mqtt.send(message);
 
@@ -52,7 +52,9 @@ const onMessageArrived = function(msg) {
       break;
     case 'playerOk':
       {
-        hostNotified = true;
+        if (playerId == message.message) {
+          hostNotified = true;
+        }
       }
       break;
 
