@@ -352,6 +352,11 @@ input::placeholder {
   line-height: 56px;
 }
 
+.c-lead-xxl {
+  font-size: 80px;
+  line-height: 80px;
+}
+
 .c-baselayout {
   flex-direction: column;
   z-index: 2;
@@ -490,8 +495,6 @@ input::placeholder {
 }
 
 .c-icon__heart {
-  height: var(--global-whitespace-xxl);
-  width: var(--global-whitespace-xxl);
   -moz-animation: heartbeat 0.8s linear infinite;
   -webkit-animation: heartbeat 0.8s linear infinite;
   animation: heartbeat 1s lineair infinite;
@@ -601,11 +604,20 @@ input::placeholder {
   background-color: #222222;
 }
 
+.c-players {
+  flex-direction: column;
+}
+
 .c-player {
   display: grid;
   grid-template: repeat(2, auto) / auto 1fr auto;
   grid-column-gap: var(--global-whitespace-sm);
-  margin-bottom: var(--global-whitespace-md);
+  margin-bottom: var(--global-whitespace-xxl);
+  width: 100%;
+}
+
+.c-player:last-child {
+  margin-bottom: 0;
 }
 
 /* ---------------- Scoreboard ---------------- */
