@@ -104,11 +104,13 @@ const onMessageArrived = function(msg) {
       break;
     case 'error':
       {
-        if (incommingMessage.message.errorMessage == 'room full' && incommingMessage.message.toId == playerId) {
-          console.log('room is full redirecting');
-          window.location.href = 'join.html?error=roomFull';
+        if (playerRole == 'Guest') {
+          if (incommingMessage.message.errorMessage == 'room full' && incommingMessage.message.toId == playerId) {
+            console.log('room is full redirecting');
+            window.location.href = 'join.html?error=roomFull';
+          }
+          console.log(incommingMessage.message);
         }
-        console.log(incommingMessage.message);
       }
       break;
 
