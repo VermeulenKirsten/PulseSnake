@@ -68,8 +68,14 @@ const listener = function() {
       message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
       message.destinationName = roomInfo.roomId;
       mqtt.send(message);
-      window.location.href = 'playerroom.html?roomId=' + roomInfo.roomId;
+      window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
     } else {
+      console.log(roomInfo);
+      for (let player of roomInfo.players) {
+        if (player.id != playerId) {
+          roomInfo.removePlayer(player.id);
+        }
+      }
       window.location.href = 'hostlobby.html';
     }
   });
@@ -323,7 +329,11 @@ const generateSnakes = function() {
 
 const getSessionData = function() {
   playerId = sessionStorage.getItem('playerId');
-  roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+  oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
+  roomInfo = new room(oldRoom.roomId);
+  roomInfo.players = oldRoom.players;
+  roomInfo.defaultSpeed = oldRoom.defaultSpeed;
+  roomInfo.gameDuration = oldRoom.gameDuration;
   checkPlayer();
   MQTTconnect();
 };
