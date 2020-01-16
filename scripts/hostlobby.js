@@ -20,6 +20,9 @@ const showplayers = function() {
   let output = '';
   for (player of roomInfo.players) {
     output += `<li>${player.name}</li>`;
+    if (player.id == playerId) {
+      nameInput.value = player.name;
+    }
   }
   playerList.innerHTML = output;
 };
