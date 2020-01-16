@@ -47,6 +47,7 @@ const getdomelements = function() {
   canvas = document.querySelector('.js-gameboard');
   ctx = canvas.getContext('2d');
   tijdHTML = document.querySelector('.js-tijd');
+  scoreHTML = document.querySelector('.js-score');
   lobbyButton = document.querySelector('.js-lobby');
   gameOverTekst = document.querySelector('.js-gameOver');
 };
@@ -371,6 +372,20 @@ const beginGame = function() {
   // displaysnakes();
   startCountDown();
 };
+// ***********  UpdateScore ***********
+const updatescore = function() {
+  for (let snake of snakes) {
+    console.log(snake.Name + ' score: ' + snake.score);
+    scoreHTML.innerHTML(snake.score);
+  }
+
+  if (!stop) {
+    setTimeout(function() {
+      updatescore();
+    }, 1000 / framerate);
+  }
+};
+
 // ***********  CheckPlayer ***********
 
 const checkPlayer = function() {
