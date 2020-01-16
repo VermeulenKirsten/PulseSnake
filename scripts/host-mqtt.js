@@ -8,13 +8,23 @@ let roomInfo;
 
 const onConnect = function() {
   console.log('Connected');
-  let suboptions = {
-    qos: 1
-  };
-  mqtt.subscribe(roomInfo.roomId, suboptions);
+
+  mqtt.subscribe(roomInfo.roomId);
   let message = new Paho.MQTT.Message(JSON.stringify(new Message('lobbyReady', '')));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
+};
+
+// ***********  when succesfully connected to broker ***********
+
+const onConnectGuest = function() {
+  mqtt.subscribe(roomId);
+  let guest = new Player(playerId);
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
+  message.destinationName = roomId;
+  mqtt.send(message);
+
+  setTimeout(roomNotFound, 3000);
 };
 // ***********  not succesfully connected to broker ***********
 
@@ -30,54 +40,91 @@ const onMessageArrived = function(msg) {
   switch (incommingMessage.type) {
     case 'player':
       {
-        let newplayer = incommingMessage.message;
-        if (roomInfo.players.length < 4) {
-          roomInfo.addPlayer(newplayer);
-          message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
-          message.destinationName = roomInfo.roomId;
-          mqtt.send(message);
-          showplayers();
-        } else {
-          message = new Paho.MQTT.Message(JSON.stringify(new Message('error', { toId: newplayer.id, errorMessage: 'room full' })));
-          message.destinationName = roomInfo.roomId;
-          mqtt.send(message);
+        if (playerRole == 'Host') {
+          let newplayer = incommingMessage.message;
+          if (roomInfo.players.length < 4) {
+            roomInfo.addPlayer(newplayer);
+            message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
+            message.destinationName = roomInfo.roomId;
+            mqtt.send(message);
+            showplayers();
+          } else {
+            message = new Paho.MQTT.Message(JSON.stringify(new Message('error', { toId: newplayer.id, errorMessage: 'room full' })));
+            message.destinationName = roomInfo.roomId;
+            mqtt.send(message);
+          }
         }
       }
       break;
     case 'playerUpdate':
       {
-        let newplayer = incommingMessage.message;
-        roomInfo.updatePlayer(newplayer);
-        showplayers();
+        if (playerRole == 'Host') {
+          let newplayer = incommingMessage.message;
+          console.log(roomInfo, newplayer);
+
+          roomInfo.updatePlayer(newplayer);
+          console.log(newplayer);
+          showplayers();
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
+          message.destinationName = roomInfo.roomId;
+          mqtt.send(message);
+        }
       }
       break;
 
     case 'disconnect':
       {
-        roomInfo.removePlayer(incommingMessage.message);
-        showplayers();
-        // for (let i = 0; i < roomInfo.players.length; i++) {
-        //   if (roomInfo.players[i].name == incommingMessage.message) {
-        //     console.log('delete', roomInfo.players[i]);
-        //     roomInfo.players.pop(i);
-        //   }
-        // }
+        if (playerRole == 'Host') {
+          roomInfo.removePlayer(incommingMessage.message);
+          showplayers();
+        }
       }
       break;
-    case 'roominfo': {
-    }
+    case 'roomInfo':
+      {
+        if (playerRole == 'Guest') {
+          console.log('roomInfo received');
+          roomInfo = incommingMessage.message;
+          console.log('roominfo', roomInfo);
+          showplayers(roomInfo);
+        }
+      }
+      break;
+    case 'startGame':
+      {
+        if (playerRole == 'Guest') {
+          roomInfo = JSON.stringify(incommingMessage.message.roomInfo);
+          sessionStorage.setItem('roomInfo', roomInfo);
+          sessionStorage.setItem('startTime', incommingMessage.message.startTime);
+          sessionStorage.setItem('playerId', playerId);
+          console.log('startgame received', incommingMessage);
+          window.location.href = 'game.html';
+        }
+      }
+      break;
+    case 'error':
+      {
+        if (incommingMessage.message.errorMessage == 'room full' && incommingMessage.message.toId == playerId) {
+          console.log('room is full redirecting');
+          window.location.href = 'join.html?error=roomFull';
+        }
+        console.log(incommingMessage.message);
+      }
+      break;
+
     default:
       console.log('not existing type:', incommingMessage);
   }
 };
+
 // ***********  connect to broker ***********
 
-const MQTTconnect = function(name) {
+const MQTTconnect = function(succesCallback) {
   console.log('connecting to ' + host);
-  mqtt = new Paho.MQTT.Client(host, Number(port), name);
+  mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
   let options = {
     timeout: 0,
-    onSuccess: onConnect,
+    onSuccess: succesCallback,
     onFailure: onFailure
   };
   mqtt.onMessageArrived = onMessageArrived;

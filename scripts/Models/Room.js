@@ -13,13 +13,15 @@ function room(roomId) {
     }
   };
   this.updatePlayer = function(newplayer) {
+    console.log('update');
     for (let player in this.players) {
       if (this.players[player].id == newplayer.id) {
+        console.log('found');
         this.players[player] = newplayer;
         break;
       }
     }
-    console.log(this.players);
+    console.log('updated:', this.players);
   };
   this.removePlayer = function(id) {
     for (let i = 0; i < this.players.length; i++) {

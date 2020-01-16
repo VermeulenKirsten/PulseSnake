@@ -1,5 +1,6 @@
 let playerId;
 let playerList;
+let playerRole;
 let domStart;
 let nameInput;
 
@@ -35,7 +36,7 @@ const loadRoomInfo = function() {
   roomInfo.players = oldRoom.players;
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
   roomInfo.gameDuration = oldRoom.gameDuration;
-  MQTTconnect(playerId);
+  MQTTconnect(onConnect);
   showplayers();
 
   document.querySelector('.js-roomid').innerHTML = roomInfo.roomId;
@@ -43,7 +44,11 @@ const loadRoomInfo = function() {
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
-  domStart.addEventListener('click', goToGame);
+  console.log(playerRole);
+
+  if (playerRole == 'Host') {
+    domStart.addEventListener('click', goToGame);
+  }
   domBack.addEventListener('click', goToCreate);
   nameInput.addEventListener('blur', updateName);
 };
@@ -52,12 +57,11 @@ const updateName = function() {
   let localPlayer;
   for (let player of roomInfo.players) {
     if (player.id == playerId) {
-      player.name = nameInput.value;
       localPlayer = player;
+      localPlayer.name = nameInput.value;
     }
   }
-  let newMessage = new Message('playerUpdate', localPlayer);
-  let message = new Paho.MQTT.Message(JSON.stringify(newMessage));
+  let message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
 };
@@ -71,15 +75,45 @@ const goToCreate = function() {
 
 const generateDOMelements = function() {
   playerList = document.querySelector('#playerListjs');
-  domStart = document.querySelector('.js-startGame');
-  domBack = document.querySelector('.js-back');
   nameInput = document.querySelector('.js-naam');
+  domBack = document.querySelector('.js-back');
+  if (playerRole == 'Host') {
+    domStart = document.querySelector('.js-startGame');
+  }
 };
 
 const init = function() {
-  generateDOMelements();
-  addListener();
-  loadRoomInfo();
+  var url = new URL(window.location.href);
+  roomId = url.searchParams.get('roomId');
+  if (roomId) {
+    playerRole = 'Guest';
+    playerId = createUuid();
+    MQTTconnect(onConnectGuest);
+    generateDOMelements();
+    addListener();
+  } else {
+    playerRole = 'Host';
+    generateDOMelements();
+    addListener();
+
+    loadRoomInfo();
+  }
+};
+
+// ***********  page reload ***********
+
+window.onbeforeunload = function() {
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+  message.destinationName = roomId;
+  mqtt.send(message);
+};
+
+// ***********  room doesn't exist ***********
+
+const roomNotFound = function() {
+  if (!roomInfo) {
+    window.location.href = 'join.html?error=roomNotFound';
+  }
 };
 
 document.addEventListener('DOMContentLoaded', init);
