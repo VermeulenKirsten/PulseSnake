@@ -7,8 +7,19 @@ function room(roomId) {
     if (length < this.maxplayers) {
       newplayer.name = `Speler ${length + 1}`;
       this.players.push(newplayer);
+      return true;
     } else {
+      return false;
     }
+  };
+  this.updatePlayer = function(newplayer) {
+    for (let player in this.players) {
+      if (this.players[player].id == newplayer.id) {
+        this.players[player] = newplayer;
+        break;
+      }
+    }
+    console.log(this.players);
   };
   this.removePlayer = function(id) {
     for (let i = 0; i < this.players.length; i++) {
