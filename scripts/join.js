@@ -22,6 +22,7 @@ const checkErrors = function() {
 const goToLobby = function() {
   window.location.href = `http://127.0.0.1:5500/hostlobby.html?roomId=${domInput.value}`;
 };
+// ***********  go to play page ***********
 
 const goToPlay = function() {
   window.location.href = 'play.html';
