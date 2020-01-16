@@ -558,6 +558,12 @@ input::placeholder {
   left: 5%;
 }
 
+.c-lobby__absolute {
+  position: absolute;
+  right: 32px;
+  bottom: 29px;
+}
+
 /* ---------------- Game ---------------- */
 
 .c-gameboard {
