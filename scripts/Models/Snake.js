@@ -87,8 +87,11 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     for (let t = 1; t < this.Tail.length; t++) {
       let Tailpiece = this.Tail[t];
       if (Tailpiece[0] == newhead[0] && Tailpiece[1] == newhead[1]) {
+        oldLength = this.Tail.length;
         this.Tail.splice(t, this.Tail.length - t);
-        this.score += this.suicideValue;
+        newLength = this.Tail.length;
+        lengthVerschil = (oldLength - newLength) / oldLength;
+        this.score = Math.ceil(this.score * lengthVerschil);
         break;
       }
     }

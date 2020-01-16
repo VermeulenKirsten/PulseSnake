@@ -6,12 +6,10 @@ let loadedPlayers = {};
 hostNotified = false;
 
 const notifyHost = function() {
-  console.log(hostNotified);
   if (!hostNotified) {
     message = new Paho.MQTT.Message(JSON.stringify(new Message('playerLoaded', playerId)));
     message.destinationName = roomInfo.roomId;
     mqtt.send(message);
-    console.log('message send');
     setTimeout(notifyHost, 1000);
   }
 };
@@ -34,7 +32,6 @@ const onMessageArrived = function(msg) {
     case 'playerLoaded':
       {
         if (playerNr == 0) {
-          console.log('send ok to ', message.message);
           loadedPlayers[message.message] = true;
           message = new Paho.MQTT.Message(JSON.stringify(new Message('playerOk', message.message)));
           message.destinationName = roomInfo.roomId;
