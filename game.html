@@ -7,11 +7,7 @@
 
     <title>Pulse Snake 2.0</title>
 
-    <script
-      src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-      integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
-      crossorigin="anonymous"
-    ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script src="scripts/Models/Snake.js"></script>
     <script src="scripts/Models/Message.js"></script>
     <script src="scripts/Models/Room.js"></script>
@@ -26,34 +22,78 @@
     <div class="c-game__grid">
       <div class="c-button__base">
         <div class="c-game__scoreboard c-input">
-          <p class="c-lead-md">Scorebord</p>
-          <p class="js-tijd">12 min 20 sec</p>
+          <p class="c-lead-md u-mb-clear">Scorebord</p>
 
-          <div class="c-game__player">
-            <p>1.</p>
-            <p class="u-align-text-left js-score">Kirsten<br />10 punten</p>
-            <p>120</p>
+          <p class="js-tijd u-mb-clear">Ready?</p>
+
+          <div>
+            <div class="c-player">
+              <!-- Standing -->
+              <p class="u-row-2">1</p>
+              <!-- Player -->
+              <p class="u-mb-clear">Kirsten</p>
+              <!-- Number of points -->
+              <p class="u-mb-clear">1750</p>
+              <!-- Heartbeat -->
+              <div class="o-layout__center">
+                <svg aria-hidden="true" focusable="false" class="c-icon c-icon__oheart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg>
+                <p class="u-mb-clear">150</p>
+              </div>
+              <!-- The word Punten -->
+              <p class="u-mb-clear">Punten</p>
+            </div>
+
+            <div class="c-player">
+              <!-- Standing -->
+              <p class="u-row-2">2</p>
+              <!-- Player -->
+              <p class="u-mb-clear">Kirsten</p>
+              <!-- Number of points -->
+              <p class="u-mb-clear">1750</p>
+              <!-- Heartbeat -->
+              <div class="o-layout__center">
+                <svg aria-hidden="true" focusable="false" class="c-icon c-icon__oheart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg>
+                <p class="u-mb-clear">150</p>
+              </div>
+              <!-- The word Punten -->
+              <p class="u-mb-clear">Punten</p>
+            </div>
+
+            <div class="c-player">
+              <!-- Standing -->
+              <p class="u-row-2">3</p>
+              <!-- Player -->
+              <p class="u-mb-clear">Kirsten</p>
+              <!-- Number of points -->
+              <p class="u-mb-clear">1750</p>
+              <!-- Heartbeat -->
+              <div class="o-layout__center">
+                <svg aria-hidden="true" focusable="false" class="c-icon c-icon__oheart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg>
+                <p class="u-mb-clear">150</p>
+              </div>
+              <!-- The word Punten -->
+              <p class="u-mb-clear">Punten</p>
+            </div>
+
+            <div class="c-player">
+              <!-- Standing -->
+              <p class="u-row-2">4</p>
+              <!-- Player -->
+              <p class="u-mb-clear">Kirsten</p>
+              <!-- Number of points -->
+              <p class="u-mb-clear">1750</p>
+              <!-- Heartbeat -->
+              <div class="o-layout__center">
+                <svg aria-hidden="true" focusable="false" class="c-icon c-icon__oheart" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg>
+                <p class="u-mb-clear">150</p>
+              </div>
+              <!-- The word Punten -->
+              <p class="u-mb-clear">Punten</p>
+            </div>
           </div>
 
-          <div class="c-game__player">
-            <p>2.</p>
-            <p class="u-align-text-left">Zarin<br />8 punten</p>
-            <p>110</p>
-          </div>
-          <div class="c-game__player">
-            <p>3.</p>
-            <p class="u-align-text-left">Kevin<br />6 punten</p>
-            <p>95</p>
-          </div>
-
-          <div class="c-game__player">
-            <p>4.</p>
-            <p class="u-align-text-left">Robbe<br />4 punten</p>
-            <p>90</p>
-          </div>
-
-          <div class="c-game__posbutton">
-            <button class="o-button-reset c-button c-game__button o-layout__center u-mb-clear js-lobby">
+          <div class="c-game__button">
+            <button class="o-button-reset c-button o-layout__center u-mb-clear js-lobby">
               <div class="c-button__base">
                 <div class="c-button__outerhead">
                   <div class="c-button__innerhead">
