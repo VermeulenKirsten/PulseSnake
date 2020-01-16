@@ -3,16 +3,23 @@ let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
 let loadedPlayers = {};
+hostNotified = false;
+
+const notifyHost = function() {
+  console.log(hostNotified);
+  if (!hostNotified) {
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('playerLoaded', playerId)));
+    message.destinationName = roomInfo.roomId;
+    mqtt.send(message);
+    console.log('message send');
+    setTimeout(notifyHost, 1000);
+  }
+};
 
 const onConnect = function() {
   console.log('Connected');
-  console.log(roomInfo);
   mqtt.subscribe(roomInfo.roomId);
-
-  message = new Paho.MQTT.Message(JSON.stringify(new Message('playerLoaded', playerId)));
-  message.destinationName = roomInfo.roomId;
-  mqtt.send(message);
-  console.log('message send');
+  notifyHost();
 };
 
 const onFailure = function() {
@@ -27,7 +34,12 @@ const onMessageArrived = function(msg) {
     case 'playerLoaded':
       {
         if (playerNr == 0) {
+          console.log('new');
           loadedPlayers[message.message] = true;
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('playerOk', '')));
+          message.destinationName = roomInfo.roomId;
+          mqtt.send(message);
+
           if (new Set(Object.values(loadedPlayers)).size === 1) {
             console.log('all players are loaded');
 
@@ -38,6 +50,12 @@ const onMessageArrived = function(msg) {
         }
       }
       break;
+    case 'playerOk':
+      {
+        hostNotified = true;
+      }
+      break;
+
     case 'startGame':
       {
         beginGame();
@@ -85,7 +103,9 @@ const onMessageArrived = function(msg) {
       {
         console.log('gameOver message received ', message.message);
         console.log('spel gedaan:' + message.message.snake.Name + 'heeft' + message.message.method);
-        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'}<br>`;
+        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${
+          message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'
+        }<br>`;
         document.querySelector('.js-lobby').style.display = 'block';
       }
       break;

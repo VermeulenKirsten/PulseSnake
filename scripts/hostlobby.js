@@ -91,6 +91,7 @@ const init = function() {
     MQTTconnect(onConnectGuest);
     generateDOMelements();
     addListener();
+    document.querySelector('.js-roomid').innerHTML = roomId;
   } else {
     playerRole = 'Host';
     generateDOMelements();
