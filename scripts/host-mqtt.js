@@ -44,6 +44,14 @@ const onMessageArrived = function(msg) {
         }
       }
       break;
+    case 'playerUpdate':
+      {
+        let newplayer = incommingMessage.message;
+        roomInfo.updatePlayer(newplayer);
+        showplayers();
+      }
+      break;
+
     case 'disconnect':
       {
         roomInfo.removePlayer(incommingMessage.message);

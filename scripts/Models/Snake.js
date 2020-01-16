@@ -17,6 +17,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
   this.Input = function(direction) {
     let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
     if (lastkey != direction) {
+      this.distanceMoved += 1;
       if (lastkey != 'right' && direction == 'left') {
         this.Inputbuffer.push('left');
       } else if (lastkey != 'down' && direction == 'up') {
