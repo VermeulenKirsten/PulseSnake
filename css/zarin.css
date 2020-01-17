@@ -6,6 +6,27 @@
   bottom: 29px;
 }
 
+.c-icon__hidden-pencil {
+  display: block;
+}
+
+.c-icon__hidden-save {
+  display: none;
+}
+
+.c-input:focus + label > .c-icon__hidden-pencil {
+  display: none;
+}
+.c-input:focus + label > .c-icon__hidden-save {
+  display: block;
+}
+.c-input:active + label > .c-icon__hidden-pencil {
+  display: none;
+}
+.c-input:active + label > .c-icon__hidden-save {
+  display: block;
+}
+
 /* ---------------- Credits ---------------- */
 
 .c-logo {
