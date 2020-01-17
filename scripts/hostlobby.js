@@ -41,6 +41,7 @@ const loadRoomInfo = function() {
 
   document.querySelector('.js-roomid').innerHTML = roomInfo.roomId;
 };
+
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
@@ -50,6 +51,7 @@ const addListener = function() {
     domStart.addEventListener('click', goToGame);
   }
   domBack.addEventListener('click', goToCreate);
+  save.addEventListener('click', updateName);
   nameInput.addEventListener('blur', updateName);
 };
 
@@ -77,6 +79,7 @@ const generateDOMelements = function() {
   playerList = document.querySelector('#playerListjs');
   nameInput = document.querySelector('.js-naam');
   domBack = document.querySelector('.js-back');
+  save = document.querySelector('.js-save');
   if (playerRole == 'Host') {
     domStart = document.querySelector('.js-startGame');
   }
