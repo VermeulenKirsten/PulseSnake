@@ -70,9 +70,14 @@ const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
       if (lobbyReady) {
-        message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-        message.destinationName = roomInfo.roomId;
-        mqtt.send(message);
+        // message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+        // message.destinationName = roomInfo.roomId;
+        // mqtt.send(message);
+        for (let player of roomInfo.players) {
+          if (player.id == playerId) {
+            sessionStorage.setItem('player', JSON.stringify(player));
+          }
+        }
         window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
       } else {
         message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));

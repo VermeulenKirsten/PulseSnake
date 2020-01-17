@@ -105,7 +105,6 @@ const generateDOMelements = function() {
   playerList = document.querySelector('#playerListjs');
   nameInput = document.querySelector('.js-naam');
   startGameTekst = document.querySelector('.js-startGameTekst');
-  console.log(htmlLeave);
   domBack = document.querySelector('.js-back');
   save = document.querySelector('.js-save');
   if (playerRole == 'Host') {
@@ -118,7 +117,22 @@ const init = function() {
   roomId = url.searchParams.get('roomId');
   if (roomId) {
     playerRole = 'Guest';
-    playerId = createUuid();
+    if (sessionStorage.getItem('player')) {
+      localPlayer = JSON.parse(sessionStorage.getItem('player'));
+      oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
+      let oldroomId = oldRoom.roomId;
+      playerId = localPlayer.id;
+
+      if (roomId == oldroomId) {
+        old = true;
+      } else {
+        old = false;
+        playerId = createUuid();
+      }
+    } else {
+      old = false;
+      playerId = createUuid();
+    }
     MQTTconnect(onConnectGuest);
     generateDOMelements();
     setHTML('Guest');

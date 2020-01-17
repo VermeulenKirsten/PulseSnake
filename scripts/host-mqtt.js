@@ -3,6 +3,8 @@ let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
 let port = 80;
 let roomInfo;
+let localPlayer;
+let old;
 
 // ***********  when succesfully connected to broker ***********
 
@@ -18,13 +20,21 @@ const onConnect = function() {
 // ***********  when succesfully connected to broker ***********
 
 const onConnectGuest = function() {
+  console.log('hah');
   mqtt.subscribe(roomId);
-  let guest = new Player(playerId);
-  message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
-  message.destinationName = roomId;
-  mqtt.send(message);
+  if (old) {
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
+    message.destinationName = roomId;
+    console.log(message);
+    mqtt.send(message);
+  } else {
+    let guest = new Player(playerId);
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
+    message.destinationName = roomId;
+    mqtt.send(message);
+  }
 
-  setTimeout(roomNotFound, 3000);
+  //setTimeout(roomNotFound, 3000);
 };
 // ***********  not succesfully connected to broker ***********
 
