@@ -55,19 +55,30 @@ const addListener = function() {
   domBack.addEventListener('click', goToCreate);
   save.addEventListener('click', updateName);
   nameInput.addEventListener('blur', updateName);
+  nameInput.addEventListener('focus', clearName);
 };
-
+const clearName = function() {
+  nameInput.value = '';
+};
 const updateName = function() {
-  let localPlayer;
-  for (let player of roomInfo.players) {
-    if (player.id == playerId) {
-      localPlayer = player;
-      localPlayer.name = nameInput.value;
+  if (nameInput.value == '') {
+    for (let player of roomInfo.players) {
+      if (player.id == playerId) {
+        nameInput.value = player.name;
+      }
     }
+  } else {
+    let localPlayer;
+    for (let player of roomInfo.players) {
+      if (player.id == playerId) {
+        localPlayer = player;
+        localPlayer.name = nameInput.value;
+      }
+    }
+    let message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
+    message.destinationName = roomInfo.roomId;
+    mqtt.send(message);
   }
-  let message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
-  message.destinationName = roomInfo.roomId;
-  mqtt.send(message);
 };
 
 // ***********  Navigation ***********
