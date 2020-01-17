@@ -553,6 +553,31 @@ input::placeholder {
   grid-column: span 4;
 }
 
+.c-speed {
+  position: relative;
+}
+
+.c-speed__indicators {
+  position: absolute;
+  margin-bottom: 0;
+  bottom: 24%;
+}
+
+.c-speed__indicator {
+  margin-right: var(--global-baseline);
+  border-bottom: solid 4px rgba(255, 255, 255, 0.5);
+  width: var(--global-whitespace-md);
+}
+
+.c-speed__indicator-active {
+  border-color: var(--global-color-alpha);
+  opacity: 1;
+}
+
+li:last-child > .c-speed__indicator {
+  margin: 0;
+}
+
 /* ---------------- Join ---------------- */
 
 /* ---------------- Lobby ---------------- */
