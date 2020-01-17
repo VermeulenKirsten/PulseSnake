@@ -1,0 +1,28 @@
+/* ---------------- Lobby ---------------- */
+
+.c-lobby__absolute {
+  position: absolute;
+  right: 32px;
+  bottom: 29px;
+}
+
+/* ---------------- Credits ---------------- */
+
+.c-logo {
+  width: 200px;
+  margin-left: 48px;
+  margin-right: 48px;
+}
+
+.c-logo-layout {
+  display: flex;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.c-logo-line {
+  border-right: 2px solid #000;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
