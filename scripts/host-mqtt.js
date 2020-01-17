@@ -97,6 +97,7 @@ const onMessageArrived = function(msg) {
           roomInfo = incommingMessage.message;
           console.log('roominfo', roomInfo);
           showplayers(roomInfo);
+          4;
         }
       }
       break;
