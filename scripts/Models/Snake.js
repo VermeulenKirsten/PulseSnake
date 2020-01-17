@@ -17,7 +17,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
   this.Input = function(direction) {
     let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
     if (lastkey != direction) {
-      this.distanceMoved += 1;
+      this.score += 1;
       if (lastkey != 'right' && direction == 'left') {
         this.Inputbuffer.push('left');
       } else if (lastkey != 'down' && direction == 'up') {
@@ -91,7 +91,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         this.Tail.splice(t, this.Tail.length - t);
         newLength = this.Tail.length;
         lengthVerschil = (oldLength - newLength) / oldLength;
-        this.score = Math.ceil(this.score * lengthVerschil);
+        this.score = Math.ceil(this.score * (1 - lengthVerschil));
         break;
       }
     }
@@ -108,7 +108,8 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     }
 
     // stats
-    this.score += 1;
+    this.distanceMoved += 1;
+
     if (this.Tail.length > this.topLength) this.topLength = this.Tail.length;
     if (this.Speed < this.topSpeed) this.topSpeed = this.Speed;
     if (this.score < 0) this.score = 0;

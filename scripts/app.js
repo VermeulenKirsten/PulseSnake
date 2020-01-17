@@ -17,6 +17,8 @@ let tijdHTML;
 let lobbyButton;
 let gameOverTekst;
 let interval;
+let readyHTML;
+let lobbyReady;
 
 let snakePositions = [
   [
@@ -50,6 +52,7 @@ const getdomelements = function() {
   scoreHTML = document.querySelector('.js-score');
   lobbyButton = document.querySelector('.js-lobby');
   gameOverTekst = document.querySelector('.js-gameOver');
+  readyHTML = document.querySelector('.js-lobbyReady');
 };
 
 // ***********  HTML Generation ***********
@@ -65,17 +68,24 @@ const getdomelements = function() {
 const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
-      message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-      message.destinationName = roomInfo.roomId;
-      mqtt.send(message);
-      window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
-    } else {
-      console.log(roomInfo);
-      for (let player of roomInfo.players) {
-        if (player.id != playerId) {
-          roomInfo.removePlayer(player.id);
-        }
+      if (lobbyReady) {
+        message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+        message.destinationName = roomInfo.roomId;
+        mqtt.send(message);
+        window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
+      } else {
+        message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+        message.destinationName = roomInfo.roomId;
+        mqtt.send(message);
+        window.location.href = 'index.html';
       }
+    } else {
+      // for (let player of roomInfo.players) {
+      //   // if (player.id != playerId) {
+      //   //   roomInfo.removePlayer(player.id);
+      //   // }
+      // }
+      sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
       window.location.href = 'hostlobby.html';
     }
   });
@@ -118,7 +128,7 @@ const createfield = function() {
 // ***********  Move the snakes according to their speed ***********
 
 const gameTick = function(snakeObj) {
-  if (!stop) {
+  if (!stop && snakes.includes(snakeObj)) {
     let oldTail = [];
     for (let tailPiece of snakeObj.Tail) {
       let x = tailPiece[0] * scalefactor;
@@ -360,13 +370,6 @@ const startMovement = function() {
 const gameOver = function() {
   stop = true;
   clearInterval(interval);
-  //gameOverTekst.innerHTML = 'Tijd is om, het spel is gedaan';
-  if (playerNr == 0) {
-    lobbyButton.style.display = 'block';
-  }
-  for (let snake of snakes) {
-    console.log(snake.Name + ' score: ' + snake.score);
-  }
 };
 // ***********  Begin Game ***********
 

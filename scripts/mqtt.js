@@ -100,17 +100,29 @@ const onMessageArrived = function(msg) {
       break;
     case 'gameOver':
       {
-        console.log('gameOver message received ', message.message);
-        console.log('spel gedaan:' + message.message.snake.Name + 'heeft' + message.message.method);
-        document.querySelector('.js-gameOver').innerHTML += `spel gedaan: ${message.message.snake.Name} ${
-          message.message.method == 'ate himself' ? 'heeft zichzelf opgegeten' : 'is van het spelboard gegaan'
-        }<br>`;
-        document.querySelector('.js-lobby').style.display = 'block';
+        stop = true;
       }
       break;
     case 'lobbyReady':
       {
-        lobbyButton.style.display = 'block';
+        if (playerNr != 0) {
+          readyHTML.innerHTML = 'Keer terug naar de kamer';
+          lobbyReady = true;
+        }
+      }
+      break;
+    case 'disconnect':
+      {
+        for (let player in roomInfo.players) {
+          if (roomInfo.players[player].id == message.message) {
+            for (let snake in snakes) {
+              if (snakes[snake].Name == roomInfo.players[player].name) {
+                snakes.splice(snake);
+              }
+            }
+            roomInfo.players.splice(player);
+          }
+        }
       }
       break;
 
