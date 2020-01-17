@@ -4,10 +4,10 @@
 
 /* baloo-regular - latin */
 @font-face {
-  font-family: "Baloo";
+  font-family: 'Baloo';
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/baloo-v5-latin-regular.woff2") format("woff2"), url("../fonts/baloo-v5-latin-regular.woff") format("woff");
+  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
 }
 
 /*------------------------------------*\
@@ -70,7 +70,7 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: "Baloo", Helvetica, arial, sans-serif;
+  font-family: 'Baloo', Helvetica, arial, sans-serif;
   color: #535353;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -81,6 +81,7 @@ html {
 *,
 *:before,
 *:after {
+  cursor: url('/img/cursor/cur222.cur'), auto;
   box-sizing: inherit;
 }
 
@@ -337,6 +338,11 @@ input::placeholder {
 
 /* ---------------- General ---------------- */
 
+.c-lead-xs {
+  font-size: 32px;
+  line-height: 32px;
+}
+
 .c-lead-sm {
   font-size: 40px;
   line-height: 40px;
@@ -362,7 +368,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/background.png") center no-repeat;
+  background: white url('/img/png/background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -446,6 +452,12 @@ input::placeholder {
   transform: translateY(4px);
 }
 
+.c-button:hover,
+.c-button__responsive:hover {
+  animation: bounce 0.5s linear;
+  transition: var(--global-transition-alpha);
+}
+
 .c-form {
   flex-direction: column;
   justify-content: space-between;
@@ -510,7 +522,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/landingpage.png") center no-repeat;
+  background: white url('/img/png/landingpage.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -577,7 +589,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/simple_background.png") center no-repeat;
+  background: white url('/img/png/simple_background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -589,6 +601,7 @@ input::placeholder {
 }
 
 .c-game__scoreboard {
+  position: relative;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   grid-row-gap: var(--global-whitespace-sm);
@@ -618,6 +631,10 @@ input::placeholder {
 
 .c-player:last-child {
   margin-bottom: 0;
+}
+
+.c-countdown {
+  position: absolute;
 }
 
 /* ---------------- Scoreboard ---------------- */
@@ -1248,18 +1265,18 @@ input::placeholder {
     text-decoration: underline;
   }
   a[href]:after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
   }
   abbr[title]:after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
   /*
       * Don't show links that are fragment identifiers,
       * or use the `javascript:` pseudo protocol
       */
-  a[href^="#"]:after,
-  a[href^="javascript:"]:after {
-    content: "";
+  a[href^='#']:after,
+  a[href^='javascript:']:after {
+    content: '';
   }
   pre {
     white-space: pre-wrap !important;
