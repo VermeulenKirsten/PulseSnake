@@ -52,7 +52,6 @@ const addListener = function() {
   } else {
     domBack.addEventListener('click', goToJoin);
   }
-  domBack.addEventListener('click', goToCreate);
   save.addEventListener('click', updateName);
   nameInput.addEventListener('blur', updateName);
   nameInput.addEventListener('focus', clearName);
@@ -89,6 +88,11 @@ const goToCreate = function() {
 const goToJoin = function() {
   console.log('craeet');
   window.location.href = 'join.html';
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+  message.destinationName = roomId;
+  mqtt.send(message);
+
+  sessionStorage.clear();
 };
 
 const setHTML = function(role) {
