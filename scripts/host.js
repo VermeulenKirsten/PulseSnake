@@ -55,12 +55,16 @@ const generateRoomId = function() {
   }
 };
 const addSpeed = function() {
+  position.children[currentSpeedOption].children[0].classList.toggle('c-speed__indicator-active');
   currentSpeedOption = currentSpeedOption == Object.keys(speedOptions).length - 1 ? currentSpeedOption : currentSpeedOption + 1;
   speed.value = Object.keys(speedOptions)[currentSpeedOption];
+  position.children[currentSpeedOption].children[0].classList.toggle('c-speed__indicator-active');
 };
 const removeSpeed = function() {
+  position.children[currentSpeedOption].children[0].classList.toggle('c-speed__indicator-active');
   currentSpeedOption = currentSpeedOption == 0 ? currentSpeedOption : currentSpeedOption - 1;
   speed.value = Object.keys(speedOptions)[currentSpeedOption];
+  position.children[currentSpeedOption].children[0].classList.toggle('c-speed__indicator-active');
 };
 const startLessTime = function() {
   mouseDownLess = true;
@@ -124,6 +128,7 @@ const generateDOMelements = function() {
   moreTime = document.querySelector('.js-moreTime');
   lessSpeed = document.querySelector('.js-lessSpeed');
   moreSpeed = document.querySelector('.js-moreSpeed');
+  position = document.querySelector('.js-position');
 };
 
 // ***********  init ***********
