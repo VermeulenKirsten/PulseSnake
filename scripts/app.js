@@ -19,6 +19,7 @@ let gameOverTekst;
 let interval;
 let readyHTML;
 let lobbyReady;
+let scores;
 
 let snakePositions = [
   [
@@ -378,6 +379,7 @@ const beginGame = function() {
   checkPlayer();
   generateSnakes();
   handlekeydowns();
+  initializeScores();
   updatescore();
   if (playerNr == 0) {
     generatefruit();
@@ -387,39 +389,48 @@ const beginGame = function() {
   startCountDown();
 };
 
-// ***********  UpdateScore ***********
-const updatescore = function() {
-  let scores = [];
-  let newhtml = '';
-  for (let snake of snakes) {
-    scores.push(snake);
-  }
-  scores.sort((a, b) => a.score - b.score).reverse();
-
-  for (let snake in scores) {
-    newhtml += `<div class="c-player">
+const initializeScores = function() {
+  scoreHTML.innerHTML = '';
+  for (let snake in snakes) {
+    snake = parseInt(snake) + 1;
+    scoreHTML.innerHTML += `<div class="c-player">
         <!-- Standing -->
-        <p class="u-row-2 u-mb-clear c-lead-xxl">${parseInt(snake) + 1}</p>
+        <p class="u-row-2 u-mb-clear c-lead-xxl" ">${snake}</p>
         <!-- Player -->
-        <p class="u-mb-clear">${scores[snake].Name}</p>
+        <p class="u-mb-clear ${'js-score-name-' + snake}">s</p>
         <!-- Number of points -->
-        <p class="u-mb-clear">${scores[snake].score}</p>
+        <p class="u-mb-clear ${'js-score-score-' + snake}"></p>
         <!-- Heartbeat -->
         <div class="o-layout__center">
-          <svg aria-hidden="true" focusable="false" class="c-icon c-icon__heart c-icon__gap" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg>
-          <p class="u-mb-clear">80</p>
+          <svg aria-hidden="true" focusable="false" class="c-icon c-icon__heart c-icon__gap" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" ><path fill="#FFFFFF" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path></svg>
+          <p class="u-mb-clear ${'js-score-heartBeat-' + snake}">80</p>
         </div>
         <!-- The word Punten -->
         <p class="u-mb-clear">Punten</p>
       </div>
     `;
   }
-  scoreHTML.innerHTML = newhtml;
+};
+
+// ***********  UpdateScore ***********
+const updatescore = function() {
+  scores = [];
+  for (let snake of snakes) {
+    scores.push(snake);
+  }
+  scores.sort((a, b) => a.score - b.score).reverse();
+
+  for (let snake in scores) {
+    scoreHTML.children[snake].children[1].innerHTML = scores[snake].Name;
+    scoreHTML.children[snake].children[2].innerHTML = scores[snake].score;
+    scoreHTML.children[snake].children[3].children[1].innerHTML = scores[snake].heartbeat;
+    scoreHTML.children[snake].children[3].children[0].children[0].setAttribute('fill', scores[snake].Color);
+  }
 
   if (!stop) {
     setTimeout(function() {
       updatescore();
-    }, 1000 / framerate / 2);
+    }, 1000 / framerate);
   }
 };
 

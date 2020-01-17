@@ -5,6 +5,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     (this.Tail = tail),
     (this.Color = color),
     (this.Inputbuffer = [direction]),
+    (this.heartbeat = 0),
     (this.score = 0),
     (this.topLength = 3),
     (this.distanceMoved = 0),
