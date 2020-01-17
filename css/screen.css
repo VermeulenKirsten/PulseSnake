@@ -559,23 +559,30 @@ input::placeholder {
 
 .c-speed__indicators {
   position: absolute;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   margin-bottom: 0;
   bottom: 24%;
 }
 
 .c-speed__indicator {
+  height: var(--global-whitespace-xs);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: var(--global-border-radius);
   margin-right: var(--global-baseline);
-  border-bottom: solid 4px rgba(255, 255, 255, 0.5);
   width: var(--global-whitespace-md);
+  transition: transform var(--global-transition-beta);
 }
 
 .c-speed__indicator-active {
-  border-color: var(--global-color-alpha);
-  opacity: 1;
+  background-color: var(--global-color-alpha);
+  transform: translateY(-4px);
 }
 
 li:last-child > .c-speed__indicator {
-  margin: 0;
+  margin-right: 0;
 }
 
 /* ---------------- Join ---------------- */
@@ -639,7 +646,7 @@ li:last-child > .c-speed__indicator {
 }
 
 .c-game__gamefield {
-  background-color: #222222;
+  background-image: url('/img/png/green_snake.png');
 }
 
 .c-players {
