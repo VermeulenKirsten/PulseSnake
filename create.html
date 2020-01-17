@@ -36,8 +36,19 @@
             </div>
           </div>
         </button>
-        <div class="c-button__base c-form__element-xxl u-column-2">
-          <input class="c-input c-lead-sm js-speed" type="text" name="speed" id="speed" value="Normaal" disabled required />
+        <div class="c-speed c-button__base c-form__element-xxl u-column-2">
+          <div>
+            <input class="c-input c-lead-sm js-speed" type="text" name="speed" id="speed" value="Normaal" disabled required />
+          </div>
+          <div class="o-layout__center">
+            <ul class="o-list o-layout__center c-speed__indicators">
+              <li data-position="0"><div class="c-speed__indicator"></div></li>
+              <li data-position="1"><div class="c-speed__indicator"></div></li>
+              <li data-position="2"><div class="c-speed__indicator c-speed__indicator-active"></div></li>
+              <li data-position="3"><div class="c-speed__indicator"></div></li>
+              <li data-position="4"><div class="c-speed__indicator"></div></li>
+            </ul>
+          </div>
         </div>
         <button type="button" class="o-button-reset c-button u-mb-clear js-moreSpeed">
           <div class="c-button__base c-button__base-round c-form__element-xxl">
