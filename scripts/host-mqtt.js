@@ -61,6 +61,16 @@ const onMessageArrived = function(msg) {
             message.destinationName = roomInfo.roomId;
             mqtt.send(message);
             showplayers();
+            for (let player of roomInfo.players) {
+              if (player.ready == false) {
+                notReady = true;
+              }
+            }
+            if (!notReady) {
+              domStart.style.display = 'block';
+            } else {
+              domStart.style.display = 'none';
+            }
           } else {
             message = new Paho.MQTT.Message(JSON.stringify(new Message('error', { toId: newplayer.id, errorMessage: 'room full' })));
             message.destinationName = roomInfo.roomId;
