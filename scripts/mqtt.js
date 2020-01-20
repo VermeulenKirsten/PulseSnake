@@ -78,6 +78,13 @@ const onMessageArrived = function(msg) {
             snakes[t].topSpeed = message.message.topSpeed;
           }
         }
+        ctx.clearRect(0, 0, gamewidth, gameheight);
+        //show the fruit
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        // show the candy
+        ctx.fillStyle = '#FF00FF';
+        ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
       }
       break;
     case 'fruit':
