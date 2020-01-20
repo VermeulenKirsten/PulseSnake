@@ -1,14 +1,16 @@
 // ***********  Variables ***********
 
-let domBack, domSelector, domRadioButtons, domSelectortext;
+let domBack, domSelector, domRadioButtons, domSelectortext, scoreboard;
+let score, lenght, heartbeat, fruit, candy;
 
 // ***********  DOM references ***********
 
 const doms = function() {
-  domBack = document.querySelector(".js-back");
-  domSelector = document.querySelector(".js-selector");
-  domRadioButtons = document.querySelectorAll(".js-radio");
-  domSelectortext = document.querySelector(".js-selectortext");
+  domBack = document.querySelector('.js-back');
+  domSelector = document.querySelector('.js-selector');
+  domRadioButtons = document.querySelectorAll('.js-radio');
+  domSelectortext = document.querySelector('.js-selectortext');
+  scoreboard = document.querySelector('.c-scoreboard');
 };
 
 // ***********  Slider ***********
@@ -17,6 +19,7 @@ const moveSlider = function() {
     if (button.checked) {
       domSelector.style.left = `${button.dataset.pos}%`;
       domSelectortext.innerHTML = button.value;
+      getScores(button.value);
     }
   });
 };
@@ -24,16 +27,36 @@ const moveSlider = function() {
 // ***********  Navigation ***********
 
 const goToIndex = function() {
-  window.location.href = "index.html";
+  window.location.href = 'index.html';
 };
 
 // ***********  Eventlisteners ***********
 
 const eventListeners = function() {
-  domBack.addEventListener("click", goToIndex);
+  domBack.addEventListener('click', goToIndex);
   domRadioButtons.forEach(button => {
-    button.addEventListener("input", moveSlider);
+    button.addEventListener('input', moveSlider);
   });
+};
+
+const insertScores = function(scores) {
+  console.log(scores);
+  let newhtml = '';
+  for (index in scores) {
+    newhtml += `<div class="c-input u-mb-md c-scoreboard__item">
+    <p>${parseInt(index) + 1}. ${scores[index].name}</p>
+    <p>${scores[index].score}</p>
+  </div>`;
+  }
+  scoreboard.innerHTML = newhtml;
+};
+
+// ***********  get scores ***********
+const getScores = async function(scoreType) {
+  console.log(`https://kotsapi.azurewebsites.net/api/getScoreType/${scoreType}`);
+  const get = await fetch(`https://kotsapi.azurewebsites.net/api/getScoreType/${scoreType}`);
+  const scores = await get.json();
+  insertScores(scores);
 };
 
 // *********** Init / DOMContentLoaded ***********
@@ -41,6 +64,7 @@ const eventListeners = function() {
 const init = function() {
   doms();
   eventListeners();
+  getScores('speed');
 };
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener('DOMContentLoaded', init);
