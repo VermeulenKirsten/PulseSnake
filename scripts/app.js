@@ -146,18 +146,16 @@ const gameTick = function(snakeObj) {
       oldTail.push(array);
     }
     //move the snake
-    console.log('move');
     snakeObj.Movesnake();
 
     let animationTime = 100 * snakeObj.Speed;
     let timeBetweenFrames = animationTime / scalefactor;
 
     for (let frame = 0; frame < scalefactor; frame++) {
-      console.log(timeBetweenFrames);
       setTimeout(function() {
-        requestAnimationFrame(function() {
-          drawSnake(snakeObj, oldTail, frame);
-        });
+        // requestAnimationFrame(function() {
+        drawSnake(snakeObj, oldTail, frame);
+        // });
       }, timeBetweenFrames * frame);
     }
 
