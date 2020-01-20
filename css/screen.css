@@ -662,7 +662,7 @@ li:last-child > .c-speed__indicator {
 
 .c-game__field {
   margin: auto;
-  background-color: black;
+  background-image: url('/img/jpg/fieldbackground.jpg');
 }
 
 .c-players {
