@@ -653,6 +653,8 @@ li:last-child > .c-speed__indicator {
 
 .c-game__frame {
   height: 100%;
+  padding: 0;
+  overflow: hidden;
 }
 
 .c-game__canvas {
@@ -662,7 +664,7 @@ li:last-child > .c-speed__indicator {
 
 .c-game__field {
   margin: auto;
-  background-image: url('/img/jpg/fieldbackground.jpg');
+  background-image: url('/img/jpg/field_background.jpg');
 }
 
 .c-players {
