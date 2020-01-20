@@ -86,11 +86,10 @@ const listener = function() {
         window.location.href = 'index.html';
       }
     } else {
-      // for (let player of roomInfo.players) {
-      //   // if (player.id != playerId) {
-      //   //   roomInfo.removePlayer(player.id);
-      //   // }
-      // }
+      for (let player in roomInfo.players) {
+        roomInfo.players[player].ready = false;
+      }
+      console.log(roomInfo);
       sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
       window.location.href = 'hostlobby.html';
     }
