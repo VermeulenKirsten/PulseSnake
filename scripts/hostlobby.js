@@ -4,6 +4,7 @@ let playerRole;
 let domStart;
 let nameInput;
 let htmlLeave;
+let first = true;
 
 // ***********  initiate game ***********
 
@@ -19,13 +20,22 @@ const goToGame = function() {
 const showplayers = function() {
   let output = '';
   for (player of roomInfo.players) {
-    output += `<li>${player.name}</li>`;
-    if (player.id == playerId) {
-      nameInput.value = player.name;
-    }
+    output += `<li>${player.name} - ${player.ready ? 'klaar' : 'niet klaar'}</li>`;
   }
   playerList.innerHTML = output;
 };
+// ***********  update name in input field ***********
+const updateNameInput = function() {
+  if (first) {
+    for (player of roomInfo.players) {
+      if (player.id == playerId) {
+        nameInput.value = player.name;
+      }
+    }
+    first = false;
+  }
+};
+
 // ***********  make a room and let people join ***********
 
 const loadRoomInfo = function() {
@@ -35,6 +45,13 @@ const loadRoomInfo = function() {
   roomInfo.players = oldRoom.players;
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
   roomInfo.gameDuration = oldRoom.gameDuration;
+  for (let player in roomInfo.players) {
+    if (roomInfo.players[player].id == playerId) {
+      roomInfo.players[player].ready = true;
+      nameInput.value = player.name;
+    }
+  }
+
   MQTTconnect(onConnect);
   showplayers();
 
@@ -50,15 +67,26 @@ const addListener = function() {
     domStart.addEventListener('click', goToGame);
     domBack.addEventListener('click', goToCreate);
   } else {
+    domStart.addEventListener('click', readyUp);
     domBack.addEventListener('click', goToJoin);
   }
   save.addEventListener('click', updateName);
   nameInput.addEventListener('blur', updateName);
   nameInput.addEventListener('focus', clearName);
 };
+// ***********  toggle player status ***********
+
+const readyUp = function() {
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('playerReady', playerId)));
+  message.destinationName = roomId;
+  mqtt.send(message);
+};
+// ***********  update the name in the room ***********
+
 const clearName = function() {
   nameInput.value = '';
 };
+
 const updateName = function() {
   if (nameInput.value == '') {
     for (let player of roomInfo.players) {
@@ -85,6 +113,7 @@ const goToCreate = function() {
   console.log('craeet');
   window.location.href = 'create.html';
 };
+
 const goToJoin = function() {
   console.log('craeet');
   window.location.href = 'join.html';
@@ -94,6 +123,7 @@ const goToJoin = function() {
 
   sessionStorage.clear();
 };
+// ***********  set the right html acording to role ***********
 
 const setHTML = function(role) {
   if (role == 'Guest') {
@@ -111,10 +141,9 @@ const generateDOMelements = function() {
   startGameTekst = document.querySelector('.js-startGameTekst');
   domBack = document.querySelector('.js-back');
   save = document.querySelector('.js-save');
-  if (playerRole == 'Host') {
-    domStart = document.querySelector('.js-startGame');
-  }
+  domStart = document.querySelector('.js-startGame');
 };
+// ***********  init ***********
 
 const init = function() {
   var url = new URL(window.location.href);
@@ -126,7 +155,6 @@ const init = function() {
       oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
       let oldroomId = oldRoom.roomId;
       playerId = localPlayer.id;
-
       if (roomId == oldroomId) {
         old = true;
       } else {
@@ -147,8 +175,8 @@ const init = function() {
     playerRole = 'Host';
     generateDOMelements();
     addListener();
-
     loadRoomInfo();
+    updateNameInput();
   }
 };
 
