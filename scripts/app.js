@@ -514,7 +514,6 @@ const getHeartbeat = function() {
     }
   }
   document.addEventListener('keydown', function(event) {
-    console.log(event.key);
     if (event.key == 'h') {
       event.stopPropagation();
       event.preventDefault();
