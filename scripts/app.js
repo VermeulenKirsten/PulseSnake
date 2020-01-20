@@ -9,7 +9,7 @@ let candy = [null, null];
 let canvas;
 let ctx;
 let gamewidth = 910;
-let gameheight = 770;
+let gameheight = 700;
 let scalefactor = 35;
 let framerate = 50;
 let tijd;
@@ -20,9 +20,9 @@ let interval;
 let readyHTML;
 let lobbyReady;
 let scores;
+let device;
 let countDownhtml;
 let countDownTime = 3;
-let device;
 
 let snakePositions = [
   [
@@ -146,14 +146,20 @@ const gameTick = function(snakeObj) {
       oldTail.push(array);
     }
     //move the snake
+    console.log('move');
     snakeObj.Movesnake();
 
-    // console.log('available: ', availableFrames);
-    let startTime = Date.now();
-    let frame = 0;
-    requestAnimationFrame(function() {
-      drawSnake(snakeObj, oldTail, frame, startTime);
-    });
+    let animationTime = 100 * snakeObj.Speed;
+    let timeBetweenFrames = animationTime / scalefactor;
+
+    for (let frame = 0; frame < scalefactor; frame++) {
+      console.log(timeBetweenFrames);
+      setTimeout(function() {
+        requestAnimationFrame(function() {
+          drawSnake(snakeObj, oldTail, frame);
+        });
+      }, timeBetweenFrames * frame);
+    }
 
     setTimeout(function() {
       gameTick(snakeObj);
@@ -162,22 +168,19 @@ const gameTick = function(snakeObj) {
 };
 
 // ***********  display the snake ***********
-const drawSnake = function(snake, oldTail, frame, startTime) {
-  // console.log('draw snake, frame: ', frame);
-  let availableFrames = (100 * snake.Speed) / (1000 / framerate);
-  //amount of pixels are moved at once
-  let pixelJump = scalefactor / availableFrames;
-  //mss moeten waarden afgerond worden
-  //make the snake disappear
+const drawSnake = function(snake, oldTail, frame) {
+  let pixelJump = 1;
   for (let tailPiece of oldTail) {
     ctx.clearRect(tailPiece[1] - 1, tailPiece[0] - 1, scalefactor + 2, scalefactor + 2);
   }
   //move the snaketail a few pixels
+  ctx.fillStyle = snake.Color;
   for (let piece in oldTail) {
     if (oldTail.length > snake.Tail.length) {
       let removedTail = oldTail.splice(snake.Tail.length, oldTail.length - snake.Tail.length);
       for (let piece of removedTail) {
-        ctx.clearRect(piece[1] - 1, piece[0] - 1, scalefactor + 2, scalefactor + 2);
+        // ctx.clearRect(piece[1] - 1, piece[0] - 1, scalefactor + 2, scalefactor + 2);
+        ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       }
     }
     let destinationX = snake.Tail[piece][1] * scalefactor;
@@ -196,9 +199,11 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
       if (destinationX == 0) {
         // offscreen to the right
         offsetX = pixelJump;
+        ctx.fillRect(0 - scalefactor + offsetX * frame, oldY, scalefactor, scalefactor);
       } else if (destinationX == gamewidth - scalefactor) {
         // offscreen to the left
         offsetX = -pixelJump;
+        ctx.fillRect(gamewidth + offsetX * frame, oldY, scalefactor, scalefactor);
       }
     }
     offsetX = offsetX * frame;
@@ -213,35 +218,16 @@ const drawSnake = function(snake, oldTail, frame, startTime) {
       if (destinationY == 0) {
         // offscreen to the bottom
         offsetY = pixelJump;
+        ctx.fillRect(oldX, 0 - scalefactor + offsetY * frame, scalefactor, scalefactor);
       } else if (destinationY == gameheight - scalefactor) {
         // offscreen to the top
         offsetY = -pixelJump;
+        ctx.fillRect(oldX, gameheight + offsetY * frame, scalefactor, scalefactor);
       }
     }
     offsetY = offsetY * frame;
-
-    ctx.fillStyle = snake.Color;
     ctx.fillRect(oldX + offsetX, oldY + offsetY, scalefactor, scalefactor);
   }
-
-  //tijd om de hele animatie uit te voeren
-  let animationTime = 100 * snake.Speed;
-  //tijd die je krijgt om een animatie frame te tekenen
-  let timeBetweenFrames = animationTime / (1000 / framerate);
-  //wanneer de huidige frame ten vroegste uitegevoerd mag worden
-  // let timeWindowCurrentFrame = timeBetweenFrames * frame;
-  //animate the movement
-  let newFrame = frame + 1;
-  if (newFrame <= availableFrames) {
-    let excecuteTime = startTime + timeBetweenFrames * frame;
-    let timeDiff = excecuteTime - Date.now();
-    setTimeout(function() {
-      requestAnimationFrame(function() {
-        drawSnake(snake, oldTail, newFrame, startTime);
-      });
-    }, timeDiff);
-  }
-  return;
 };
 // ***********  refresh the display ***********
 
