@@ -20,6 +20,7 @@ let interval;
 let readyHTML;
 let lobbyReady;
 let scores;
+let device;
 
 let snakePositions = [
   [
@@ -384,6 +385,7 @@ const beginGame = function() {
   checkPlayer();
   generateSnakes();
   handlekeydowns();
+  getHeartbeat(scores);
   initializeScores();
   updatescore();
   if (playerNr == 0) {
@@ -392,6 +394,146 @@ const beginGame = function() {
   }
   // displaysnakes();
   startCountDown();
+};
+
+const getHeartbeatCurrentSnake = function(heartValue) {
+  snakes[playerNr].heartbeat = heartValue;
+};
+
+const getHeartbeat = function() {
+  const searchParams = new URL(location).searchParams;
+
+  var myCharacteristic;
+
+  function onStartButtonClick() {
+    let serviceUuid = 'heart_rate';
+    if (serviceUuid.startsWith('0x')) {
+      serviceUuid = parseInt(serviceUuid);
+    }
+
+    let characteristicUuid = 'heart_rate_measurement';
+    if (characteristicUuid.startsWith('0x')) {
+      characteristicUuid = parseInt(characteristicUuid);
+    }
+
+    //log('Requesting Bluetooth Device...');
+    navigator.bluetooth
+      .requestDevice({ filters: [{ services: [serviceUuid] }] })
+      .then(device => {
+        //log('Connecting to GATT Server...');
+        return device.gatt.connect();
+        // reconnect();
+      })
+      .then(server => {
+        //log('Getting Service...');
+        return server.getPrimaryService(serviceUuid);
+      })
+      .then(service => {
+        //log('Getting Characteristic...');
+        return service.getCharacteristic(characteristicUuid);
+      })
+      .then(characteristic => {
+        myCharacteristic = characteristic;
+        return myCharacteristic.startNotifications().then(_ => {
+          // log('> Notifications started');
+          myCharacteristic.addEventListener('characteristicvaluechanged', handleNotifications);
+        });
+      })
+      .catch(error => {
+        //log('Argh! ' + error);
+      });
+  }
+
+  function reconnect() {
+    exponentialBackoff(
+      3 /* max retries */,
+      2 /* seconds delay */,
+      function toTry() {
+        time('Connecting to Bluetooth Device... ');
+        return device.gatt.connect();
+      },
+      function success() {
+        log('> Bluetooth Device connected. Try disconnect it now.');
+      },
+      function fail() {
+        time('Failed to reconnect.');
+      }
+    );
+  }
+  function onStopButtonClick() {
+    if (myCharacteristic) {
+      myCharacteristic
+        .stopNotifications()
+        .then(_ => {
+          //log('> Notifications stopped');
+          myCharacteristic.removeEventListener('characteristicvaluechanged', handleNotifications);
+        })
+        .catch(error => {
+          //log('Argh! ' + error);
+        });
+    }
+  }
+
+  function handleNotifications(event) {
+    let value = event.target.value;
+    let a = [];
+    // Convert raw data bytes to hex values just for the sake of showing something.
+    // In the "real" world, you'd use data.getUint8, data.getUint16 or even
+    // TextDecoder to process raw data bytes.
+    let heartValue;
+    for (let i = 0; i < value.byteLength; i++) {
+      heartValue = value
+        .getUint8(i)
+        .toString(16)
+        .slice(-2);
+      heartValue = parseInt(heartValue, 16);
+      a.push(heartValue);
+
+      if ((heartValue > 0) & (typeof heartValue == 'number')) {
+        getHeartbeatCurrentSnake(heartValue);
+      }
+    }
+  }
+  document.addEventListener('keydown', function(event) {
+    console.log(event.key);
+    if (event.key == 'h') {
+      event.stopPropagation();
+      event.preventDefault();
+
+      if (isWebBluetoothEnabled()) {
+        //ChromeSamples.clearLog();
+        onStartButtonClick();
+      }
+    }
+  });
+  function isWebBluetoothEnabled() {
+    if (navigator.bluetooth) {
+      return true;
+    } else {
+      ChromeSamples.setStatus('Web Bluetooth API is not available.\n' + 'Please make sure the "Experimental Web Platform features" flag is enabled.');
+      return false;
+    }
+  }
+  /* jshint ignore: */
+  (function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    (i[r] =
+      i[r] ||
+      function() {
+        (i[r].q = i[r].q || []).push(arguments);
+      }),
+      (i[r].l = 1 * new Date());
+    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+  ga('create', 'UA-53563471-1', 'auto');
+  ga('send', 'pageview');
+
+  function time(text) {
+    log('[' + new Date().toJSON().substr(11, 8) + '] ' + text);
+  }
 };
 
 const initializeScores = function() {

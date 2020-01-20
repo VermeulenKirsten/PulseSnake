@@ -646,7 +646,7 @@ li:last-child > .c-speed__indicator {
 }
 
 .c-game__gamefield {
-  background-image: url('/img/png/green_snake.png');
+  /* background-image: url('/img/png/green_snake.png'); */
 }
 
 .c-players {
