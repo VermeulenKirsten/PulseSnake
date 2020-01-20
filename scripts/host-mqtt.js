@@ -20,12 +20,12 @@ const onConnect = function() {
 // ***********  when succesfully connected to broker ***********
 
 const onConnectGuest = function() {
-  console.log('hah');
+  console.log('Connected');
+
   mqtt.subscribe(roomId);
   if (old) {
     message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
     message.destinationName = roomId;
-    console.log(message);
     mqtt.send(message);
   } else {
     let guest = new Player(playerId);
@@ -70,10 +70,7 @@ const onMessageArrived = function(msg) {
       {
         if (playerRole == 'Host') {
           let newplayer = incommingMessage.message;
-          console.log(roomInfo, newplayer);
-
           roomInfo.updatePlayer(newplayer);
-          console.log(newplayer);
           showplayers();
           message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
           message.destinationName = roomInfo.roomId;
@@ -81,7 +78,32 @@ const onMessageArrived = function(msg) {
         }
       }
       break;
-
+    case 'playerReady':
+      {
+        if (playerRole == 'Host') {
+          for (let player in roomInfo.players) {
+            if (roomInfo.players[player].id == incommingMessage.message) {
+              roomInfo.players[player].ready = !roomInfo.players[player].ready;
+            }
+          }
+          showplayers();
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
+          message.destinationName = roomInfo.roomId;
+          mqtt.send(message);
+          let notReady = false;
+          for (let player of roomInfo.players) {
+            if (player.ready == false) {
+              notReady = true;
+            }
+          }
+          if (!notReady) {
+            domStart.style.display = 'block';
+          } else {
+            domStart.style.display = 'none';
+          }
+        }
+      }
+      break;
     case 'disconnect':
       {
         if (playerRole == 'Host') {
@@ -95,9 +117,7 @@ const onMessageArrived = function(msg) {
         if (playerRole == 'Guest') {
           console.log('roomInfo received');
           roomInfo = incommingMessage.message;
-          console.log('roominfo', roomInfo);
           showplayers(roomInfo);
-          4;
         }
       }
       break;
@@ -120,7 +140,6 @@ const onMessageArrived = function(msg) {
             console.log('room is full redirecting');
             window.location.href = 'join.html?error=roomFull';
           }
-          console.log(incommingMessage.message);
         }
       }
       break;
