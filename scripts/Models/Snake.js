@@ -16,24 +16,34 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     (this.candyValue = -25),
     (this.suicideValue = -15);
   this.Input = function(direction) {
+    let validMove = false;
     let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
     if (lastkey != direction) {
-      this.score += 1;
       if (lastkey != 'right' && direction == 'left') {
+        this.score += 1;
         this.Inputbuffer.push('left');
+        validMove = true;
       } else if (lastkey != 'down' && direction == 'up') {
+        this.score += 1;
         this.Inputbuffer.push('up');
+        validMove = true;
       } else if (lastkey != 'left' && direction == 'right') {
+        this.score += 1;
         this.Inputbuffer.push('right');
+        validMove = true;
       } else if (lastkey != 'up' && direction == 'down') {
+        this.score += 1;
         this.Inputbuffer.push('down');
+        validMove = true;
       } else if (direction == 'slow') {
         this.Speed -= 1;
       }
-      let snakemessage = new Message('snake', this);
-      let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
-      message.destinationName = roomInfo.roomId;
-      mqtt.send(message);
+      if (validMove) {
+        let snakemessage = new Message('snake', this);
+        let message = new Paho.MQTT.Message(JSON.stringify(snakemessage));
+        message.destinationName = roomInfo.roomId;
+        mqtt.send(message);
+      }
     }
   };
   this.Movesnake = function() {

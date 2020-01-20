@@ -15,6 +15,9 @@ const onConnect = function() {
   let message = new Paho.MQTT.Message(JSON.stringify(new Message('lobbyReady', '')));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('playerReady', playerId)));
+  message.destinationName = roomInfo.roomId;
+  mqtt.send(message);
 };
 
 // ***********  when succesfully connected to broker ***********
