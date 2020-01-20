@@ -118,6 +118,7 @@ const onMessageArrived = function(msg) {
           console.log('roomInfo received');
           roomInfo = incommingMessage.message;
           showplayers(roomInfo);
+          updateNameInput();
         }
       }
       break;

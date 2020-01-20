@@ -4,6 +4,7 @@ let playerRole;
 let domStart;
 let nameInput;
 let htmlLeave;
+let first = true;
 
 // ***********  initiate game ***********
 
@@ -20,12 +21,21 @@ const showplayers = function() {
   let output = '';
   for (player of roomInfo.players) {
     output += `<li>${player.name} - ${player.ready ? 'klaar' : 'niet klaar'}</li>`;
-    if (player.id == playerId) {
-      nameInput.value = player.name;
-    }
   }
   playerList.innerHTML = output;
 };
+// ***********  update name in input field ***********
+const updateNameInput = function() {
+  if (first) {
+    for (player of roomInfo.players) {
+      if (player.id == playerId) {
+        nameInput.value = player.name;
+      }
+    }
+    first = false;
+  }
+};
+
 // ***********  make a room and let people join ***********
 
 const loadRoomInfo = function() {
@@ -147,7 +157,6 @@ const init = function() {
       playerId = localPlayer.id;
       if (roomId == oldroomId) {
         old = true;
-        nameInput.value = localPlayer.name;
       } else {
         old = false;
         playerId = createUuid();
@@ -167,6 +176,7 @@ const init = function() {
     generateDOMelements();
     addListener();
     loadRoomInfo();
+    updateNameInput();
   }
 };
 
