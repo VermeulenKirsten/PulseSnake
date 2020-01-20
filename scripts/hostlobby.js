@@ -47,7 +47,6 @@ const loadRoomInfo = function() {
   roomInfo.gameDuration = oldRoom.gameDuration;
   for (let player in roomInfo.players) {
     if (roomInfo.players[player].id == playerId) {
-      roomInfo.players[player].ready = true;
       nameInput.value = player.name;
     }
   }
@@ -70,6 +69,7 @@ const addListener = function() {
     domStart.addEventListener('click', readyUp);
     domBack.addEventListener('click', goToJoin);
   }
+  nameForm.addEventListener('submit', updateName);
   save.addEventListener('click', updateName);
   nameInput.addEventListener('blur', updateName);
   nameInput.addEventListener('focus', clearName);
@@ -106,6 +106,7 @@ const updateName = function() {
     message.destinationName = roomInfo.roomId;
     mqtt.send(message);
   }
+  document.activeElement.blur();
 };
 
 // ***********  Navigation ***********
@@ -128,6 +129,8 @@ const goToJoin = function() {
 const setHTML = function(role) {
   if (role == 'Guest') {
     startGameTekst.innerHTML = 'Klaar';
+  } else {
+    domStart.style.display = 'none';
   }
   domBack = document.querySelector('.js-back');
 };
@@ -137,11 +140,12 @@ const setHTML = function(role) {
 const generateDOMelements = function() {
   console.log('dom');
   playerList = document.querySelector('#playerListjs');
-  nameInput = document.querySelector('.js-naam');
+  nameInput = document.querySelector('.js-name').children[0];
   startGameTekst = document.querySelector('.js-startGameTekst');
   domBack = document.querySelector('.js-back');
   save = document.querySelector('.js-save');
   domStart = document.querySelector('.js-startGame');
+  nameForm = document.querySelector('.js-name');
 };
 // ***********  init ***********
 
@@ -171,9 +175,10 @@ const init = function() {
     addListener();
     document.querySelector('.js-roomid').innerHTML = roomId;
   } else {
-    setHTML('Host');
     playerRole = 'Host';
     generateDOMelements();
+    setHTML('Host');
+
     addListener();
     loadRoomInfo();
     updateNameInput();

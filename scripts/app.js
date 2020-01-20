@@ -276,8 +276,7 @@ const generatefruit = function() {
   // check if game is finished
   if (alltails.length == (gamewidth / scalefactor) * (gameheight / scalefactor)) {
     fruit = [-100, -100];
-    stop = false;
-    throw 'error';
+    gameOver();
     return;
   }
   // check if random location is a free spot
