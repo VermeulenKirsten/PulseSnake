@@ -363,6 +363,11 @@ input::placeholder {
   line-height: 80px;
 }
 
+.c-lead-xxxl {
+  font-size: 120px;
+  line-height: 120px;
+}
+
 .c-baselayout {
   flex-direction: column;
   z-index: 2;
@@ -645,8 +650,18 @@ li:last-child > .c-speed__indicator {
   grid-row: 4;
 }
 
-.c-game__gamefield {
-  background-image: url('/img/png/green_snake.png');
+.c-game__frame {
+  height: 100%;
+}
+
+.c-game__canvas {
+  position: relative;
+  height: 100%;
+}
+
+.c-game__field {
+  margin: auto;
+  background-color: black;
 }
 
 .c-players {
@@ -667,6 +682,8 @@ li:last-child > .c-speed__indicator {
 
 .c-countdown {
   position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 /* ---------------- Scoreboard ---------------- */
