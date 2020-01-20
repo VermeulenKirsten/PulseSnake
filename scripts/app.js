@@ -20,6 +20,8 @@ let interval;
 let readyHTML;
 let lobbyReady;
 let scores;
+let countDownhtml;
+let countDownTime = 3;
 
 let snakePositions = [
   [
@@ -54,6 +56,7 @@ const getdomelements = function() {
   lobbyButton = document.querySelector('.js-lobby');
   gameOverTekst = document.querySelector('.js-gameOver');
   readyHTML = document.querySelector('.js-lobbyReady');
+  countDownhtml = document.querySelector('.js-countDown');
 };
 
 // ***********  HTML Generation ***********
@@ -354,11 +357,26 @@ const getSessionData = function() {
 };
 
 const startCountDown = function() {
-  tijd = roomInfo.gameDuration * 60 + 3;
+  if (countDownTime == 0) {
+    countDownhtml.children[0].innerHTML = 'GO!';
+  } else if (countDownTime == -1) {
+    countDownhtml.style.display = 'none';
+  } else {
+    countDownhtml.children[0].innerHTML = countDownTime;
+  }
+  countDownTime -= 1;
+  if (countDownTime >= -1) {
+    setTimeout(startCountDown, 1000);
+    if (countDownTime == 0) {
+      setTimeout(startGame, 1000);
+    }
+  }
+};
+const startGame = function() {
+  startMovement();
+  tijd = roomInfo.gameDuration * 60;
   tijdHTML.innerHTML = tijd;
-  console.log('tijd:', tijd);
   interval = setInterval(countDown, 1000);
-  setTimeout(startMovement, 3000);
   setTimeout(gameOver, tijd * 1000);
 };
 
@@ -375,6 +393,8 @@ const startMovement = function() {
 const gameOver = function() {
   stop = true;
   clearInterval(interval);
+  countDownhtml.style.display = 'flex';
+  countDownhtml.children[0].innerHTML = 'STOP!';
 };
 // ***********  Begin Game ***********
 
