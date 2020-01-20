@@ -9,7 +9,7 @@ let candy = [null, null];
 let canvas;
 let ctx;
 let gamewidth = 910;
-let gameheight = 700;
+let gameheight = 770;
 let scalefactor = 35;
 let framerate = 50;
 let tijd;
@@ -20,9 +20,9 @@ let interval;
 let readyHTML;
 let lobbyReady;
 let scores;
-let device;
 let countDownhtml;
 let countDownTime = 3;
+let device;
 
 let snakePositions = [
   [
