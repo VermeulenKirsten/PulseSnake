@@ -101,8 +101,8 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         oldLength = this.Tail.length;
         this.Tail.splice(t, this.Tail.length - t);
         newLength = this.Tail.length;
-        lengthVerschil = (oldLength - newLength) / oldLength;
-        this.score = Math.ceil(this.score * (1 - lengthVerschil));
+        lengthVerschil = oldLength - newLength;
+        this.score = this.score - lengthVerschil * this.fruitValue;
         break;
       }
     }
