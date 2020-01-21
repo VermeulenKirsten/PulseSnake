@@ -14,18 +14,18 @@
   display: none;
 }
 
-.c-input:focus + label > .c-icon__hidden-pencil {
+.c-input:focus + label > label > .c-icon__hidden-pencil {
   display: none;
 }
 .c-input:focus + label > .c-icon__hidden-save {
   display: block;
 }
-.c-input:active + label > .c-icon__hidden-pencil {
+/* .c-input:active + label > .c-icon__hidden-pencil {
   display: none;
 }
 .c-input:active + label > .c-icon__hidden-save {
   display: block;
-}
+} */
 
 /* ---------------- Credits ---------------- */
 
