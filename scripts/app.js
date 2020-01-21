@@ -22,7 +22,7 @@ let lobbyReady;
 let scores;
 let device;
 let countDownhtml;
-let fruitImage, candyImage;
+let fruitImage, candyImage, snakeHead, snakeBody, snakeTail;
 let countDownTime = 3;
 let baseHeartBeat;
 let baseSpeed = 4;
@@ -67,6 +67,10 @@ const getdomelements = function() {
 
   fruitImage = document.querySelector('#js-fruitIcon');
   candyImage = document.querySelector('#js-candyIcon');
+
+  snakeHead = document.querySelector('#js-snakeboi-head');
+  snakeTail = document.querySelector('#js-snakeboi-tail');
+  snakeBody = document.querySelector('#js-snakeboi-body');
 };
 
 // *********** HTML Generation ***********
@@ -180,6 +184,58 @@ const drawSnake = function(snake, oldTail, frame) {
   //move the snaketail a few pixels
   ctx.fillStyle = snake.Color;
   for (let piece in oldTail) {
+    piece = parseInt(piece);
+    //the image this piece needs
+    let image = snakeBody;
+    let angle = 0;
+    //check if the piece is a head
+    if (piece == 0) {
+      image = snakeHead;
+      //check what angle it should have
+      if (snake.Inputbuffer[0] == 'right') {
+        angle = 0;
+      } else if (snake.Inputbuffer[0] == 'down') {
+        angle = 90;
+      } else if (snake.Inputbuffer[0] == 'left') {
+        angle = 180;
+      } else if (snake.Inputbuffer[0] == 'up') {
+        angle = 270;
+      }
+    }
+    //check if the piece is a tail
+    else if (piece == oldTail.length - 1) {
+      image = snakeTail;
+      if (oldTail[piece - 1][0] == oldTail[piece][0]) {
+        if (oldTail[piece - 1][1] > oldTail[piece][1]) {
+          angle = 0;
+        } else {
+          angle = 180;
+        }
+      } else {
+        if (oldTail[piece - 1][0] > oldTail[piece][0]) {
+          angle = 90;
+        } else {
+          angle = 270;
+        }
+      }
+    }
+    //the piece is a body (for now)
+    else {
+      if (oldTail[piece - 1][0] == oldTail[piece][0] && oldTail[piece][0] == oldTail[piece + 1][0]) {
+        if (oldTail[piece - 1][1] > oldTail[piece][1]) {
+          angle = 0;
+        } else {
+          angle = 180;
+        }
+      } else {
+        if (oldTail[piece - 1][0] > oldTail[piece][0]) {
+          angle = 90;
+        } else {
+          angle = 270;
+        }
+      }
+    }
+    //delete if snake has shrunk
     if (oldTail.length > snake.Tail.length) {
       let removedTail = oldTail.splice(snake.Tail.length, oldTail.length - snake.Tail.length);
       for (let piece of removedTail) {
@@ -187,6 +243,7 @@ const drawSnake = function(snake, oldTail, frame) {
         ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       }
     }
+
     let destinationX = snake.Tail[piece][1] * scalefactor;
     let destinationY = snake.Tail[piece][0] * scalefactor;
 
@@ -203,11 +260,13 @@ const drawSnake = function(snake, oldTail, frame) {
       if (destinationX == 0) {
         // offscreen to the right
         offsetX = pixelJump;
-        ctx.fillRect(0 - scalefactor + offsetX * frame, oldY, scalefactor, scalefactor);
+        // ctx.fillRect(0 - scalefactor + offsetX * frame, oldY, scalefactor, scalefactor);
+        drawImage(image, 0 - scalefactor + offsetX * frame, oldY, angle);
       } else if (destinationX == gamewidth - scalefactor) {
         // offscreen to the left
         offsetX = -pixelJump;
-        ctx.fillRect(gamewidth + offsetX * frame, oldY, scalefactor, scalefactor);
+        // ctx.fillRect(gamewidth + offsetX * frame, oldY, scalefactor, scalefactor);
+        drawImage(image, gamewidth + offsetX * frame, oldY, angle);
       }
     }
     offsetX = offsetX * frame;
@@ -222,15 +281,32 @@ const drawSnake = function(snake, oldTail, frame) {
       if (destinationY == 0) {
         // offscreen to the bottom
         offsetY = pixelJump;
-        ctx.fillRect(oldX, 0 - scalefactor + offsetY * frame, scalefactor, scalefactor);
+        // ctx.fillRect(oldX, 0 - scalefactor + offsetY * frame, scalefactor, scalefactor);
+        drawImage(image, oldX, 0 - scalefactor + offsetY * frame, angle);
       } else if (destinationY == gameheight - scalefactor) {
         // offscreen to the top
         offsetY = -pixelJump;
-        ctx.fillRect(oldX, gameheight + offsetY * frame, scalefactor, scalefactor);
+        // ctx.fillRect(oldX, gameheight + offsetY * frame, scalefactor, scalefactor);
+        drawImage(image, oldX, gameheight + offsetY * frame, angle);
       }
     }
     offsetY = offsetY * frame;
-    ctx.fillRect(oldX + offsetX, oldY + offsetY, scalefactor, scalefactor);
+
+    // let prev = oldTail[piece - 1];
+    // //check if head
+    // if (piece == 0) {
+    //   if (snake.Inputbuffer[0] == 'right') {
+    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 0);
+    //   } else if (snake.Inputbuffer[0] == 'down') {
+    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 90);
+    //   } else if (snake.Inputbuffer[0] == 'left') {
+    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 180);
+    //   } else if (snake.Inputbuffer[0] == 'up') {
+    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 270);
+    //   }
+    // }
+
+    drawImage(image, oldX + offsetX, oldY + offsetY, angle);
   }
 };
 // *********** refresh the display ***********
