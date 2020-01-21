@@ -22,6 +22,7 @@ let lobbyReady;
 let scores;
 let device;
 let countDownhtml;
+let fruitImage, candyImage;
 let countDownTime = 3;
 let baseHeartBeat;
 let baseSpeed = 4;
@@ -51,7 +52,7 @@ let snakePositions = [
 ];
 let snakeColors = ['#00FF00', '#FFFF00', '#0000FF', '#00FFFF'];
 
-// ***********  DOM references ***********
+// *********** DOM references ***********
 const getdomelements = function() {
   canvas = document.querySelector('.js-gameboard');
   ctx = canvas.getContext('2d');
@@ -63,6 +64,9 @@ const getdomelements = function() {
   countDownhtml = document.querySelector('.js-countDown');
   hartslagwaardeHTML = document.querySelector('.js-hartslagwaarde');
   pompendHartHTML = document.querySelector('.js-pompendHart');
+
+  fruitImage = document.querySelector('#js-fruitIcon');
+  candyImage = document.querySelector('#js-candyIcon');
   buttonUpHTML = document.querySelector('.js-buttonUp');
   buttonLeftHTML = document.querySelector('.js-buttonLeft');
   buttonRightHTML = document.querySelector('.js-buttonRight');
@@ -70,16 +74,15 @@ const getdomelements = function() {
   clearTutorialHTML = document.querySelector('.js-clearTutorial');
 };
 
-// ***********  HTML Generation ***********
+// *********** HTML Generation ***********
 
-// ***********  Callback ***********
+// *********** Callback ***********
 
-// ***********  Data Access ***********
+// *********** Data Access ***********
 
-// ***********  Objects ***********
+// *********** Objects ***********
 
-// ***********  Event Listeners ***********
-
+// *********** Event Listeners ***********
 const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
@@ -111,7 +114,6 @@ const listener = function() {
 };
 
 //event that triggers when keyboard buttons are pressed
-
 const handlekeydowns = function() {
   document.addEventListener('keydown', function(key) {
     //left arrow key pressed
@@ -140,12 +142,11 @@ const handlekeydowns = function() {
   });
 };
 
-// ***********  generate a black field ***********
+// *********** generate a black field ***********
 const createfield = function() {
   ctx.clearRect(0, 0, gamewidth, gameheight);
 };
-// ***********  Move the snakes according to their speed ***********
-
+// *********** Move the snakes according to their speed ***********
 const gameTick = function(snakeObj) {
   if (!stop && snakes.includes(snakeObj)) {
     let oldTail = [];
@@ -175,7 +176,7 @@ const gameTick = function(snakeObj) {
   }
 };
 
-// ***********  display the snake ***********
+// *********** display the snake ***********
 const drawSnake = function(snake, oldTail, frame) {
   let pixelJump = 1;
   for (let tailPiece of oldTail) {
@@ -237,8 +238,7 @@ const drawSnake = function(snake, oldTail, frame) {
     ctx.fillRect(oldX + offsetX, oldY + offsetY, scalefactor, scalefactor);
   }
 };
-// ***********  refresh the display ***********
-
+// *********** refresh the display ***********
 const displaysnakes = function() {
   createfield();
   for (let snake of snakes) {
@@ -269,8 +269,17 @@ const displaysnakes = function() {
   }
 };
 
-// ***********  generate fruit ***********
+// *********** function to draw rotated images ***********
+const drawImage = function(image, x, y, degrees) {
+  ctx.save();
+  ctx.translate(x + scalefactor / 2, y + scalefactor / 2);
+  ctx.rotate((degrees * Math.PI) / 180.0);
+  ctx.translate(-x - scalefactor / 2, -y - scalefactor / 2);
+  ctx.drawImage(image, x, y, scalefactor, scalefactor);
+  ctx.restore();
+};
 
+// *********** generate fruit ***********
 const generatefruit = function() {
   // console.log('generating fruit');
   let x = Math.ceil(Math.random() * (gamewidth / scalefactor)) - 1;
@@ -304,8 +313,12 @@ const generatefruit = function() {
   mqtt.send(message);
 };
 
-// ***********  generate candy ***********
+// *********** draw fruit ***********
+const drawFruit = function() {
+  drawImage(fruitImage, fruit[1] * scalefactor, fruit[0] * scalefactor, 0);
+};
 
+// *********** generate candy ***********
 const generatecandy = function() {
   //generate random location
   let x = Math.ceil((Math.random() * gamewidth) / scalefactor - 1);
@@ -330,14 +343,19 @@ const generatecandy = function() {
   mqtt.send(message);
 };
 
-// ***********  generate snake objects ***********
+// *********** draw candy ***********
+const drawCandy = function() {
+  drawImage(candyImage, candy[1] * scalefactor, candy[0] * scalefactor, 0);
+};
+
+// *********** generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
     newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', roomInfo.defaultSpeed, snakeColors[i]);
     snakes.push(newsnake);
   }
 };
-// ***********  Get Session Data ***********
+// *********** Get Session Data ***********
 
 const getSessionData = function() {
   playerId = sessionStorage.getItem('playerId');
@@ -390,7 +408,7 @@ const gameOver = function() {
   countDownhtml.style.display = 'flex';
   countDownhtml.children[0].innerHTML = 'STOP!';
 };
-// ***********  Begin Game ***********
+// *********** Begin Game ***********
 
 const beginGame = function() {
   console.log('begin the game');
@@ -612,7 +630,7 @@ const initializeScores = function() {
   }
 };
 
-// ***********  UpdateScore ***********
+// *********** UpdateScore ***********
 const updatescore = function() {
   scores = [];
   for (let snake of snakes) {
@@ -634,7 +652,7 @@ const updatescore = function() {
   }
 };
 
-// ***********  CheckPlayer ***********
+// *********** CheckPlayer ***********
 
 const checkPlayer = function() {
   //check if you are the host or not
@@ -654,7 +672,7 @@ const checkPlayer = function() {
   }
 };
 
-// ***********  Init / DOMContentLoaded ***********
+// *********** Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
   listener();

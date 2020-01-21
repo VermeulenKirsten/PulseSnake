@@ -80,11 +80,13 @@ const onMessageArrived = function(msg) {
 
             ctx.clearRect(0, 0, gamewidth, gameheight);
             //show the fruit
-            ctx.fillStyle = '#FF0000';
-            ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+            // ctx.fillStyle = '#FF0000';
+            // ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+            drawFruit();
             // show the candy
-            ctx.fillStyle = '#FF00FF';
-            ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+            // ctx.fillStyle = '#FF00FF';
+            // ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+            drawCandy();
           }
         }
       }
@@ -94,8 +96,9 @@ const onMessageArrived = function(msg) {
         console.log('fruit  message received ', message.message);
         fruit = message.message;
         //show the fruit
-        ctx.fillStyle = '#FF0000';
-        ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        // ctx.fillStyle = '#FF0000';
+        // ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        drawFruit();
       }
       break;
     case 'candy':
@@ -103,8 +106,9 @@ const onMessageArrived = function(msg) {
         console.log('candy message received ', message.message);
         candy = message.message;
         // show the candy
-        ctx.fillStyle = '#FF00FF';
-        ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        // ctx.fillStyle = '#FF00FF';
+        // ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+        drawCandy();
       }
       break;
     case 'gameOver':

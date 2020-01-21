@@ -4,10 +4,10 @@
 
 /* baloo-regular - latin */
 @font-face {
-  font-family: "Baloo";
+  font-family: 'Baloo';
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/baloo-v5-latin-regular.woff2") format("woff2"), url("../fonts/baloo-v5-latin-regular.woff") format("woff");
+  src: url('../fonts/baloo-v5-latin-regular.woff2') format('woff2'), url('../fonts/baloo-v5-latin-regular.woff') format('woff');
 }
 
 /*------------------------------------*\
@@ -70,7 +70,7 @@
 html {
   font-size: var(--global-whitespace-md);
   line-height: 1.5;
-  font-family: "Baloo", Helvetica, arial, sans-serif;
+  font-family: 'Baloo', Helvetica, arial, sans-serif;
   color: #535353;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -81,7 +81,7 @@ html {
 *,
 *:before,
 *:after {
-  cursor: url("/img/cursor/cur222.cur"), auto;
+  cursor: url('/img/cursor/cur222.cur'), auto;
   box-sizing: inherit;
 }
 
@@ -373,7 +373,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/background.png") center no-repeat;
+  background: white url('/img/png/background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -527,7 +527,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/landingpage.png") center no-repeat;
+  background: white url('/img/png/landingpage.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -627,7 +627,7 @@ li:last-child > .c-speed__indicator {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url("/img/png/simple_background.png") center no-repeat;
+  background: white url('/img/png/simple_background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -664,7 +664,7 @@ li:last-child > .c-speed__indicator {
 
 .c-game__field {
   display: block;
-  background-image: url("/img/png/field_background.png");
+  background-image: url('/img/png/field_background.png');
 }
 
 .c-players {
@@ -821,6 +821,10 @@ li:last-child > .c-speed__indicator {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+.c-sprites {
+  display: none;
 }
 
 /*------------------------------------*\
@@ -1414,18 +1418,18 @@ li:last-child > .c-speed__indicator {
     text-decoration: underline;
   }
   a[href]:after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
   }
   abbr[title]:after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
   /*
       * Don't show links that are fragment identifiers,
       * or use the `javascript:` pseudo protocol
       */
-  a[href^="#"]:after,
-  a[href^="javascript:"]:after {
-    content: "";
+  a[href^='#']:after,
+  a[href^='javascript:']:after {
+    content: '';
   }
   pre {
     white-space: pre-wrap !important;
