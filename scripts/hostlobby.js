@@ -5,6 +5,7 @@ let domStart;
 let nameInput;
 let htmlLeave;
 let first = true;
+let playerNr;
 
 // ***********  initiate game ***********
 
@@ -36,12 +37,34 @@ const updateNameInput = function() {
   }
 };
 
+const updateSnakeColor = function() {
+  for (let player of roomInfo.players) {
+    if (player.id == playerId) {
+      switch (player.color) {
+        case '#FF0000':
+          document.querySelector('.js-snake').src = 'img/png/red_snake.png';
+          break;
+        case '#00FF00':
+          document.querySelector('.js-snake').src = 'img/png/green_snake.png';
+          break;
+        case '#0000FF':
+          document.querySelector('.js-snake').src = 'img/png/blue_snake.png';
+          break;
+        case '#FFFF00':
+          document.querySelector('.js-snake').src = 'img/png/yellow_snake.png';
+          break;
+      }
+    }
+  }
+};
+
 // ***********  make a room and let people join ***********
 
 const loadRoomInfo = function() {
   playerId = sessionStorage.getItem('playerId');
   oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
   roomInfo = new room(oldRoom.roomId);
+  roomInfo.colors = oldRoom.colors;
   roomInfo.players = oldRoom.players;
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
   roomInfo.gameDuration = oldRoom.gameDuration;
@@ -181,6 +204,7 @@ const init = function() {
 
     addListener();
     loadRoomInfo();
+    updateSnakeColor();
     updateNameInput();
   }
 };
