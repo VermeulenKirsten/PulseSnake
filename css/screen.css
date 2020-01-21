@@ -696,6 +696,8 @@ li:last-child > .c-speed__indicator {
   height: 100%;
   background-color: white;
   background-image: url("/img/png/background.png");
+  background-size: cover;
+  overflow: hidden;
 }
 
 .c-tutorial {
