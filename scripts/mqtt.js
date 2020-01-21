@@ -76,6 +76,7 @@ const onMessageArrived = function(msg) {
             snakes[t].fruitEaten = message.message.fruitEaten;
             snakes[t].candyEaten = message.message.candyEaten;
             snakes[t].topSpeed = message.message.topSpeed;
+            snakes[t].heartbeat = message.message.heartbeat;
 
             ctx.clearRect(0, 0, gamewidth, gameheight);
             //show the fruit

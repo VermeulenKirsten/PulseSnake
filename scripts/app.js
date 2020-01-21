@@ -23,6 +23,9 @@ let scores;
 let device;
 let countDownhtml;
 let countDownTime = 3;
+let baseHeartBeat;
+let baseSpeed = 4;
+let tellerBaseHeartBeat = 0;
 
 let snakePositions = [
   [
@@ -379,24 +382,6 @@ const gameOver = function() {
   clearInterval(interval);
   countDownhtml.style.display = 'flex';
   countDownhtml.children[0].innerHTML = 'STOP!';
-  if (playerNr == 0) {
-    let eindscores = [];
-    for (let snake of snakes) {
-      eindscores.push({ Name: snake.Name, Score: snake.score, ScoreType: 'score', Minuten: roomInfo.gameDuration });
-      eindscores.push({ Name: snake.Name, Score: snake.Speed, ScoreType: 'snelheid', Minuten: roomInfo.gameDuration });
-      eindscores.push({ Name: snake.Name, Score: snake.topLength, ScoreType: 'lengte', Minuten: roomInfo.gameDuration });
-      eindscores.push({ Name: snake.Name, Score: snake.fruitEaten, ScoreType: 'fruit', Minuten: roomInfo.gameDuration });
-      eindscores.push({ Name: snake.Name, Score: snake.candyEaten, ScoreType: 'candy', Minuten: roomInfo.gameDuration });
-      eindscores.push({ Name: snake.Name, Score: snake.topHeartbeat, ScoreType: 'hartslag', Minuten: roomInfo.gameDuration });
-    }
-    for (let eindscore of eindscores) {
-      fetch('https://kotsapi.azurewebsites.net/api/newScore', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }, // this line is important, if this content-type is not set it wont work
-        body: JSON.stringify(eindscore) //use the stringify object of the queryString class
-      });
-    }
-  }
 };
 // ***********  Begin Game ***********
 
@@ -418,6 +403,14 @@ const beginGame = function() {
 
 const getHeartbeatCurrentSnake = function(heartValue) {
   snakes[playerNr].heartbeat = heartValue;
+  let snakespeed = (heartValue - baseHeartBeat) / 100;
+  console.log('heartvalue: ' + heartValue);
+  console.log('-');
+  console.log('baseheartbeat: ' + baseHeartBeat);
+  console.log('snakespeed: ' + snakespeed);
+  console.log('basespeed: ' + baseSpeed);
+  snakes[playerNr].Speed = baseSpeed - snakespeed;
+  console.log('current speed: ' + snakes[playerNr].Speed);
 };
 
 const getHeartbeat = function() {
@@ -510,6 +503,11 @@ const getHeartbeat = function() {
       a.push(heartValue);
 
       if ((heartValue > 0) & (typeof heartValue == 'number')) {
+        if (tellerBaseHeartBeat < 1) {
+          baseHeartBeat = heartValue;
+          console.log('BaseHeartBeat: ' + baseHeartBeat);
+          tellerBaseHeartBeat = 1;
+        }
         getHeartbeatCurrentSnake(heartValue);
       }
     }
