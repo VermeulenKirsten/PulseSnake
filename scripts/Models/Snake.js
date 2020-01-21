@@ -10,6 +10,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     (this.topLength = 3),
     (this.distanceMoved = 0),
     (this.fruitEaten = 0),
+    (this.topHeartbeat = 0),
     (this.candyEaten = 0),
     (this.topSpeed = 0),
     (this.fruitValue = 50),
@@ -122,6 +123,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     this.distanceMoved += 1;
 
     if (this.Tail.length > this.topLength) this.topLength = this.Tail.length;
+    if (this.heartbeat > this.topHeartbeat) this.topHeartbeat = this.heartbeat;
     if (this.Speed < this.topSpeed) this.topSpeed = this.Speed;
     if (this.score < 0) this.score = 0;
   };
