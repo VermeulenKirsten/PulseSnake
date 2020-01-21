@@ -247,11 +247,10 @@ const drawSnake = function(snake, oldTail, frame) {
         }
       }
     }
-    //delete if snake has shrunk
+    //delete old pieces if snake has shrunk
     if (oldTail.length > snake.Tail.length) {
       let removedTail = oldTail.splice(snake.Tail.length, oldTail.length - snake.Tail.length);
       for (let piece of removedTail) {
-        // ctx.clearRect(piece[1] - 1, piece[0] - 1, scalefactor + 2, scalefactor + 2);
         ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       }
     }
@@ -273,11 +272,13 @@ const drawSnake = function(snake, oldTail, frame) {
         // offscreen to the right
         offsetX = pixelJump;
         // ctx.fillRect(0 - scalefactor + offsetX * frame, oldY, scalefactor, scalefactor);
+        angle = 0;
         drawImage(image, 0 - scalefactor + offsetX * frame, oldY, angle);
       } else if (destinationX == gamewidth - scalefactor) {
         // offscreen to the left
         offsetX = -pixelJump;
         // ctx.fillRect(gamewidth + offsetX * frame, oldY, scalefactor, scalefactor);
+        angle = 180;
         drawImage(image, gamewidth + offsetX * frame, oldY, angle);
       }
     }
@@ -294,29 +295,17 @@ const drawSnake = function(snake, oldTail, frame) {
         // offscreen to the bottom
         offsetY = pixelJump;
         // ctx.fillRect(oldX, 0 - scalefactor + offsetY * frame, scalefactor, scalefactor);
+        angle = 90;
         drawImage(image, oldX, 0 - scalefactor + offsetY * frame, angle);
       } else if (destinationY == gameheight - scalefactor) {
         // offscreen to the top
         offsetY = -pixelJump;
         // ctx.fillRect(oldX, gameheight + offsetY * frame, scalefactor, scalefactor);
+        angle = 270;
         drawImage(image, oldX, gameheight + offsetY * frame, angle);
       }
     }
     offsetY = offsetY * frame;
-
-    // let prev = oldTail[piece - 1];
-    // //check if head
-    // if (piece == 0) {
-    //   if (snake.Inputbuffer[0] == 'right') {
-    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 0);
-    //   } else if (snake.Inputbuffer[0] == 'down') {
-    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 90);
-    //   } else if (snake.Inputbuffer[0] == 'left') {
-    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 180);
-    //   } else if (snake.Inputbuffer[0] == 'up') {
-    //     drawImage(snakeHead, oldX + offsetX, oldY + offsetY, 270);
-    //   }
-    // }
 
     drawImage(image, oldX + offsetX, oldY + offsetY, angle);
   }
