@@ -61,6 +61,8 @@ const getdomelements = function() {
   gameOverTekst = document.querySelector('.js-gameOver');
   readyHTML = document.querySelector('.js-lobbyReady');
   countDownhtml = document.querySelector('.js-countDown');
+  hartslagwaardeHTML = document.querySelector('.js-hartslagwaarde');
+  pompendHartHTML = document.querySelector('.js-pompendHart');
 };
 
 // ***********  HTML Generation ***********
@@ -509,18 +511,19 @@ const getHeartbeat = function() {
           tellerBaseHeartBeat = 1;
         }
         getHeartbeatCurrentSnake(heartValue);
+        console.log(hartslagwaardeHTML);
+        hartslagwaardeHTML.innerHTML = heartValue;
+        pompendHartHTML.classList.add('c-tutorial__heart-connected');
       }
     }
   }
-  document.addEventListener('keydown', function(event) {
-    if (event.key == 'h') {
-      event.stopPropagation();
-      event.preventDefault();
+  document.querySelector('.js-hartslag').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
 
-      if (isWebBluetoothEnabled()) {
-        //ChromeSamples.clearLog();
-        onStartButtonClick();
-      }
+    if (isWebBluetoothEnabled()) {
+      //ChromeSamples.clearLog();
+      onStartButtonClick();
     }
   });
   function isWebBluetoothEnabled() {
