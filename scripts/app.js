@@ -64,7 +64,8 @@ const getdomelements = function() {
   countDownhtml = document.querySelector('.js-countDown');
   hartslagwaardeHTML = document.querySelector('.js-hartslagwaarde');
   pompendHartHTML = document.querySelector('.js-pompendHart');
-
+  continueHTML = document.querySelector('.js-continue');
+  overlayHTML = document.querySelector('.js-overlay');
   fruitImage = document.querySelector('#js-fruitIcon');
   candyImage = document.querySelector('#js-candyIcon');
   buttonUpHTML = document.querySelector('.js-buttonUp');
@@ -417,6 +418,7 @@ const beginGame = function() {
   handlekeydowns();
   tutorialbuttons();
   getHeartbeat(scores);
+  continueTutorial();
   initializeScores();
   updatescore();
   if (playerNr == 0) {
@@ -425,6 +427,12 @@ const beginGame = function() {
   }
   // displaysnakes();
   startCountDown();
+};
+
+const continueTutorial = function() {
+  continueHTML.addEventListener('click', function() {
+    overlayHTML.classList.add('o-hide-accessible');
+  });
 };
 
 const tutorialbuttons = function() {
