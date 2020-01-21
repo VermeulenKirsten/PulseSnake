@@ -1,11 +1,5 @@
 /* ---------------- Lobby ---------------- */
 
-.c-lobby__absolute {
-  position: absolute;
-  right: 32px;
-  bottom: 29px;
-}
-
 .c-icon__hidden-pencil {
   display: block;
 }
@@ -14,18 +8,18 @@
   display: none;
 }
 
-.c-input:focus + label > label > .c-icon__hidden-pencil {
+.c-input:focus + label > .c-icon__hidden-pencil {
   display: none;
 }
 .c-input:focus + label > .c-icon__hidden-save {
   display: block;
 }
-/* .c-input:active + label > .c-icon__hidden-pencil {
+.c-input:active + label > .c-icon__hidden-pencil {
   display: none;
 }
 .c-input:active + label > .c-icon__hidden-save {
   display: block;
-} */
+}
 
 /* ---------------- Credits ---------------- */
 
@@ -46,8 +40,4 @@
   height: 100px;
   display: flex;
   align-items: center;
-}
-
-.u-padding-lg {
-  max-width: 25%;
 }
