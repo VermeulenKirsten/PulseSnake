@@ -64,9 +64,21 @@ const getdomelements = function() {
   countDownhtml = document.querySelector('.js-countDown');
   hartslagwaardeHTML = document.querySelector('.js-hartslagwaarde');
   pompendHartHTML = document.querySelector('.js-pompendHart');
-
+  continueHTML = document.querySelector('.js-continue');
+  overlayHTML = document.querySelector('.js-overlay');
   fruitImage = document.querySelector('#js-fruitIcon');
   candyImage = document.querySelector('#js-candyIcon');
+  buttonUpHTML = document.querySelector('.js-buttonUp');
+  buttonLeftHTML = document.querySelector('.js-buttonLeft');
+  buttonRightHTML = document.querySelector('.js-buttonRight');
+  buttonDownHTML = document.querySelector('.js-buttonDown');
+  clearTutorialHTML = document.querySelector('.js-clearTutorial');
+  infoHartslagHTML = document.querySelector('.js-infoHartslag');
+  infoBesturingHTML = document.querySelector('.js-infoBesturing');
+  modalHTML = document.querySelector('.js-modal-hart');
+  modalBesturingHTML = document.querySelector('.js-modal-besturing');
+  spanHartslag = document.getElementsByClassName('c-close')[0];
+  spanBesturing = document.getElementsByClassName('c-close-besturing')[0];
 
   snakeHead = document.querySelector('#js-snakeboi-head');
   snakeTail = document.querySelector('#js-snakeboi-tail');
@@ -486,7 +498,10 @@ const beginGame = function() {
   checkPlayer();
   generateSnakes();
   handlekeydowns();
+  infobuttons();
+  tutorialbuttons();
   getHeartbeat(scores);
+  continueTutorial();
   initializeScores();
   updatescore();
   if (playerNr == 0) {
@@ -495,6 +510,64 @@ const beginGame = function() {
   }
   // displaysnakes();
   startCountDown();
+};
+
+const infobuttons = function() {
+  window.addEventListener('click', function(event) {
+    if (event.target == modalHTML || event.target == modalBesturingHTML) {
+      modalBesturingHTML.style.display = 'none';
+      modalHTML.style.display = 'none';
+    }
+  });
+
+  infoHartslagHTML.addEventListener('click', function() {
+    modalHTML.style.display = 'block';
+  });
+
+  infoBesturingHTML.addEventListener('click', function() {
+    modalBesturingHTML.style.display = 'block';
+  });
+
+  spanHartslag.addEventListener('click', function() {
+    modalHTML.style.display = 'none';
+  });
+
+  spanBesturing.addEventListener('click', function() {
+    modalBesturingHTML.style.display = 'none';
+  });
+};
+
+const continueTutorial = function() {
+  continueHTML.addEventListener('click', function() {
+    overlayHTML.classList.add('o-hide-accessible');
+  });
+};
+
+const tutorialbuttons = function() {
+  document.addEventListener('keydown', function(key) {
+    if (key.which === 37) {
+      buttonLeftHTML.classList.add('c-tutorial__button-ok');
+    }
+    //up arrow key pressed
+    else if (key.which === 38) {
+      buttonUpHTML.classList.add('c-tutorial__button-ok');
+    }
+    //right arrow key pressed
+    else if (key.which === 39) {
+      buttonRightHTML.classList.add('c-tutorial__button-ok');
+    }
+    //down arrow key pressed
+    else if (key.which === 40) {
+      buttonDownHTML.classList.add('c-tutorial__button-ok');
+    }
+  });
+
+  clearTutorialHTML.addEventListener('click', function() {
+    buttonLeftHTML.classList.remove('c-tutorial__button-ok');
+    buttonDownHTML.classList.remove('c-tutorial__button-ok');
+    buttonRightHTML.classList.remove('c-tutorial__button-ok');
+    buttonUpHTML.classList.remove('c-tutorial__button-ok');
+  });
 };
 
 const getHeartbeatCurrentSnake = function(heartValue) {
@@ -612,6 +685,7 @@ const getHeartbeat = function() {
     }
   }
   document.querySelector('.js-hartslag').addEventListener('click', function(event) {
+    console.log('hartslag');
     event.stopPropagation();
     event.preventDefault();
 

@@ -1,11 +1,13 @@
 function room(roomId) {
-  (this.roomId = roomId), (this.players = []), (this.maxplayers = 4), this.defaultSpeed, this.gameDuration;
+  (this.roomId = roomId), (this.players = []), (this.maxplayers = 4), this.defaultSpeed, this.gameDuration, (this.colors = ['#00FF00', '#FF0000', '#0000FF', '#FFFF00']);
 
   this.addPlayer = function(newplayer) {
     let length = this.players.length;
-    console.log(length);
     if (length < this.maxplayers) {
       newplayer.name = `Speler ${length + 1}`;
+      newplayer.color = this.colors[0];
+      this.colors.shift();
+      console.log(('co', this.colors));
       this.players.push(newplayer);
       return true;
     } else {
@@ -13,26 +15,20 @@ function room(roomId) {
     }
   };
   this.updatePlayer = function(newplayer) {
-    console.log('update');
     for (let player in this.players) {
       if (this.players[player].id == newplayer.id) {
-        console.log('found');
         this.players[player] = newplayer;
         break;
       }
     }
-    console.log('updated:', this.players);
   };
   this.removePlayer = function(id) {
     for (let i = 0; i < this.players.length; i++) {
       if (this.players[i].id == id) {
-        console.log('delete', this.players[i]);
-        console.log(this.players);
+        this.colors.push(this.players[i].color);
         this.players.splice(i, 1);
         for (let t = i; i < this.players.length; i++) {
-          console.log('>>>', this.players[t].name, `Speler ${t + 2}`);
           if (this.players[t].name == `Speler ${t + 2}`) {
-            console.log('t', t);
             this.players[t].name = `Speler ${t + 1}`;
           }
         }

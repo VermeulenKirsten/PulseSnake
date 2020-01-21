@@ -122,6 +122,9 @@ const onMessageArrived = function(msg) {
         if (playerRole == 'Host') {
           roomInfo.removePlayer(incommingMessage.message);
           showplayers();
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
+          message.destinationName = roomInfo.roomId;
+          mqtt.send(message);
         }
       }
       break;
@@ -132,6 +135,7 @@ const onMessageArrived = function(msg) {
           roomInfo = incommingMessage.message;
           showplayers(roomInfo);
           updateNameInput();
+          updateSnakeColor();
         }
       }
       break;
