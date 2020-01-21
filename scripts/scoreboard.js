@@ -2,7 +2,7 @@
 
 let domBack, domSelector, domRadioButtons, domSelectortext, scoreboard;
 let score, lenght, heartbeat, fruit, candy;
-
+let scoreType = 'Score';
 // ***********  DOM references ***********
 
 const doms = function() {
@@ -20,6 +20,8 @@ const moveSlider = function() {
       domSelector.style.left = `${button.dataset.pos}%`;
       domSelectortext.innerHTML = button.value;
       getScores(button.value);
+      console.log(button.value);
+      scoreType = button.value;
     }
   });
 };
@@ -42,11 +44,20 @@ const eventListeners = function() {
 const insertScores = function(scores) {
   console.log(scores);
   let newhtml = '';
-  for (index in scores) {
-    newhtml += `<div class="c-input u-mb-md c-scoreboard__item">
+  if (scoreType == 'Score') {
+    for (index in scores) {
+      newhtml += `<div class="c-input u-mb-md c-scoreboard__item">
+    <p>${parseInt(index) + 1}. ${scores[index].name}</p>
+    <p>${Math.round(scores[index].scorePerMinuut)}</p>
+  </div>`;
+    }
+  } else {
+    for (index in scores) {
+      newhtml += `<div class="c-input u-mb-md c-scoreboard__item">
     <p>${parseInt(index) + 1}. ${scores[index].name}</p>
     <p>${scores[index].score}</p>
   </div>`;
+    }
   }
   scoreboard.innerHTML = newhtml;
 };
@@ -64,7 +75,7 @@ const getScores = async function(scoreType) {
 const init = function() {
   doms();
   eventListeners();
-  getScores('score');
+  getScores('Score');
 };
 
 document.addEventListener('DOMContentLoaded', init);
