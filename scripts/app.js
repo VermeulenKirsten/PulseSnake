@@ -73,6 +73,12 @@ const getdomelements = function() {
   buttonRightHTML = document.querySelector('.js-buttonRight');
   buttonDownHTML = document.querySelector('.js-buttonDown');
   clearTutorialHTML = document.querySelector('.js-clearTutorial');
+  infoHartslagHTML = document.querySelector('.js-infoHartslag');
+  infoBesturingHTML = document.querySelector('.js-infoBesturing');
+  modalHTML = document.querySelector('.js-modal-hart');
+  modalBesturingHTML = document.querySelector('.js-modal-besturing');
+  spanHartslag = document.getElementsByClassName('c-close')[0];
+  spanBesturing = document.getElementsByClassName('c-close-besturing')[0];
 };
 
 // *********** HTML Generation ***********
@@ -416,6 +422,7 @@ const beginGame = function() {
   checkPlayer();
   generateSnakes();
   handlekeydowns();
+  infobuttons();
   tutorialbuttons();
   getHeartbeat(scores);
   continueTutorial();
@@ -427,6 +434,31 @@ const beginGame = function() {
   }
   // displaysnakes();
   startCountDown();
+};
+
+const infobuttons = function() {
+  window.addEventListener('click', function(event) {
+    if (event.target == modalHTML || event.target == modalBesturingHTML) {
+      modalBesturingHTML.style.display = 'none';
+      modalHTML.style.display = 'none';
+    }
+  });
+
+  infoHartslagHTML.addEventListener('click', function() {
+    modalHTML.style.display = 'block';
+  });
+
+  infoBesturingHTML.addEventListener('click', function() {
+    modalBesturingHTML.style.display = 'block';
+  });
+
+  spanHartslag.addEventListener('click', function() {
+    modalHTML.style.display = 'none';
+  });
+
+  spanBesturing.addEventListener('click', function() {
+    modalBesturingHTML.style.display = 'none';
+  });
 };
 
 const continueTutorial = function() {
@@ -577,6 +609,7 @@ const getHeartbeat = function() {
     }
   }
   document.querySelector('.js-hartslag').addEventListener('click', function(event) {
+    console.log('hartslag');
     event.stopPropagation();
     event.preventDefault();
 
