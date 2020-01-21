@@ -64,7 +64,7 @@ const getScores = async function(scoreType) {
 const init = function() {
   doms();
   eventListeners();
-  getScores('speed');
+  getScores('score');
 };
 
 document.addEventListener('DOMContentLoaded', init);
