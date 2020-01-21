@@ -63,6 +63,11 @@ const getdomelements = function() {
   countDownhtml = document.querySelector('.js-countDown');
   hartslagwaardeHTML = document.querySelector('.js-hartslagwaarde');
   pompendHartHTML = document.querySelector('.js-pompendHart');
+  buttonUpHTML = document.querySelector('.js-buttonUp');
+  buttonLeftHTML = document.querySelector('.js-buttonLeft');
+  buttonRightHTML = document.querySelector('.js-buttonRight');
+  buttonDownHTML = document.querySelector('.js-buttonDown');
+  clearTutorialHTML = document.querySelector('.js-clearTutorial');
 };
 
 // ***********  HTML Generation ***********
@@ -392,6 +397,7 @@ const beginGame = function() {
   checkPlayer();
   generateSnakes();
   handlekeydowns();
+  tutorialbuttons();
   getHeartbeat(scores);
   initializeScores();
   updatescore();
@@ -401,6 +407,33 @@ const beginGame = function() {
   }
   // displaysnakes();
   startCountDown();
+};
+
+const tutorialbuttons = function() {
+  document.addEventListener('keydown', function(key) {
+    if (key.which === 37) {
+      buttonLeftHTML.classList.add('c-tutorial__button-ok');
+    }
+    //up arrow key pressed
+    else if (key.which === 38) {
+      buttonUpHTML.classList.add('c-tutorial__button-ok');
+    }
+    //right arrow key pressed
+    else if (key.which === 39) {
+      buttonRightHTML.classList.add('c-tutorial__button-ok');
+    }
+    //down arrow key pressed
+    else if (key.which === 40) {
+      buttonDownHTML.classList.add('c-tutorial__button-ok');
+    }
+  });
+
+  clearTutorialHTML.addEventListener('click', function() {
+    buttonLeftHTML.classList.remove('c-tutorial__button-ok');
+    buttonDownHTML.classList.remove('c-tutorial__button-ok');
+    buttonRightHTML.classList.remove('c-tutorial__button-ok');
+    buttonUpHTML.classList.remove('c-tutorial__button-ok');
+  });
 };
 
 const getHeartbeatCurrentSnake = function(heartValue) {
