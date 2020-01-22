@@ -352,35 +352,35 @@ const drawSnake = function(snake, oldTail, frame) {
   }
 };
 // *********** refresh the display ***********
-const displaysnakes = function() {
-  createfield();
-  for (let snake of snakes) {
-    try {
-      for (let piece of snake.Tail) {
-        ctx.fillStyle = snake.Color;
-        ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-        if (piece == snake.Tail[0]) {
-          ctx.fillStyle = '#006600';
-          ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-        }
-      }
-      ctx.fillStyle = '#FF0000';
-      ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-      // show the candy
-      ctx.fillStyle = '#FF00FF';
-      ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-    } catch {
-      snake.isalive = false;
-      console.log('u dead boi');
-      stop = true;
-    }
-  }
-  if (!stop) {
-    setTimeout(function() {
-      displaysnakes();
-    }, 1000 / framerate);
-  }
-};
+// const displaysnakes = function() {
+//   createfield();
+//   for (let snake of snakes) {
+//     try {
+//       for (let piece of snake.Tail) {
+//         ctx.fillStyle = snake.Color;
+//         ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+//         if (piece == snake.Tail[0]) {
+//           ctx.fillStyle = '#006600';
+//           ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+//         }
+//       }
+//       ctx.fillStyle = '#FF0000';
+//       ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+//       // show the candy
+//       ctx.fillStyle = '#FF00FF';
+//       ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
+//     } catch {
+//       snake.isalive = false;
+//       console.log('u dead boi');
+//       stop = true;
+//     }
+//   }
+//   if (!stop) {
+//     setTimeout(function() {
+//       displaysnakes();
+//     }, 1000 / framerate);
+//   }
+// };
 
 // *********** function to draw rotated images ***********
 const drawImage = function(image, x, y, degrees) {
@@ -504,7 +504,6 @@ const getSessionData = function() {
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
   roomInfo.gameDuration = oldRoom.gameDuration;
   checkPlayer();
-  MQTTconnect();
 };
 
 const startCountDown = function() {
@@ -575,7 +574,6 @@ const beginGame = function() {
   infobuttons();
   tutorialbuttons();
   getHeartbeat(scores);
-  continueTutorial();
   initializeScores();
   updatescore();
   if (playerNr == 0) {
@@ -614,6 +612,7 @@ const infobuttons = function() {
 const continueTutorial = function() {
   continueHTML.addEventListener('click', function() {
     overlayHTML.classList.add('o-hide-accessible');
+    InitiateStartSecuence();
   });
 };
 
@@ -863,13 +862,18 @@ const checkPlayer = function() {
   }
 };
 
+const InitiateStartSecuence = function() {
+  listener();
+  MQTTconnect();
+};
+
 // *********** Init / DOMContentLoaded ***********
 const init = function() {
   console.log('init');
-  listener();
+  // listener();
   getdomelements();
   getSessionData();
-
+  continueTutorial();
   //generateSnakes();
   // beginGame;
 };
