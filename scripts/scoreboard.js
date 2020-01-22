@@ -46,14 +46,14 @@ const insertScores = function(scores) {
   let newhtml = '';
   if (scoreType == 'Score') {
     for (index in scores) {
-      newhtml += `<div class="c-input u-mb-md c-scoreboard__item">
+      newhtml += `<div class="c-input c-scoreboard__item">
     <p>${parseInt(index) + 1}. ${scores[index].name}</p>
     <p>${Math.round(scores[index].scorePerMinuut)}</p>
   </div>`;
     }
   } else {
     for (index in scores) {
-      newhtml += `<div class="c-input u-mb-md c-scoreboard__item">
+      newhtml += `<div class="c-input c-scoreboard__item">
     <p>${parseInt(index) + 1}. ${scores[index].name}</p>
     <p>${scores[index].score}</p>
   </div>`;
