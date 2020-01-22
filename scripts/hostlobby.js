@@ -10,22 +10,36 @@ let playerNr;
 // ***********  initiate game ***********
 
 const goToGame = function() {
-  message = new Paho.MQTT.Message(JSON.stringify(new Message("startGame", { roomInfo: roomInfo })));
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('startGame', { roomInfo: roomInfo })));
   message.destinationName = roomInfo.roomId;
   mqtt.send(message);
-  sessionStorage.setItem("roomInfo", JSON.stringify(roomInfo));
-  window.location.href = "game.html";
+  sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+  window.location.href = 'game.html';
 };
 // ***********  show players in loby ***********
 
 const showplayers = function() {
-  let output = "";
+  let output = '';
   for (player of roomInfo.players) {
+    switch (player.color) {
+      case '#FF0000':
+        head = '/img/png/red_head.png';
+        break;
+      case '#00FF00':
+        head = '/img/png/green_head.png';
+        break;
+      case '#0000FF':
+        head = '/img/png/blue_head.png';
+        break;
+      case '#FFFF00':
+        head = '/img/png/yellow_head.png';
+        break;
+    }
     output += `<li class="o-layout__center c-lobby__player">
-    <img class="c-lobby__img-sm" src="/img/png/green_head.png" alt="Hoofdje" />
+    <img class="c-lobby__img-sm" src="${head}" alt="Hoofdje" />
     <p class="u-mb-clear">${player.name}</p>
     <div class="c-lobby__player-status">
-    <p class="u-mb-clear">${player.ready ? "klaar" : "niet klaar"}</p>
+    <p class="u-mb-clear">${player.ready ? 'klaar' : 'niet klaar'}</p>
     </div>
   </li>`;
   }
@@ -67,8 +81,8 @@ const updateSnakeColor = function() {
 // ***********  make a room and let people join ***********
 
 const loadRoomInfo = function() {
-  playerId = sessionStorage.getItem("playerId");
-  oldRoom = JSON.parse(sessionStorage.getItem("roomInfo"));
+  playerId = sessionStorage.getItem('playerId');
+  oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
   roomInfo = new room(oldRoom.roomId);
   roomInfo.colors = oldRoom.colors;
   roomInfo.players = oldRoom.players;
@@ -83,7 +97,7 @@ const loadRoomInfo = function() {
   MQTTconnect(onConnect);
   showplayers();
 
-  document.querySelector(".js-roomid").innerHTML = roomInfo.roomId;
+  document.querySelector('.js-roomid').innerHTML = roomInfo.roomId;
 };
 
 // ***********  add eventlistener to submit button and generate room ***********
@@ -91,33 +105,33 @@ const loadRoomInfo = function() {
 const addListener = function() {
   console.log(playerRole);
 
-  if (playerRole == "Host") {
-    domStart.addEventListener("click", goToGame);
-    domBack.addEventListener("click", goToCreate);
+  if (playerRole == 'Host') {
+    domStart.addEventListener('click', goToGame);
+    domBack.addEventListener('click', goToCreate);
   } else {
-    domStart.addEventListener("click", readyUp);
-    domBack.addEventListener("click", goToJoin);
+    domStart.addEventListener('click', readyUp);
+    domBack.addEventListener('click', goToJoin);
   }
-  nameForm.addEventListener("submit", updateName);
-  save.addEventListener("click", updateName);
-  nameInput.addEventListener("blur", updateName);
-  nameInput.addEventListener("focus", clearName);
+  nameForm.addEventListener('submit', updateName);
+  save.addEventListener('click', updateName);
+  nameInput.addEventListener('blur', updateName);
+  nameInput.addEventListener('focus', clearName);
 };
 // ***********  toggle player status ***********
 
 const readyUp = function() {
-  message = new Paho.MQTT.Message(JSON.stringify(new Message("playerReady", playerId)));
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('playerReady', playerId)));
   message.destinationName = roomId;
   mqtt.send(message);
 };
 // ***********  update the name in the room ***********
 
 const clearName = function() {
-  nameInput.value = "";
+  nameInput.value = '';
 };
 
 const updateName = function() {
-  if (nameInput.value == "") {
+  if (nameInput.value == '') {
     for (let player of roomInfo.players) {
       if (player.id == playerId) {
         nameInput.value = player.name;
@@ -131,7 +145,7 @@ const updateName = function() {
         localPlayer.name = nameInput.value;
       }
     }
-    let message = new Paho.MQTT.Message(JSON.stringify(new Message("playerUpdate", localPlayer)));
+    let message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
     message.destinationName = roomInfo.roomId;
     mqtt.send(message);
   }
@@ -140,14 +154,14 @@ const updateName = function() {
 
 // ***********  Navigation ***********
 const goToCreate = function() {
-  console.log("craeet");
-  window.location.href = "create.html";
+  console.log('craeet');
+  window.location.href = 'create.html';
 };
 
 const goToJoin = function() {
-  console.log("craeet");
-  window.location.href = "join.html";
-  message = new Paho.MQTT.Message(JSON.stringify(new Message("disconnect", playerId)));
+  console.log('craeet');
+  window.location.href = 'join.html';
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
   message.destinationName = roomId;
   mqtt.send(message);
 
@@ -156,36 +170,36 @@ const goToJoin = function() {
 // ***********  set the right html acording to role ***********
 
 const setHTML = function(role) {
-  if (role == "Guest") {
-    startGameTekst.innerHTML = "Klaar";
+  if (role == 'Guest') {
+    startGameTekst.innerHTML = 'Klaar';
   } else {
-    domStart.style.display = "none";
+    domStart.style.display = 'none';
   }
-  domBack = document.querySelector(".js-back");
+  domBack = document.querySelector('.js-back');
 };
 
 // ***********  generate dom elements ***********
 
 const generateDOMelements = function() {
-  console.log("dom");
-  playerList = document.querySelector(".js-players");
-  nameInput = document.querySelector(".js-name").children[0];
-  startGameTekst = document.querySelector(".js-startGameTekst");
-  domBack = document.querySelector(".js-back");
-  save = document.querySelector(".js-save");
-  domStart = document.querySelector(".js-startGame");
-  nameForm = document.querySelector(".js-name");
+  console.log('dom');
+  playerList = document.querySelector('.js-players');
+  nameInput = document.querySelector('.js-name').children[0];
+  startGameTekst = document.querySelector('.js-startGameTekst');
+  domBack = document.querySelector('.js-back');
+  save = document.querySelector('.js-save');
+  domStart = document.querySelector('.js-startGame');
+  nameForm = document.querySelector('.js-name');
 };
 // ***********  init ***********
 
 const init = function() {
   var url = new URL(window.location.href);
-  roomId = url.searchParams.get("roomId");
+  roomId = url.searchParams.get('roomId');
   if (roomId) {
-    playerRole = "Guest";
-    if (sessionStorage.getItem("player")) {
-      localPlayer = JSON.parse(sessionStorage.getItem("player"));
-      oldRoom = JSON.parse(sessionStorage.getItem("roomInfo"));
+    playerRole = 'Guest';
+    if (sessionStorage.getItem('player')) {
+      localPlayer = JSON.parse(sessionStorage.getItem('player'));
+      oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
       let oldroomId = oldRoom.roomId;
       playerId = localPlayer.id;
       if (roomId == oldroomId) {
@@ -200,13 +214,13 @@ const init = function() {
     }
     MQTTconnect(onConnectGuest);
     generateDOMelements();
-    setHTML("Guest");
+    setHTML('Guest');
     addListener();
-    document.querySelector(".js-roomid").innerHTML = roomId;
+    document.querySelector('.js-roomid').innerHTML = roomId;
   } else {
-    playerRole = "Host";
+    playerRole = 'Host';
     generateDOMelements();
-    setHTML("Host");
+    setHTML('Host');
 
     addListener();
     loadRoomInfo();
@@ -218,7 +232,7 @@ const init = function() {
 // ***********  page reload ***********
 
 window.onbeforeunload = function() {
-  message = new Paho.MQTT.Message(JSON.stringify(new Message("disconnect", playerId)));
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
   message.destinationName = roomId;
   mqtt.send(message);
 };
@@ -227,8 +241,8 @@ window.onbeforeunload = function() {
 
 const roomNotFound = function() {
   if (!roomInfo) {
-    window.location.href = "join.html?error=roomNotFound";
+    window.location.href = 'join.html?error=roomNotFound';
   }
 };
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener('DOMContentLoaded', init);
