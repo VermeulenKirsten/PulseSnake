@@ -718,7 +718,6 @@ li:last-child > .c-speed__indicator {
   background-image: url("/img/png/background.png");
   background-size: cover;
   overflow: hidden;
-  display: none;
 }
 
 .c-tutorial {
