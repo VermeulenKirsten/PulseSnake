@@ -23,6 +23,7 @@ let scores;
 let device;
 let countDownhtml;
 let fruitImage, candyImage, snakeHead, snakeBody, snakeCorner, snakeTail;
+let audioPlayer, muteButton;
 let countDownTime = 3;
 let baseHeartBeat;
 let baseSpeed = 4;
@@ -96,6 +97,8 @@ const getdomelements = function() {
   yellowSnakeTail = document.querySelector('#js-yellowsnaketail');
   yellowSnakeBody = document.querySelector('#js-yellowsnakebody');
   yellowSnakeCorner = document.querySelector('#js-yellowsnakecorner');
+
+  audioPlayer = document.querySelector('#js-audioplayer');
 };
 
 // *********** HTML Generation ***********
@@ -504,9 +507,16 @@ const getSessionData = function() {
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
   roomInfo.gameDuration = oldRoom.gameDuration;
   checkPlayer();
+  MQTTconnect();
 };
 
 const startCountDown = function() {
+  audioPlayer.play();
+  muteButton = document.querySelector('#js-mute');
+  muteButton.addEventListener('click', function() {
+    console.log(muteButton);
+    audioPlayer.muted = !muteButton.checked;
+  });
   if (countDownTime == 0) {
     countDownhtml.children[0].innerHTML = 'GO!';
   } else if (countDownTime == -1) {
