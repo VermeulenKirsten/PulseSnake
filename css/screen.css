@@ -625,6 +625,18 @@ li:last-child > .c-speed__indicator {
   max-width: calc(var(--global-baseline) * 56);
 }
 
+.c-lobby__ready {
+  width: var(--global-whitespace-xl);
+  height: var(--global-whitespace-xl);
+  fill: var(--global-color-alpha);
+}
+
+.c-lobby__not-ready {
+  width: var(--global-whitespace-xl);
+  height: var(--global-whitespace-xl);
+  fill: red;
+}
+
 .c-lobby__icon {
   position: absolute;
   top: 18px;
@@ -633,7 +645,7 @@ li:last-child > .c-speed__indicator {
 
 .c-lobby__player-status {
   padding-left: var(--global-whitespace-md);
-  border-left: solid 2px var(--global-color-alpha);
+  border-left: solid 4px var(--global-color-alpha);
 }
 
 .c-lobby__img-sm {
@@ -851,6 +863,11 @@ li:last-child > .c-speed__indicator {
 .c-scoreboard__item {
   display: flex;
   justify-content: space-between;
+  margin-bottom: var(--global-whitespace-sm);
+}
+
+.c-scoreboard__item:last-child {
+  margin-bottom: 0;
 }
 
 .c-scoreboard p {
