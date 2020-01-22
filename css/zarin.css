@@ -41,3 +41,23 @@
   display: flex;
   align-items: center;
 }
+
+.js-mute {
+  color: rgba(0, 0, 0, 0);
+}
+
+.c-mute + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-unmuted {
+  display: none;
+}
+
+.c-mute:checked + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-unmuted {
+  display: block;
+}
+
+.c-mute + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-muted {
+  display: block;
+}
+
+.c-mute:checked + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-muted {
+  display: none;
+}
