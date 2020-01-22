@@ -512,7 +512,7 @@ const getSessionData = function() {
 
 const startCountDown = function() {
   audioPlayer.play();
-  audioPlayer.loop();
+  audioPlayer.loop = true;
   muteButton = document.querySelector('#js-mute');
   muteButton.addEventListener('click', function() {
     console.log(muteButton);
