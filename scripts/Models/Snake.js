@@ -15,7 +15,11 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     (this.topSpeed = 0),
     (this.fruitValue = 50),
     (this.candyValue = -25),
-    (this.suicideValue = -15);
+    (this.suicideValue = -15),
+    this.head,
+    this.body,
+    this.corner,
+    this.tail;
   this.Input = function(direction) {
     let validMove = false;
     let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
