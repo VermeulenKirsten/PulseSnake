@@ -211,11 +211,11 @@ const drawSnake = function(snake, oldTail, frame) {
   for (let piece in oldTail) {
     piece = parseInt(piece);
     //the image this piece needs
-    let image = snakeBody;
+    let image = snake.body;
     let angle = 0;
     //check if the piece is a head
     if (piece == 0) {
-      image = snakeHead;
+      image = snake.head;
       //check what angle it should have
       if (snake.Inputbuffer[0] == 'right') {
         angle = 0;
@@ -229,7 +229,7 @@ const drawSnake = function(snake, oldTail, frame) {
     }
     //check if the piece is a tail
     else if (piece == oldTail.length - 1) {
-      image = snakeTail;
+      image = snake.tail;
       if (oldTail[piece - 1][0] == oldTail[piece][0]) {
         if (oldTail[piece - 1][1] > oldTail[piece][1]) {
           angle = 0;
@@ -329,23 +329,23 @@ const drawSnake = function(snake, oldTail, frame) {
       //verticaal na horizontaal draaien
       if (snake.Tail[piece - 1][0] == snake.Tail[piece][0] && snake.Tail[piece][1] == snake.Tail[piece + 1][1]) {
         if (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
         } else if (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
         } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
         } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
         }
       } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
         if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
         } else if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
         } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
         } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
-          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
+          drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
         }
       }
     }
@@ -465,7 +465,7 @@ const drawCandy = function() {
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
     newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', roomInfo.defaultSpeed, snakeColors[i]);
-    switch (i.color) {
+    switch (roomInfo.players[i].color) {
       case '#FF0000':
         newsnake.head = redSnakeHead;
         newsnake.body = redSnakeBody;
