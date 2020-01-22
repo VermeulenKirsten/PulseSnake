@@ -80,9 +80,22 @@ const getdomelements = function() {
   spanHartslag = document.getElementsByClassName('c-close')[0];
   spanBesturing = document.getElementsByClassName('c-close-besturing')[0];
 
-  snakeHead = document.querySelector('#js-snakeboi-head');
-  snakeTail = document.querySelector('#js-snakeboi-tail');
-  snakeBody = document.querySelector('#js-snakeboi-body');
+  greenSnakeHead = document.querySelector('#js-greensnakehead');
+  greenSnakeTail = document.querySelector('#js-greensnaketail');
+  greenSnakeBody = document.querySelector('#js-greensnakebody');
+  greenSnakeCorner = document.querySelector('#js-greensnakecorner');
+  redSnakeHead = document.querySelector('#js-redsnakehead');
+  redSnakeTail = document.querySelector('#js-redsnaketail');
+  redSnakeBody = document.querySelector('#js-redsnakebody');
+  redSnakeCorner = document.querySelector('#js-redsnakecorner');
+  blueSnakeHead = document.querySelector('#js-bluesnakehead');
+  blueSnakeTail = document.querySelector('#js-bluesnaketail');
+  blueSnakeBody = document.querySelector('#js-bluesnakebody');
+  blueSnakeCorner = document.querySelector('#js-bluesnakecorner');
+  yellowSnakeHead = document.querySelector('#js-yellowsnakehead');
+  yellowSnakeTail = document.querySelector('#js-yellowsnaketail');
+  yellowSnakeBody = document.querySelector('#js-yellowsnakebody');
+  yellowSnakeCorner = document.querySelector('#js-yellowsnakecorner');
 };
 
 // *********** HTML Generation ***********
@@ -424,6 +437,32 @@ const drawCandy = function() {
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
     newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', roomInfo.defaultSpeed, snakeColors[i]);
+    switch (i.color) {
+      case '#FF0000':
+        newsnake.head = redSnakeHead;
+        newsnake.body = redSnakeBody;
+        newsnake.corner = redSnakeCorner;
+        newsnake.tail = redSnakeTail;
+        break;
+      case '#00FF00':
+        newsnake.head = greenSnakeHead;
+        newsnake.body = greenSnakeBody;
+        newsnake.corner = greenSnakeCorner;
+        newsnake.tail = greenSnakeTail;
+        break;
+      case '#0000FF':
+        newsnake.head = blueSnakeHead;
+        newsnake.body = blueSnakeBody;
+        newsnake.corner = blueSnakeCorner;
+        newsnake.tail = blueSnakeTail;
+        break;
+      case '#FFFF00':
+        newsnake.head = yellowSnakeHead;
+        newsnake.body = yellowSnakeBody;
+        newsnake.corner = yellowSnakeCorner;
+        newsnake.tail = yellowSnakeTail;
+        break;
+    }
     snakes.push(newsnake);
   }
 };
