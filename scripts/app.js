@@ -22,7 +22,7 @@ let lobbyReady;
 let scores;
 let device;
 let countDownhtml;
-let fruitImage, candyImage, snakeHead, snakeBody, snakeTail;
+let fruitImage, candyImage, snakeHead, snakeBody, snakeCorner, snakeTail;
 let countDownTime = 3;
 let baseHeartBeat;
 let baseSpeed = 4;
@@ -321,6 +321,34 @@ const drawSnake = function(snake, oldTail, frame) {
     offsetY = offsetY * frame;
 
     drawImage(image, oldX + offsetX, oldY + offsetY, angle);
+  }
+  //draw the corners
+  for (let piece in snake.Tail) {
+    piece = parseInt(piece);
+    if (piece != 0 && piece != snake.Tail.length - 1) {
+      //verticaal na horizontaal draaien
+      if (snake.Tail[piece - 1][0] == snake.Tail[piece][0] && snake.Tail[piece][1] == snake.Tail[piece + 1][1]) {
+        if (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
+        } else if (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
+        } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
+        } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
+        }
+      } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
+        if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
+        } else if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
+        } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
+        } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
+          drawImage(snakeCorner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
+        }
+      }
+    }
   }
 };
 // *********** refresh the display ***********
