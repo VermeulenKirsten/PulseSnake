@@ -57,3 +57,42 @@
 .c-mute:checked + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-muted {
   display: none;
 }
+
+/* ---------------- animation hart verbinden ---------------- */
+.c-tutorial__heart-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: none;
+}
+.c-loader__circle {
+  stroke: white;
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 10px;
+  stroke-dasharray: 0 470;
+  stroke-dashoffset: 380;
+  transform-origin: 256px 256px;
+  animation: cirkel 2s linear infinite;
+}
+.c-loader__circle2 {
+  stroke-dashoffset: 400;
+  animation-delay: 0.15s;
+}
+.c-loader__circle3 {
+  stroke-dashoffset: 420;
+  animation-delay: 0.3s;
+}
+
+@keyframes cirkel {
+  0% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(60deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
