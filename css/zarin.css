@@ -23,6 +23,18 @@
 
 /* ---------------- Credits ---------------- */
 
+.c-credits {
+  align-items: flex-start;
+  margin-bottom: 48px;
+  width: 100%;
+  max-width: 50%;
+  justify-content: space-around;
+}
+
+.c-credits__gap {
+  margin-right: 72px;
+}
+
 .c-logo {
   width: 200px;
   margin-left: 48px;

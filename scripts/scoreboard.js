@@ -1,4 +1,4 @@
-// ***********  Variables ***********
+  // ***********  Variables ***********
 
 let domBack, domSelector, domRadioButtons, domSelectortext, scoreboard;
 let score, lenght, heartbeat, fruit, candy;
