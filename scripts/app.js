@@ -29,6 +29,7 @@ let baseHeartBeat;
 let baseSpeed = 4;
 let tellerBaseHeartBeat = 0;
 let heartLoadingAnimation;
+let makeymakeytest = 0;
 
 let snakePositions = [
   [
@@ -513,6 +514,12 @@ const getSessionData = function() {
 };
 
 const startCountDown = function() {
+  audioPlayer.play();
+  muteButton = document.querySelector('#js-mute');
+  muteButton.addEventListener('click', function() {
+    console.log(muteButton);
+    audioPlayer.muted = !muteButton.checked;
+  });
   if (countDownTime == 0) {
     countDownhtml.children[0].innerHTML = 'GO!';
   } else if (countDownTime == -1) {
@@ -632,18 +639,22 @@ const tutorialbuttons = function() {
   document.addEventListener('keydown', function(key) {
     if (key.which === 37) {
       buttonLeftHTML.classList.add('c-tutorial__button-ok');
+      showContinue();
     }
     //up arrow key pressed
     else if (key.which === 38) {
       buttonUpHTML.classList.add('c-tutorial__button-ok');
+      showContinue();
     }
     //right arrow key pressed
     else if (key.which === 39) {
       buttonRightHTML.classList.add('c-tutorial__button-ok');
+      showContinue();
     }
     //down arrow key pressed
     else if (key.which === 40) {
       buttonDownHTML.classList.add('c-tutorial__button-ok');
+      showContinue();
     }
   });
 
@@ -652,7 +663,20 @@ const tutorialbuttons = function() {
     buttonDownHTML.classList.remove('c-tutorial__button-ok');
     buttonRightHTML.classList.remove('c-tutorial__button-ok');
     buttonUpHTML.classList.remove('c-tutorial__button-ok');
+    continueHTML.classList.add('o-hide-accessible');
   });
+};
+
+const showContinue = function() {
+  if (
+    buttonLeftHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonRightHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonUpHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonDownHTML.classList.contains('c-tutorial__button-ok')
+  ) {
+    console.log('nice');
+    continueHTML.classList.remove('o-hide-accessible');
+  }
 };
 
 const getHeartbeatCurrentSnake = function(heartValue) {
