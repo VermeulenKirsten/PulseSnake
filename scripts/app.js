@@ -28,6 +28,7 @@ let countDownTime = 3;
 let baseHeartBeat;
 let baseSpeed = 4;
 let tellerBaseHeartBeat = 0;
+let heartLoadingAnimation;
 
 let snakePositions = [
   [
@@ -99,6 +100,7 @@ const getdomelements = function() {
   yellowSnakeCorner = document.querySelector('#js-yellowsnakecorner');
 
   audioPlayer = document.querySelector('#js-audioplayer');
+  heartLoadingAnimation = document.querySelector('.js-heartanimation');
 };
 
 // *********** HTML Generation ***********
@@ -507,17 +509,10 @@ const getSessionData = function() {
   roomInfo.defaultSpeed = oldRoom.defaultSpeed;
   roomInfo.gameDuration = oldRoom.gameDuration;
   checkPlayer();
-  MQTTconnect();
+  // MQTTconnect();
 };
 
 const startCountDown = function() {
-  audioPlayer.play();
-  audioPlayer.loop = true;
-  muteButton = document.querySelector('#js-mute');
-  muteButton.addEventListener('click', function() {
-    console.log(muteButton);
-    audioPlayer.muted = !muteButton.checked;
-  });
   if (countDownTime == 0) {
     countDownhtml.children[0].innerHTML = 'GO!';
   } else if (countDownTime == -1) {
@@ -551,6 +546,15 @@ const startMovement = function() {
   }
 };
 
+const playMusic = function() {
+  audioPlayer.play();
+  audioPlayer.loop = true;
+  muteButton = document.querySelector('#js-mute');
+  muteButton.addEventListener('click', function() {
+    console.log(muteButton);
+    audioPlayer.muted = !muteButton.checked;
+  });
+};
 const gameOver = function() {
   stop = true;
   clearInterval(interval);
@@ -580,11 +584,7 @@ const gameOver = function() {
 const beginGame = function() {
   console.log('begin the game');
   checkPlayer();
-  generateSnakes();
   handlekeydowns();
-  infobuttons();
-  tutorialbuttons();
-  getHeartbeat(scores);
   initializeScores();
   updatescore();
   if (playerNr == 0) {
@@ -623,6 +623,7 @@ const infobuttons = function() {
 const continueTutorial = function() {
   continueHTML.addEventListener('click', function() {
     overlayHTML.classList.add('o-hide-accessible');
+    playMusic();
     InitiateStartSecuence();
   });
 };
@@ -657,13 +658,7 @@ const tutorialbuttons = function() {
 const getHeartbeatCurrentSnake = function(heartValue) {
   snakes[playerNr].heartbeat = heartValue;
   let snakespeed = (heartValue - baseHeartBeat) / 100;
-  console.log('heartvalue: ' + heartValue);
-  console.log('-');
-  console.log('baseheartbeat: ' + baseHeartBeat);
-  console.log('snakespeed: ' + snakespeed);
-  console.log('basespeed: ' + baseSpeed);
   snakes[playerNr].Speed = baseSpeed - snakespeed;
-  console.log('current speed: ' + snakes[playerNr].Speed);
 };
 
 const getHeartbeat = function() {
@@ -681,6 +676,7 @@ const getHeartbeat = function() {
     if (characteristicUuid.startsWith('0x')) {
       characteristicUuid = parseInt(characteristicUuid);
     }
+    heartLoadingAnimation.style.display = 'block';
 
     //log('Requesting Bluetooth Device...');
     navigator.bluetooth
@@ -706,7 +702,8 @@ const getHeartbeat = function() {
         });
       })
       .catch(error => {
-        //log('Argh! ' + error);
+        // log('Argh! ' + error);
+        heartLoadingAnimation.style.display = 'none';
       });
   }
 
@@ -762,14 +759,13 @@ const getHeartbeat = function() {
           tellerBaseHeartBeat = 1;
         }
         getHeartbeatCurrentSnake(heartValue);
-        console.log(hartslagwaardeHTML);
         hartslagwaardeHTML.innerHTML = heartValue;
         pompendHartHTML.classList.add('c-tutorial__heart-connected');
+        heartLoadingAnimation.style.display = 'none';
       }
     }
   }
   document.querySelector('.js-hartslag').addEventListener('click', function(event) {
-    console.log('hartslag');
     event.stopPropagation();
     event.preventDefault();
 
@@ -885,6 +881,11 @@ const init = function() {
   getdomelements();
   getSessionData();
   continueTutorial();
+  infobuttons();
+  tutorialbuttons();
+  getHeartbeat(scores);
+  generateSnakes();
+
   //generateSnakes();
   // beginGame;
 };
