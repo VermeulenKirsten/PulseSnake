@@ -70,6 +70,17 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     }
     this.Tail.unshift(newhead);
 
+    //move player to other side of screen when going off screen
+    if (this.Tail[0][0] < 0 && this.Inputbuffer[0] == 'up') {
+      newhead[0] = gameheight / scalefactor - 1;
+    } else if (this.Tail[0][0] >= gameheight / scalefactor && this.Inputbuffer[0] == 'down') {
+      newhead[0] = 0;
+    } else if (this.Tail[0][1] < 0 && this.Inputbuffer[0] == 'left') {
+      newhead[1] = gamewidth / scalefactor - 1;
+    } else if (this.Tail[0][1] >= gamewidth / scalefactor && this.Inputbuffer[0] == 'right') {
+      newhead[1] = 0;
+    }
+
     // host will check if the snake ate the fruit
     if (playerNr == 0) {
       let eaten = false;
@@ -110,17 +121,6 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
         this.score = this.score - lengthVerschil * this.fruitValue;
         break;
       }
-    }
-
-    //move player to other side of screen when going off screen
-    if (this.Tail[0][0] < 0 && this.Inputbuffer[0] == 'up') {
-      newhead[0] = gameheight / scalefactor - 1;
-    } else if (this.Tail[0][0] >= gameheight / scalefactor && this.Inputbuffer[0] == 'down') {
-      newhead[0] = 0;
-    } else if (this.Tail[0][1] < 0 && this.Inputbuffer[0] == 'left') {
-      newhead[1] = gamewidth / scalefactor - 1;
-    } else if (this.Tail[0][1] >= gamewidth / scalefactor && this.Inputbuffer[0] == 'right') {
-      newhead[1] = 0;
     }
 
     // stats
