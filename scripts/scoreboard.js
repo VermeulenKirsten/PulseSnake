@@ -1,4 +1,4 @@
-  // ***********  Variables ***********
+// ***********  Variables ***********
 
 let domBack, domSelector, domRadioButtons, domSelectortext, scoreboard;
 let score, lenght, heartbeat, fruit, candy;
@@ -44,20 +44,11 @@ const eventListeners = function() {
 const insertScores = function(scores) {
   console.log(scores);
   let newhtml = '';
-  if (scoreType == 'Score') {
-    for (index in scores) {
-      newhtml += `<div class="c-input c-scoreboard__item">
-    <p>${parseInt(index) + 1}. ${scores[index].name}</p>
-    <p>${Math.round(scores[index].scorePerMinuut)}</p>
-  </div>`;
-    }
-  } else {
-    for (index in scores) {
-      newhtml += `<div class="c-input c-scoreboard__item">
+  for (index in scores) {
+    newhtml += `<div class="c-input c-scoreboard__item">
     <p>${parseInt(index) + 1}. ${scores[index].name}</p>
     <p>${scores[index].score}</p>
   </div>`;
-    }
   }
   scoreboard.innerHTML = newhtml;
 };
