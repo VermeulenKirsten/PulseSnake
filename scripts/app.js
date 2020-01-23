@@ -23,7 +23,7 @@ let scores;
 let device;
 let countDownhtml;
 let fruitImage, candyImage, snakeHead, snakeBody, snakeCorner, snakeTail;
-let audioPlayer, muteButton;
+let audioPlayer, fruitSound, candySound, hitSound, muteButton;
 let countDownTime = 3;
 let baseHeartBeat;
 let baseSpeed = 4;
@@ -101,6 +101,9 @@ const getdomelements = function() {
   yellowSnakeCorner = document.querySelector('#js-yellowsnakecorner');
 
   audioPlayer = document.querySelector('#js-audioplayer');
+  fruitSound = document.querySelector('#js-fruitsound');
+  candySound = document.querySelector('#js-candysound');
+  hitSound = document.querySelector('#js-hitsound');
   heartLoadingAnimation = document.querySelector('.js-heartanimation');
 };
 
@@ -668,12 +671,7 @@ const tutorialbuttons = function() {
 };
 
 const showContinue = function() {
-  if (
-    buttonLeftHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonRightHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonUpHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonDownHTML.classList.contains('c-tutorial__button-ok')
-  ) {
+  if (buttonLeftHTML.classList.contains('c-tutorial__button-ok') && buttonRightHTML.classList.contains('c-tutorial__button-ok') && buttonUpHTML.classList.contains('c-tutorial__button-ok') && buttonDownHTML.classList.contains('c-tutorial__button-ok')) {
     console.log('nice');
     continueHTML.classList.remove('o-hide-accessible');
   }
@@ -916,4 +914,4 @@ const init = function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   init();
- });
+});

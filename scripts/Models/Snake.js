@@ -1,25 +1,5 @@
 function Snake(name, id, tail, direction, speed, color = '#00FF00') {
-  (this.Id = id),
-    (this.Name = name),
-    (this.Speed = speed),
-    (this.Tail = tail),
-    (this.Color = color),
-    (this.Inputbuffer = [direction]),
-    (this.heartbeat = 0),
-    (this.score = 0),
-    (this.topLength = 3),
-    (this.distanceMoved = 0),
-    (this.fruitEaten = 0),
-    (this.topHeartbeat = 0),
-    (this.candyEaten = 0),
-    (this.topSpeed = 0),
-    (this.fruitValue = 50),
-    (this.candyValue = -25),
-    (this.suicideValue = -15),
-    this.head,
-    this.body,
-    this.corner,
-    this.tail;
+  (this.Id = id), (this.Name = name), (this.Speed = speed), (this.Tail = tail), (this.Color = color), (this.Inputbuffer = [direction]), (this.heartbeat = 0), (this.score = 0), (this.topLength = 3), (this.distanceMoved = 0), (this.fruitEaten = 0), (this.topHeartbeat = 0), (this.candyEaten = 0), (this.topSpeed = 0), (this.fruitValue = 50), (this.candyValue = -25), (this.suicideValue = -15), this.head, this.body, this.corner, this.tail;
   this.Input = function(direction) {
     let validMove = false;
     let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];
@@ -87,6 +67,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
       if (fruit[0] == newhead[0] && fruit[1] == newhead[1]) {
         this.Tail.push(tailend);
         generatefruit();
+        fruitSound.play();
         eaten = true;
         this.fruitEaten += 1;
         this.score += this.fruitValue;
@@ -98,6 +79,7 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
           this.Tail.pop();
         }
         generatecandy();
+        candySound.play();
         eaten = true;
         this.candyEaten += 1;
         this.score += this.candyValue;
@@ -114,6 +96,8 @@ function Snake(name, id, tail, direction, speed, color = '#00FF00') {
     for (let t = 1; t < this.Tail.length; t++) {
       let Tailpiece = this.Tail[t];
       if (Tailpiece[0] == newhead[0] && Tailpiece[1] == newhead[1]) {
+        console.log(hitSound);
+        hitSound.play();
         oldLength = this.Tail.length;
         this.Tail.splice(t, this.Tail.length - t);
         newLength = this.Tail.length;
