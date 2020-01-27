@@ -109,22 +109,11 @@ const getdomelements = function() {
   heartLoadingAnimation = document.querySelector('.js-heartanimation');
 };
 
-// *********** HTML Generation ***********
-
-// *********** Callback ***********
-
-// *********** Data Access ***********
-
-// *********** Objects ***********
-
 // *********** Event Listeners ***********
 const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
       if (lobbyReady) {
-        // message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-        // message.destinationName = roomInfo.roomId;
-        // mqtt.send(message);
         for (let player of roomInfo.players) {
           if (player.id == playerId) {
             sessionStorage.setItem('player', JSON.stringify(player));

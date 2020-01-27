@@ -217,6 +217,7 @@ const init = function() {
       playerId = createUuid();
     }
     MQTTconnect(onConnectGuest);
+    setTimeout(roomNotFound, 5000);
     generateDOMelements();
     setHTML('Guest');
     addListener();
