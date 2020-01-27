@@ -1,4 +1,4 @@
-// ***********  Variables ***********
+  // ***********  Variables ***********
 
 let domPlay, domScoreboard, domCredits, domSettings;
 
