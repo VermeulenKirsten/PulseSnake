@@ -23,6 +23,10 @@ let scores;
 let device;
 let countDownhtml;
 let fruitImage, candyImage, snakeHead, snakeBody, snakeCorner, snakeTail;
+let greenSnakeHead, greenSnakeBody, greenSnakeCorner, greenSnakeTail;
+let redSnakeHead, redSnakeBody, redSnakeCorner, redSnakeTail;
+let blueSnakeHead, blueSnakeBody, blueSnakeCorner, blueSnakeTail;
+let yellowSnakeHead, yellowSnakeBody, yellowSnakeCorner, yellowSnakeTail;
 let audioPlayer, fruitSound, candySound, hitSound, muteButton;
 let countDownTime = 3;
 let baseHeartBeat;
@@ -91,18 +95,27 @@ const getdomelements = function() {
   greenSnakeBodyHalf = document.querySelector('#js-greensnakebodyhalf');
   greenSnakeBodyOtherHalf = document.querySelector('#js-greensnakebodyotherhalf');
   greenSnakeCorner = document.querySelector('#js-greensnakecorner');
+
   redSnakeHead = document.querySelector('#js-redsnakehead');
   redSnakeTail = document.querySelector('#js-redsnaketail');
   redSnakeBody = document.querySelector('#js-redsnakebody');
   redSnakeCorner = document.querySelector('#js-redsnakecorner');
+  redSnakeBodyHalf = document.querySelector('#js-redsnakebodyhalf');
+  redSnakeBodyOtherHalf = document.querySelector('#js-redsnakebodyotherhalf');
+
   blueSnakeHead = document.querySelector('#js-bluesnakehead');
   blueSnakeTail = document.querySelector('#js-bluesnaketail');
   blueSnakeBody = document.querySelector('#js-bluesnakebody');
   blueSnakeCorner = document.querySelector('#js-bluesnakecorner');
+  blueSnakeBodyHalf = document.querySelector('#js-bluesnakebodyhalf');
+  blueSnakeBodyOtherHalf = document.querySelector('#js-bluesnakebodyotherhalf');
+
   yellowSnakeHead = document.querySelector('#js-yellowsnakehead');
   yellowSnakeTail = document.querySelector('#js-yellowsnaketail');
   yellowSnakeBody = document.querySelector('#js-yellowsnakebody');
   yellowSnakeCorner = document.querySelector('#js-yellowsnakecorner');
+  yellowSnakeBodyHalf = document.querySelector('#js-yellowsnakebodyhalf');
+  yellowSnakeBodyOtherHalf = document.querySelector('#js-yellowsnakebodyotherhalf');
 
   audioPlayer = document.querySelector('#js-audioplayer');
   fruitSound = document.querySelector('#js-fruitsound');
@@ -674,7 +687,12 @@ const tutorialbuttons = function() {
 };
 
 const showContinue = function() {
-  if (buttonLeftHTML.classList.contains('c-tutorial__button-ok') && buttonRightHTML.classList.contains('c-tutorial__button-ok') && buttonUpHTML.classList.contains('c-tutorial__button-ok') && buttonDownHTML.classList.contains('c-tutorial__button-ok')) {
+  if (
+    buttonLeftHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonRightHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonUpHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonDownHTML.classList.contains('c-tutorial__button-ok')
+  ) {
     console.log('nice');
     continueMovementHTML.classList.remove('o-hide-accessible');
   }
