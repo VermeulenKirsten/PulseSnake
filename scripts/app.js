@@ -53,7 +53,7 @@ let snakePositions = [
     [15, 1]
   ]
 ];
-let snakeColors = ['#00FF00', '#FFFF00', '#0000FF', '#00FFFF'];
+let snakeColors = ['#00FF00', '#0000FF', '#00FFFF', '#FFFF00'];
 
 // *********** DOM references ***********
 const getdomelements = function() {
@@ -671,7 +671,12 @@ const tutorialbuttons = function() {
 };
 
 const showContinue = function() {
-  if (buttonLeftHTML.classList.contains('c-tutorial__button-ok') && buttonRightHTML.classList.contains('c-tutorial__button-ok') && buttonUpHTML.classList.contains('c-tutorial__button-ok') && buttonDownHTML.classList.contains('c-tutorial__button-ok')) {
+  if (
+    buttonLeftHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonRightHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonUpHTML.classList.contains('c-tutorial__button-ok') &&
+    buttonDownHTML.classList.contains('c-tutorial__button-ok')
+  ) {
     console.log('nice');
     continueHTML.classList.remove('o-hide-accessible');
   }
