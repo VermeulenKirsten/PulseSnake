@@ -216,7 +216,7 @@ const drawSnake = function(snake, oldTail, frame) {
   let pixelJump = 1;
   //clear old tail
   for (let tailPiece of oldTail) {
-    ctx.clearRect(tailPiece[1], tailPiece[0], scalefactor, scalefactor);
+    ctx.clearRect(tailPiece[1] - 1, tailPiece[0] - 1, scalefactor + 2, scalefactor + 2);
   }
   //scanning for places where cornerpieces are needed
   let cornerPieces = [];
@@ -233,10 +233,8 @@ const drawSnake = function(snake, oldTail, frame) {
       }
     }
   }
-  // if (cornerPieces.length != 0) {
-  //   console.log(snake.Tail);
-  //   console.log(cornerPieces);
-  // }
+
+  let redrawImages = [];
 
   //move the snaketail a few pixels
   ctx.fillStyle = snake.Color;
@@ -360,7 +358,11 @@ const drawSnake = function(snake, oldTail, frame) {
       }
     }
     offsetY = offsetY * frame;
-    drawImage(image, oldX + offsetX, oldY + offsetY, angle);
+    if (image != snake.head && image != snake.tail) {
+      drawImage(image, oldX + offsetX, oldY + offsetY, angle);
+    } else {
+      redrawImages.push([image, oldX + offsetX, oldY + offsetY, angle]);
+    }
   }
   //draw the corners
   for (let piece in snake.Tail) {
@@ -391,6 +393,13 @@ const drawSnake = function(snake, oldTail, frame) {
         ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       }
     }
+  }
+  //redraw head (and tail)
+  for (let image of redrawImages) {
+    if (image[0] == snake.head && frame < 12) {
+      ctx.clearRect(image[1], image[2], scalefactor, scalefactor);
+    }
+    drawImage(image[0], image[1], image[2], image[3]);
   }
 };
 
@@ -683,12 +692,7 @@ const tutorialbuttons = function() {
 };
 
 const showContinue = function() {
-  if (
-    buttonLeftHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonRightHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonUpHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonDownHTML.classList.contains('c-tutorial__button-ok')
-  ) {
+  if (buttonLeftHTML.classList.contains('c-tutorial__button-ok') && buttonRightHTML.classList.contains('c-tutorial__button-ok') && buttonUpHTML.classList.contains('c-tutorial__button-ok') && buttonDownHTML.classList.contains('c-tutorial__button-ok')) {
     console.log('nice');
     continueMovementHTML.classList.remove('o-hide-accessible');
   }
