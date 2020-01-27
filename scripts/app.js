@@ -475,7 +475,7 @@ const drawCandy = function() {
 // *********** generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', roomInfo.defaultSpeed, snakeColors[i]);
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], 'right', roomInfo.defaultSpeed, roomInfo.players[i].color);
     switch (roomInfo.players[i].color) {
       case '#FF0000':
         newsnake.head = redSnakeHead;

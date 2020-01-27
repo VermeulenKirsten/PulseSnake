@@ -7,7 +7,6 @@ function room(roomId) {
       newplayer.name = `Speler ${length + 1}`;
       newplayer.color = this.colors[0];
       this.colors.shift();
-      console.log(('co', this.colors));
       this.players.push(newplayer);
       return true;
     } else {
