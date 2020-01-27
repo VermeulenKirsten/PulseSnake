@@ -88,6 +88,7 @@ const getdomelements = function() {
   greenSnakeHead = document.querySelector('#js-greensnakehead');
   greenSnakeTail = document.querySelector('#js-greensnaketail');
   greenSnakeBody = document.querySelector('#js-greensnakebody');
+  greenSnakeBodyHalf = document.querySelector('#js-greensnakebodyhalf');
   greenSnakeCorner = document.querySelector('#js-greensnakecorner');
   redSnakeHead = document.querySelector('#js-redsnakehead');
   redSnakeTail = document.querySelector('#js-redsnaketail');
@@ -208,17 +209,20 @@ const drawSnake = function(snake, oldTail, frame) {
     ctx.clearRect(tailPiece[1], tailPiece[0], scalefactor, scalefactor);
   }
   //scanning for places where cornerpieces are needed
-  // let cornerPieces = [];
-  // for (let piece in snake.Tail) {
-  //   piece = parseInt(piece);
-  //   if (piece != 0 && piece != snake.Tail.length - 1) {
-  //     if (snake.Tail[piece - 1][0] == snake.Tail[piece][0] && snake.Tail[piece][1] == snake.Tail[piece + 1][1]) {
-  //       cornerPieces.push([snake.Tail[piece][0] * scalefactor, snake.Tail[piece][1] * scalefactor]);
-  //     } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
-  //       cornerPieces.push([snake.Tail[piece][0] * scalefactor, snake.Tail[piece][1] * scalefactor]);
-  //     }
-  //   }
-  // }
+  let cornerPieces = [];
+  let cornerIndexes = [];
+  for (let piece in snake.Tail) {
+    piece = parseInt(piece);
+    if (piece != 0 && piece != snake.Tail.length - 1) {
+      if (snake.Tail[piece - 1][0] == snake.Tail[piece][0] && snake.Tail[piece][1] == snake.Tail[piece + 1][1]) {
+        cornerPieces.push([snake.Tail[piece][0] * scalefactor, snake.Tail[piece][1] * scalefactor]);
+        cornerIndexes.push(piece);
+      } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
+        cornerPieces.push([snake.Tail[piece][0] * scalefactor, snake.Tail[piece][1] * scalefactor]);
+        cornerIndexes.push(piece);
+      }
+    }
+  }
   // if (cornerPieces.length != 0) {
   //   console.log(snake.Tail);
   //   console.log(cornerPieces);
@@ -229,7 +233,7 @@ const drawSnake = function(snake, oldTail, frame) {
   for (let piece in oldTail) {
     piece = parseInt(piece);
     //the image this piece needs
-    let image = snake.body;
+    let image;
     let angle = 0;
     //check if the piece is a head
     if (piece == 0) {
@@ -264,6 +268,14 @@ const drawSnake = function(snake, oldTail, frame) {
     }
     //body controle
     else {
+      image = snake.body;
+      for (let index of cornerIndexes) {
+        if (index == piece) {
+          if (frame > 20) {
+            image = snake.bodyHalf;
+          }
+        }
+      }
       if (snake.Tail[piece][1] * scalefactor == oldTail[piece][1]) {
         if (oldTail[piece - 1][0] > oldTail[piece][0]) {
           angle = 90;
@@ -463,6 +475,7 @@ const generateSnakes = function() {
       case '#00FF00':
         newsnake.head = greenSnakeHead;
         newsnake.body = greenSnakeBody;
+        newsnake.bodyHalf = greenSnakeBodyHalf;
         newsnake.corner = greenSnakeCorner;
         newsnake.tail = greenSnakeTail;
         break;
@@ -655,12 +668,7 @@ const tutorialbuttons = function() {
 };
 
 const showContinue = function() {
-  if (
-    buttonLeftHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonRightHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonUpHTML.classList.contains('c-tutorial__button-ok') &&
-    buttonDownHTML.classList.contains('c-tutorial__button-ok')
-  ) {
+  if (buttonLeftHTML.classList.contains('c-tutorial__button-ok') && buttonRightHTML.classList.contains('c-tutorial__button-ok') && buttonUpHTML.classList.contains('c-tutorial__button-ok') && buttonDownHTML.classList.contains('c-tutorial__button-ok')) {
     console.log('nice');
     continueMovementHTML.classList.remove('o-hide-accessible');
   }
