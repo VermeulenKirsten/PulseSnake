@@ -109,22 +109,11 @@ const getdomelements = function() {
   heartLoadingAnimation = document.querySelector('.js-heartanimation');
 };
 
-// *********** HTML Generation ***********
-
-// *********** Callback ***********
-
-// *********** Data Access ***********
-
-// *********** Objects ***********
-
 // *********** Event Listeners ***********
 const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
       if (lobbyReady) {
-        // message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-        // message.destinationName = roomInfo.roomId;
-        // mqtt.send(message);
         for (let player of roomInfo.players) {
           if (player.id == playerId) {
             sessionStorage.setItem('player', JSON.stringify(player));
@@ -362,36 +351,6 @@ const drawSnake = function(snake, oldTail, frame) {
     }
   }
 };
-// *********** refresh the display ***********
-// const displaysnakes = function() {
-//   createfield();
-//   for (let snake of snakes) {
-//     try {
-//       for (let piece of snake.Tail) {
-//         ctx.fillStyle = snake.Color;
-//         ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//         if (piece == snake.Tail[0]) {
-//           ctx.fillStyle = '#006600';
-//           ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//         }
-//       }
-//       ctx.fillStyle = '#FF0000';
-//       ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//       // show the candy
-//       ctx.fillStyle = '#FF00FF';
-//       ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//     } catch {
-//       snake.isalive = false;
-//       console.log('u dead boi');
-//       stop = true;
-//     }
-//   }
-//   if (!stop) {
-//     setTimeout(function() {
-//       displaysnakes();
-//     }, 1000 / framerate);
-//   }
-// };
 
 // *********** function to draw rotated images ***********
 const drawImage = function(image, x, y, degrees) {
