@@ -67,8 +67,10 @@ const getdomelements = function() {
   countDownhtml = document.querySelector('.js-countDown');
   hartslagwaardeHTML = document.querySelector('.js-hartslagwaarde');
   pompendHartHTML = document.querySelector('.js-pompendHart');
-  continueHTML = document.querySelector('.js-continue');
-  overlayHTML = document.querySelector('.js-overlay');
+  continueHeartHTML = document.querySelector('.js-continue-heart');
+  overlayHTML = document.querySelector('.js-overlay-heart');
+  continueMovementHTML = document.querySelector('.js-continue-buttons');
+  overlayMovementHTML = document.querySelector('.js-overlay-buttons');
   fruitImage = document.querySelector('#js-fruitIcon');
   candyImage = document.querySelector('#js-candyIcon');
   buttonUpHTML = document.querySelector('.js-buttonUp');
@@ -631,8 +633,13 @@ const infobuttons = function() {
 };
 
 const continueTutorial = function() {
-  continueHTML.addEventListener('click', function() {
+  continueHeartHTML.addEventListener('click', function() {
     overlayHTML.classList.add('o-hide-accessible');
+    overlayMovementHTML.classList.remove('o-hide-accessible');
+  });
+  continueMovementHTML.addEventListener('click', function() {
+    overlayHTML.classList.add('o-hide-accessible');
+    overlayMovementHTML.classList.add('o-hide-accessible');
     playMusic();
     InitiateStartSecuence();
   });
@@ -666,7 +673,7 @@ const tutorialbuttons = function() {
     buttonDownHTML.classList.remove('c-tutorial__button-ok');
     buttonRightHTML.classList.remove('c-tutorial__button-ok');
     buttonUpHTML.classList.remove('c-tutorial__button-ok');
-    continueHTML.classList.add('o-hide-accessible');
+    continueMovementHTML.classList.add('o-hide-accessible');
   });
 };
 
@@ -678,7 +685,7 @@ const showContinue = function() {
     buttonDownHTML.classList.contains('c-tutorial__button-ok')
   ) {
     console.log('nice');
-    continueHTML.classList.remove('o-hide-accessible');
+    continueMovementHTML.classList.remove('o-hide-accessible');
   }
 };
 
