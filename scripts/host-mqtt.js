@@ -24,7 +24,6 @@ const onConnect = function() {
 
 const onConnectGuest = function() {
   console.log('Connected');
-
   mqtt.subscribe(roomId);
   if (old) {
     message = new Paho.MQTT.Message(JSON.stringify(new Message('playerUpdate', localPlayer)));
@@ -36,8 +35,6 @@ const onConnectGuest = function() {
     message.destinationName = roomId;
     mqtt.send(message);
   }
-
-  //setTimeout(roomNotFound, 3000);
 };
 // ***********  not succesfully connected to broker ***********
 
