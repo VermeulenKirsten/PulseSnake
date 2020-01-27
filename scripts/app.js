@@ -170,10 +170,6 @@ const handlekeydowns = function() {
     //down arrow key pressed
     else if (key.which === 40) {
       snakes[playerNr].Input('down');
-    }
-    //space bar pressed
-    else if (key.which === 32) {
-      snakes[playerNr].Input('slow');
     } else if (key.which === 70) {
       stop = true;
       console.log(stop);
