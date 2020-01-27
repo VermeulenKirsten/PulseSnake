@@ -214,9 +214,27 @@ const gameTick = function(snakeObj) {
 // *********** display the snake ***********
 const drawSnake = function(snake, oldTail, frame) {
   let pixelJump = 1;
+  //clear old tail
   for (let tailPiece of oldTail) {
-    ctx.clearRect(tailPiece[1] - 1, tailPiece[0] - 1, scalefactor + 2, scalefactor + 2);
+    ctx.clearRect(tailPiece[1], tailPiece[0], scalefactor, scalefactor);
   }
+  //scanning for places where cornerpieces are needed
+  // let cornerPieces = [];
+  // for (let piece in snake.Tail) {
+  //   piece = parseInt(piece);
+  //   if (piece != 0 && piece != snake.Tail.length - 1) {
+  //     if (snake.Tail[piece - 1][0] == snake.Tail[piece][0] && snake.Tail[piece][1] == snake.Tail[piece + 1][1]) {
+  //       cornerPieces.push([snake.Tail[piece][0] * scalefactor, snake.Tail[piece][1] * scalefactor]);
+  //     } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
+  //       cornerPieces.push([snake.Tail[piece][0] * scalefactor, snake.Tail[piece][1] * scalefactor]);
+  //     }
+  //   }
+  // }
+  // if (cornerPieces.length != 0) {
+  //   console.log(snake.Tail);
+  //   console.log(cornerPieces);
+  // }
+
   //move the snaketail a few pixels
   ctx.fillStyle = snake.Color;
   for (let piece in oldTail) {
@@ -255,19 +273,19 @@ const drawSnake = function(snake, oldTail, frame) {
         }
       }
     }
-    //the piece is a body (for now)
+    //body controle
     else {
-      if (oldTail[piece - 1][0] == oldTail[piece][0] && oldTail[piece][0] == oldTail[piece + 1][0]) {
-        if (oldTail[piece - 1][1] > oldTail[piece][1]) {
-          angle = 0;
-        } else {
-          angle = 180;
-        }
-      } else {
+      if (snake.Tail[piece][1] * scalefactor == oldTail[piece][1]) {
         if (oldTail[piece - 1][0] > oldTail[piece][0]) {
           angle = 90;
         } else {
           angle = 270;
+        }
+      } else if (snake.Tail[piece][0] * scalefactor == oldTail[piece][0]) {
+        if (oldTail[piece - 1][1] > oldTail[piece][1]) {
+          angle = 0;
+        } else {
+          angle = 180;
         }
       }
     }
@@ -278,7 +296,6 @@ const drawSnake = function(snake, oldTail, frame) {
         ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       }
     }
-
     let destinationX = snake.Tail[piece][1] * scalefactor;
     let destinationY = snake.Tail[piece][0] * scalefactor;
 
@@ -318,19 +335,16 @@ const drawSnake = function(snake, oldTail, frame) {
       if (destinationY == 0) {
         // offscreen to the bottom
         offsetY = pixelJump;
-        // ctx.fillRect(oldX, 0 - scalefactor + offsetY * frame, scalefactor, scalefactor);
         angle = 90;
         drawImage(image, oldX, 0 - scalefactor + offsetY * frame, angle);
       } else if (destinationY == gameheight - scalefactor) {
         // offscreen to the top
         offsetY = -pixelJump;
-        // ctx.fillRect(oldX, gameheight + offsetY * frame, scalefactor, scalefactor);
         angle = 270;
         drawImage(image, oldX, gameheight + offsetY * frame, angle);
       }
     }
     offsetY = offsetY * frame;
-
     drawImage(image, oldX + offsetX, oldY + offsetY, angle);
   }
   //draw the corners
@@ -348,6 +362,7 @@ const drawSnake = function(snake, oldTail, frame) {
         } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
           drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
         }
+        ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
         if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
           drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
@@ -358,49 +373,22 @@ const drawSnake = function(snake, oldTail, frame) {
         } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
           drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
         }
+        ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       }
     }
   }
 };
-// *********** refresh the display ***********
-// const displaysnakes = function() {
-//   createfield();
-//   for (let snake of snakes) {
-//     try {
-//       for (let piece of snake.Tail) {
-//         ctx.fillStyle = snake.Color;
-//         ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//         if (piece == snake.Tail[0]) {
-//           ctx.fillStyle = '#006600';
-//           ctx.fillRect(piece[1] * scalefactor, piece[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//         }
-//       }
-//       ctx.fillStyle = '#FF0000';
-//       ctx.fillRect(fruit[1] * scalefactor, fruit[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//       // show the candy
-//       ctx.fillStyle = '#FF00FF';
-//       ctx.fillRect(candy[1] * scalefactor, candy[0] * scalefactor, 1 * scalefactor, 1 * scalefactor);
-//     } catch {
-//       snake.isalive = false;
-//       console.log('u dead boi');
-//       stop = true;
-//     }
-//   }
-//   if (!stop) {
-//     setTimeout(function() {
-//       displaysnakes();
-//     }, 1000 / framerate);
-//   }
-// };
 
 // *********** function to draw rotated images ***********
 const drawImage = function(image, x, y, degrees) {
-  ctx.save();
-  ctx.translate(x + scalefactor / 2, y + scalefactor / 2);
-  ctx.rotate((degrees * Math.PI) / 180.0);
-  ctx.translate(-x - scalefactor / 2, -y - scalefactor / 2);
-  ctx.drawImage(image, x, y, scalefactor, scalefactor);
-  ctx.restore();
+  if (image != null) {
+    ctx.save();
+    ctx.translate(x + scalefactor / 2, y + scalefactor / 2);
+    ctx.rotate((degrees * Math.PI) / 180.0);
+    ctx.translate(-x - scalefactor / 2, -y - scalefactor / 2);
+    ctx.drawImage(image, x, y, scalefactor, scalefactor);
+    ctx.restore();
+  }
 };
 
 // *********** generate fruit ***********
