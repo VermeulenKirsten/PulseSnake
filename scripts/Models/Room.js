@@ -1,5 +1,5 @@
 function room(roomId) {
-  (this.roomId = roomId), (this.players = []), (this.maxplayers = 4), this.defaultSpeed, this.gameDuration, (this.colors = ['#00FF00', '#FF0000', '#0000FF', '#FFFF00']);
+  (this.roomId = roomId), (this.players = []), (this.maxplayers = 4), this.defaultSpeed, this.gameDuration, (this.colors = ['#00FF00', '#0000FF', '#FFFF00', '#FF0000']);
 
   this.addPlayer = function(newplayer) {
     let length = this.players.length;
