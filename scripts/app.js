@@ -274,6 +274,9 @@ const drawSnake = function(snake, oldTail, frame) {
           if (frame > 20) {
             image = snake.bodyHalf;
           }
+          // else if (frame < 20){
+          //   image = snake.bodyHalf2;
+          // }
         }
       }
       if (snake.Tail[piece][1] * scalefactor == oldTail[piece][1]) {
