@@ -1,5 +1,5 @@
 function Snake(name, id, tail, direction, speed, color = '#00FF00') {
-  (this.Id = id), (this.Name = name), (this.Speed = speed), (this.Tail = tail), (this.Color = color), (this.Inputbuffer = [direction]), (this.heartbeat = 0), (this.score = 0), (this.topLength = 3), (this.distanceMoved = 0), (this.fruitEaten = 0), (this.topHeartbeat = 0), (this.candyEaten = 0), (this.topSpeed = 0), (this.fruitValue = 50), (this.candyValue = -25), (this.suicideValue = -15), this.head, this.body, this.bodyHalf, this.corner, this.tail;
+  (this.Id = id), (this.Name = name), (this.Speed = speed), (this.Tail = tail), (this.Color = color), (this.Inputbuffer = [direction]), (this.heartbeat = 0), (this.score = 0), (this.topLength = 3), (this.distanceMoved = 0), (this.fruitEaten = 0), (this.topHeartbeat = 0), (this.candyEaten = 0), (this.topSpeed = 0), (this.fruitValue = 50), (this.candyValue = -25), (this.suicideValue = -15), this.head, this.body, this.bodyHalf, this.bodyOtherHalf, this.corner, this.tail;
   this.Input = function(direction) {
     let validMove = false;
     let lastkey = this.Inputbuffer[this.Inputbuffer.length - 1];

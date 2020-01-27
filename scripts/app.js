@@ -89,6 +89,7 @@ const getdomelements = function() {
   greenSnakeTail = document.querySelector('#js-greensnaketail');
   greenSnakeBody = document.querySelector('#js-greensnakebody');
   greenSnakeBodyHalf = document.querySelector('#js-greensnakebodyhalf');
+  greenSnakeBodyOtherHalf = document.querySelector('#js-greensnakebodyotherhalf');
   greenSnakeCorner = document.querySelector('#js-greensnakecorner');
   redSnakeHead = document.querySelector('#js-redsnakehead');
   redSnakeTail = document.querySelector('#js-redsnaketail');
@@ -274,9 +275,10 @@ const drawSnake = function(snake, oldTail, frame) {
           if (frame > 20) {
             image = snake.bodyHalf;
           }
-          // else if (frame < 20){
-          //   image = snake.bodyHalf2;
-          // }
+        } else if (index - 1 == piece) {
+          if (frame < 15) {
+            image = snake.bodyOtherHalf;
+          }
         }
       }
       if (snake.Tail[piece][1] * scalefactor == oldTail[piece][1]) {
@@ -479,6 +481,7 @@ const generateSnakes = function() {
         newsnake.head = greenSnakeHead;
         newsnake.body = greenSnakeBody;
         newsnake.bodyHalf = greenSnakeBodyHalf;
+        newsnake.bodyOtherHalf = greenSnakeBodyOtherHalf;
         newsnake.corner = greenSnakeCorner;
         newsnake.tail = greenSnakeTail;
         break;
