@@ -36,7 +36,7 @@ let heartLoadingAnimation;
 let makeymakeytest = 0;
 let overlayTutorialHTML;
 let continueTutorialHTML;
-
+let listGifs = ['apple.gif', 'candy.gif', 'eatMyself.gif', 'hartslag.gif'];
 let snakePositions = [
   [
     [2, 3],
@@ -96,6 +96,10 @@ const getdomelements = function() {
   modalBesturingHTML = document.querySelector('.js-modal-besturing');
   spanHartslag = document.getElementsByClassName('c-close')[0];
   spanBesturing = document.getElementsByClassName('c-close-besturing')[0];
+  gifHTML = document.querySelector('.js-gif');
+  previousGifHTML = document.querySelector('.js-previous-gif');
+  nextGifHTML = document.querySelector('.js-next-gif');
+  indicatorPosition = document.querySelectorAll('.js-position');
 
   greenSnakeHead = document.querySelector('#js-greensnakehead');
   greenSnakeTail = document.querySelector('#js-greensnaketail');
@@ -130,6 +134,18 @@ const getdomelements = function() {
   candySound = document.querySelector('#js-candysound');
   hitSound = document.querySelector('#js-hitsound');
   heartLoadingAnimation = document.querySelector('.js-heartanimation');
+};
+
+const gifListener = function() {
+  nextGifHTML.addEventListener('click', function() {
+    console.log(indicatorPosition);
+    indicatorPosition.forEach(element => {
+      if (element.classList.includes('c-tutorial__indicator-active')) {
+        let dataPosition = element;
+      }
+    });
+    //gifHTML.src = listGifs[]
+  });
 };
 
 // *********** Event Listeners ***********
@@ -401,16 +417,28 @@ const drawSnake = function(snake, oldTail, frame) {
       //   ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
       // }-
       let angle = 0;
-      if ((snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) || (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0])) {
+      if (
+        (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) ||
+        (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0])
+      ) {
         angle = 270;
         drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
-      } else if ((snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) || (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0])) {
+      } else if (
+        (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) ||
+        (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0])
+      ) {
         angle = 0;
         drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
-      } else if ((snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) || (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0])) {
+      } else if (
+        (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) ||
+        (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0])
+      ) {
         angle = 90;
         drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
-      } else if ((snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) || (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0])) {
+      } else if (
+        (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) ||
+        (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0])
+      ) {
         angle = 180;
         drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
       }
@@ -514,7 +542,14 @@ const drawCandy = function() {
 // *********** generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], snakeStartDirections[i], roomInfo.defaultSpeed, roomInfo.players[i].color);
+    newsnake = new Snake(
+      roomInfo.players[i].name,
+      roomInfo.players[i].id,
+      snakePositions[i],
+      snakeStartDirections[i],
+      roomInfo.defaultSpeed,
+      roomInfo.players[i].color
+    );
     switch (roomInfo.players[i].color) {
       case '#FF0000':
         newsnake.head = redSnakeHead;
@@ -952,7 +987,9 @@ const init = function() {
   // listener();
   getdomelements();
   getSessionData();
+  gifListener();
   continueTutorial();
+
   infobuttons();
   tutorialbuttons();
   navigation();
