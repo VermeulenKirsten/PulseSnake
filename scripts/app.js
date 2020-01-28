@@ -34,6 +34,8 @@ let baseSpeed = 4;
 let tellerBaseHeartBeat = 0;
 let heartLoadingAnimation;
 let makeymakeytest = 0;
+let overlayTutorialHTML;
+let continueTutorialHTML;
 
 let snakePositions = [
   [
@@ -73,8 +75,12 @@ const getdomelements = function() {
   pompendHartHTML = document.querySelector('.js-pompendHart');
   continueHeartHTML = document.querySelector('.js-continue-heart');
   overlayHTML = document.querySelector('.js-overlay-heart');
+  backHeart = document.querySelector('.js-back-heart');
   continueMovementHTML = document.querySelector('.js-continue-buttons');
   overlayMovementHTML = document.querySelector('.js-overlay-buttons');
+  backMovement = document.querySelector('.js-back-controls');
+  overlayTutorialHTML = document.querySelector('.js-overlay-tutorial');
+  // continueTutorialHTML = document.querySelector('.js-continue-tutorial');
   fruitImage = document.querySelector('#js-fruitIcon');
   candyImage = document.querySelector('#js-candyIcon');
   buttonUpHTML = document.querySelector('.js-buttonUp');
@@ -652,33 +658,32 @@ const continueTutorial = function() {
     overlayMovementHTML.classList.remove('o-hide-accessible');
   });
   continueMovementHTML.addEventListener('click', function() {
-    overlayHTML.classList.add('o-hide-accessible');
     overlayMovementHTML.classList.add('o-hide-accessible');
-    playMusic();
-    InitiateStartSecuence();
+    overlayTutorialHTML.classList.remove('o-hide-accessible');
   });
+  // continueTutorialHTML.addEventListener('click', function() {
+  //   overlayTutorialHTML.classList.add('o-hide-accessible');
+  //   playMusic();
+  //   InitiateStartSecuence();
+  // });
 };
 
 const tutorialbuttons = function() {
   document.addEventListener('keydown', function(key) {
     if (key.which === 37) {
       buttonLeftHTML.classList.add('c-tutorial__button-ok');
-      showContinue();
     }
     //up arrow key pressed
     else if (key.which === 38) {
       buttonUpHTML.classList.add('c-tutorial__button-ok');
-      showContinue();
     }
     //right arrow key pressed
     else if (key.which === 39) {
       buttonRightHTML.classList.add('c-tutorial__button-ok');
-      showContinue();
     }
     //down arrow key pressed
     else if (key.which === 40) {
       buttonDownHTML.classList.add('c-tutorial__button-ok');
-      showContinue();
     }
   });
 
@@ -687,15 +692,7 @@ const tutorialbuttons = function() {
     buttonDownHTML.classList.remove('c-tutorial__button-ok');
     buttonRightHTML.classList.remove('c-tutorial__button-ok');
     buttonUpHTML.classList.remove('c-tutorial__button-ok');
-    continueMovementHTML.classList.add('o-hide-accessible');
   });
-};
-
-const showContinue = function() {
-  if (buttonLeftHTML.classList.contains('c-tutorial__button-ok') && buttonRightHTML.classList.contains('c-tutorial__button-ok') && buttonUpHTML.classList.contains('c-tutorial__button-ok') && buttonDownHTML.classList.contains('c-tutorial__button-ok')) {
-    console.log('nice');
-    continueMovementHTML.classList.remove('o-hide-accessible');
-  }
 };
 
 const getHeartbeatCurrentSnake = function(heartValue) {
@@ -847,6 +844,13 @@ const getHeartbeat = function() {
   }
 };
 
+const navigation = function() {
+  backMovement.addEventListener('click', function() {
+    overlayHTML.classList.remove('o-hide-accessible');
+    overlayMovementHTML.classList.add('o-hide-accessible');
+  });
+};
+
 const initializeScores = function() {
   scoreHTML.innerHTML = '';
   for (let snake in snakes) {
@@ -919,13 +923,13 @@ const InitiateStartSecuence = function() {
 
 // *********** Init / DOMContentLoaded ***********
 const init = function() {
-  console.log('init');
   // listener();
   getdomelements();
   getSessionData();
   continueTutorial();
   infobuttons();
   tutorialbuttons();
+  navigation();
   getHeartbeat(scores);
   generateSnakes();
 
