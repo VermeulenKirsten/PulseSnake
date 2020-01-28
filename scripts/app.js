@@ -432,61 +432,52 @@ const drawSnake = function(snake, oldTail, frame) {
   for (let piece in snake.Tail) {
     piece = parseInt(piece);
     if (piece != 0 && piece != snake.Tail.length - 1) {
-      //verticaal na horizontaal draaien
-      // if (snake.Tail[piece - 1][0] == snake.Tail[piece][0] && snake.Tail[piece][1] == snake.Tail[piece + 1][1]) {
-      //   if (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
-      //   } else if (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
-      //   } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
-      //   } else if (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
-      //   }
-      //   ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
-      // } else if (snake.Tail[piece - 1][1] == snake.Tail[piece][1] && snake.Tail[piece][0] == snake.Tail[piece + 1][0]) {
-      //   if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
-      //   } else if (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
-      //   } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
-      //   } else if (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) {
-      //     drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
-      //   }
-      //   ctx.clearRect(piece[1], piece[0], scalefactor, scalefactor);
-      // }-
-      let angle = 0;
-      if (
-        (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) ||
-        (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0])
-      ) {
+      let angle = null;
+      let prev = [...snake.Tail[piece - 1]];
+      let current = [...snake.Tail[piece]];
+      let next = [...snake.Tail[piece + 1]];
+      //rightborder fix
+      if (prev[1] == 25 && current[1] == 0) {
+        prev[1] = -1;
+      }
+      //leftborder fix
+      if (prev[1] == 0 && current[1] == 25) {
+        prev[1] = 26;
+      }
+      //corder after border fix
+      if (next[1] == 25 && current[1] == 0) {
+        next[1] = -1;
+      }
+      if (next[1] == 0 && current[1] == 25) {
+        next[1] = 26;
+      }
+      //bottom border fix
+      if (prev[0] == 21 && current[0] == 0) {
+        prev[0] = -1;
+      }
+      //top border fix
+      if (prev[0] == 0 && current[0] == 21) {
+        prev[0] = 22;
+      }
+      //corner after border fix
+      if (next[0] == 21 && current[0] == 0) {
+        next[0] = -1;
+      }
+      if (next[0] == 0 && current[0] == 21) {
+        next[0] = 22;
+      }
+      if ((prev[0] > current[0] && current[1] < next[1]) || (prev[1] > current[1] && current[0] < next[0])) {
         angle = 270;
-        drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 270);
-      } else if (
-        (snake.Tail[piece - 1][0] > snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) ||
-        (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] < snake.Tail[piece + 1][0])
-      ) {
+      } else if ((prev[0] > current[0] && current[1] > next[1]) || (prev[1] < current[1] && current[0] < next[0])) {
         angle = 0;
-        drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 0);
-      } else if (
-        (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] > snake.Tail[piece + 1][1]) ||
-        (snake.Tail[piece - 1][1] < snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0])
-      ) {
+      } else if ((prev[0] < current[0] && current[1] > next[1]) || (prev[1] < current[1] && current[0] > next[0])) {
         angle = 90;
-        drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 90);
-      } else if (
-        (snake.Tail[piece - 1][0] < snake.Tail[piece][0] && snake.Tail[piece][1] < snake.Tail[piece + 1][1]) ||
-        (snake.Tail[piece - 1][1] > snake.Tail[piece][1] && snake.Tail[piece][0] > snake.Tail[piece + 1][0])
-      ) {
+      } else if ((prev[0] < current[0] && current[1] < next[1]) || (prev[1] > current[1] && current[0] > next[0])) {
         angle = 180;
-        drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, 180);
       }
-      if (angle) {
-        // drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, angle);
+      if (angle != null) {
+        drawImage(snake.corner, snake.Tail[piece][1] * scalefactor, snake.Tail[piece][0] * scalefactor, angle);
       }
-
-      // deel 1 = horizontaal , deel 2  = verticaal
     }
   }
   //redraw head (and tail)
