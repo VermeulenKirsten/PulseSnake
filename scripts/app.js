@@ -136,6 +136,8 @@ const getdomelements = function() {
   candySound = document.querySelector('#js-candysound');
   hitSound = document.querySelector('#js-hitsound');
   heartLoadingAnimation = document.querySelector('.js-heartanimation');
+
+  muteButton = document.querySelector('#js-mute');
 };
 
 const gifListener = function() {
@@ -187,26 +189,15 @@ const gifListener = function() {
 const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
-      if (lobbyReady) {
-        for (let player of roomInfo.players) {
-          if (player.id == playerId) {
-            sessionStorage.setItem('player', JSON.stringify(player));
-          }
-        }
-        window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
-      } else {
-        message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-        message.destinationName = roomInfo.roomId;
-        mqtt.send(message);
-        window.location.href = 'index.html';
-      }
+      message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+      message.destinationName = roomInfo.roomId;
+      mqtt.send(message);
+      window.location.href = 'index.html';
     } else {
-      for (let player in roomInfo.players) {
-        roomInfo.players[player].ready = false;
-      }
-      console.log(roomInfo);
-      sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-      window.location.href = 'hostlobby.html';
+      sessionStorage.clear();
+      sessionStorage.setItem('sound', !muteButton.checked);
+
+      window.location.href = 'index.html';
     }
   });
 };
@@ -614,12 +605,6 @@ const getSessionData = function() {
 };
 
 const startCountDown = function() {
-  audioPlayer.play();
-  muteButton = document.querySelector('#js-mute');
-  muteButton.addEventListener('click', function() {
-    console.log(muteButton);
-    audioPlayer.muted = !muteButton.checked;
-  });
   if (countDownTime == 0) {
     countDownhtml.children[0].innerHTML = 'GO!';
   } else if (countDownTime == -1) {
@@ -656,10 +641,16 @@ const startMovement = function() {
 const playMusic = function() {
   audioPlayer.play();
   audioPlayer.loop = true;
-  muteButton = document.querySelector('#js-mute');
+  if (sessionStorage.getItem('sound') == 'true') {
+    audioPlayer.muted = true;
+    muteButton.checked = false;
+  } else {
+    audioPlayer.muted = false;
+    muteButton.checked = true;
+  }
   muteButton.addEventListener('click', function() {
-    console.log(muteButton);
     audioPlayer.muted = !muteButton.checked;
+    sessionStorage.setItem('sound', !muteButton.checked);
   });
 };
 const gameOver = function() {

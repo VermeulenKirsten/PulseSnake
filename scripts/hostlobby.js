@@ -152,9 +152,7 @@ const updateName = function() {
 
 // ***********  Navigation ***********
 const goToCreate = function() {
-  console.log('craeet');
   sessionStorage.clear();
-
   window.location.href = 'create.html';
 };
 
@@ -197,21 +195,7 @@ const init = function() {
   roomId = url.searchParams.get('roomId');
   if (roomId) {
     playerRole = 'Guest';
-    if (sessionStorage.getItem('player')) {
-      localPlayer = JSON.parse(sessionStorage.getItem('player'));
-      oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
-      let oldroomId = oldRoom.roomId;
-      playerId = localPlayer.id;
-      if (roomId == oldroomId) {
-        old = true;
-      } else {
-        old = false;
-        playerId = createUuid();
-      }
-    } else {
-      old = false;
-      playerId = createUuid();
-    }
+    playerId = createUuid();
     MQTTconnect(onConnectGuest);
     setTimeout(roomNotFound, 5000);
     generateDOMelements();
@@ -222,7 +206,6 @@ const init = function() {
     playerRole = 'Host';
     generateDOMelements();
     setHTML('Host');
-
     addListener();
     loadRoomInfo();
     updateSnakeColor();
