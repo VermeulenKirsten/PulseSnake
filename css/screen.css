@@ -820,6 +820,26 @@ li:last-child > .c-speed__indicator {
   grid-column: 3;
 }
 
+.c-tutorial__indicators {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.c-tutorial__indicator {
+  height: var(--global-whitespace-sm);
+  background-color: var(--global-color-gamma);
+  border-radius: var(--global-border-radius);
+  margin-right: var(--global-whitespace-sm);
+  width: var(--global-whitespace-xxl);
+  transition: transform var(--global-transition-beta);
+}
+
+.c-tutorial__indicator-active {
+  background-color: var(--global-color-alpha);
+  transform: translateY(-4px);
+}
+
 /* The Modal (background) */
 .c-modal {
   display: none; /* Hidden by default */
