@@ -880,7 +880,10 @@ const getHeartbeat = function() {
       a.push(heartValue);
 
       if ((heartValue > 0) & (typeof heartValue == 'number')) {
-        if (tellerBaseHeartBeat < 1) {
+        if (!baseHeartBeat) {
+          baseHeartBeat = heartValue;
+        }
+        if (heartValue < baseHeartBeat) {
           baseHeartBeat = heartValue;
           console.log('BaseHeartBeat: ' + baseHeartBeat);
           tellerBaseHeartBeat = 1;
