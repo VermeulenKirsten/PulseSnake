@@ -37,6 +37,12 @@ let makeymakeytest = 0;
 let overlayTutorialHTML;
 let continueTutorialHTML;
 let listGifs = ['apple.gif', 'candy.gif', 'eatMyself.gif', 'hartslag.gif'];
+let listTitles = [
+  'Eet appels en scoor punten!',
+  'Eet geen snoep of je verliest punten',
+  'Jezelf opeten maakt je korter',
+  'Een hogere hartslag zorgt voor hogere snelheid'
+];
 let snakePositions = [
   [
     [2, 3],
@@ -100,6 +106,7 @@ const getdomelements = function() {
   previousGifHTML = document.querySelector('.js-previous-gif');
   nextGifHTML = document.querySelector('.js-next-gif');
   indicatorPosition = document.querySelectorAll('.js-position');
+  titleHTML = document.querySelector('.js-title');
 
   greenSnakeHead = document.querySelector('#js-greensnakehead');
   greenSnakeTail = document.querySelector('#js-greensnaketail');
@@ -138,13 +145,46 @@ const getdomelements = function() {
 
 const gifListener = function() {
   nextGifHTML.addEventListener('click', function() {
-    console.log(indicatorPosition);
+    let dataPosition;
     indicatorPosition.forEach(element => {
-      if (element.classList.includes('c-tutorial__indicator-active')) {
-        let dataPosition = element;
+      if (element.classList.contains('c-tutorial__indicator-active')) {
+        dataPosition = element.dataset.position;
+
+        if (dataPosition < '3') {
+          element.classList.remove('c-tutorial__indicator-active');
+        }
       }
     });
-    //gifHTML.src = listGifs[]
+    indicatorPosition.forEach(element => {
+      if (element.dataset.position == parseInt(dataPosition) + 1) {
+        element.classList.add('c-tutorial__indicator-active');
+      }
+    });
+    if (dataPosition < '3') {
+      gifHTML.src = `/img/gif/${listGifs[parseInt(dataPosition) + 1]}`;
+      titleHTML.innerHTML = listTitles[parseInt(dataPosition) + 1];
+    }
+  });
+
+  previousGifHTML.addEventListener('click', function() {
+    let dataPosition;
+    indicatorPosition.forEach(element => {
+      if (element.classList.contains('c-tutorial__indicator-active')) {
+        dataPosition = element.dataset.position;
+        if (dataPosition > '0') {
+          element.classList.remove('c-tutorial__indicator-active');
+        }
+      }
+    });
+    indicatorPosition.forEach(element => {
+      if (element.dataset.position == parseInt(dataPosition) - 1) {
+        element.classList.add('c-tutorial__indicator-active');
+      }
+    });
+    if (dataPosition > '0') {
+      gifHTML.src = `/img/gif/${listGifs[parseInt(dataPosition) - 1]}`;
+      titleHTML.innerHTML = listTitles[parseInt(dataPosition) - 1];
+    }
   });
 };
 
