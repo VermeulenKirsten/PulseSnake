@@ -855,6 +855,11 @@ li:last-child > .c-speed__indicator {
   max-width: calc(var(--global-baseline) * 50);
 }
 
+.c-tutorial__gif {
+  overflow: hidden;
+  padding: 0;
+}
+
 /* The Modal (background) */
 .c-modal {
   display: none; /* Hidden by default */
