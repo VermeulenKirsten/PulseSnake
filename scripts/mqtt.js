@@ -113,6 +113,11 @@ const onMessageArrived = function(msg) {
               }
             }
             roomInfo.players.splice(player);
+            setTimeout(function() {
+              ctx.clearRect(0, 0, gamewidth, gameheight);
+              drawFruit();
+              drawCandy();
+            }, 601);
             initializeScores();
           }
         }

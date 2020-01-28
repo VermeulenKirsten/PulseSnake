@@ -158,7 +158,7 @@ const gifListener = function() {
       }
     });
     if (dataPosition < '3') {
-      gifHTML.src = `/img/gif/${listGifs[parseInt(dataPosition) + 1]}`;
+      gifHTML.src = `img/gif/${listGifs[parseInt(dataPosition) + 1]}`;
       titleHTML.innerHTML = listTitles[parseInt(dataPosition) + 1];
     }
   });
@@ -179,7 +179,7 @@ const gifListener = function() {
       }
     });
     if (dataPosition > '0') {
-      gifHTML.src = `/img/gif/${listGifs[parseInt(dataPosition) - 1]}`;
+      gifHTML.src = `img/gif/${listGifs[parseInt(dataPosition) - 1]}`;
       titleHTML.innerHTML = listTitles[parseInt(dataPosition) - 1];
     }
   });
