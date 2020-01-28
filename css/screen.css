@@ -830,14 +830,29 @@ li:last-child > .c-speed__indicator {
   height: var(--global-whitespace-sm);
   background-color: var(--global-color-gamma);
   border-radius: var(--global-border-radius);
-  margin-right: var(--global-whitespace-sm);
+  margin-right: var(--global-whitespace-md);
   width: var(--global-whitespace-xxl);
   transition: transform var(--global-transition-beta);
 }
 
 .c-tutorial__indicator-active {
   background-color: var(--global-color-alpha);
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+}
+
+.c-tutorial__vertical {
+  flex-direction: column;
+}
+
+.c-tutorial__slideshow {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  column-gap: var(--global-whitespace-xxl);
+  margin-bottom: calc(var(--global-baseline) * 12);
+}
+
+.c-tutorial__skip {
+  max-width: calc(var(--global-baseline) * 50);
 }
 
 /* The Modal (background) */
