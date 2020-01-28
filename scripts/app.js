@@ -81,6 +81,7 @@ const getdomelements = function() {
   backMovement = document.querySelector('.js-back-controls');
   overlayTutorialHTML = document.querySelector('.js-overlay-tutorial');
   // continueTutorialHTML = document.querySelector('.js-continue-tutorial');
+  skiptutorial = document.querySelector('.js-skip');
   fruitImage = document.querySelector('#js-fruitIcon');
   candyImage = document.querySelector('#js-candyIcon');
   buttonUpHTML = document.querySelector('.js-buttonUp');
@@ -848,6 +849,11 @@ const navigation = function() {
   backMovement.addEventListener('click', function() {
     overlayHTML.classList.remove('o-hide-accessible');
     overlayMovementHTML.classList.add('o-hide-accessible');
+  });
+  skiptutorial.addEventListener('click', function() {
+    overlayTutorialHTML.classList.add('o-hide-accessible');
+    playMusic();
+    InitiateStartSecuence();
   });
 };
 
