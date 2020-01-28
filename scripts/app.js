@@ -37,12 +37,7 @@ let makeymakeytest = 0;
 let overlayTutorialHTML;
 let continueTutorialHTML;
 let listGifs = ['apple.gif', 'candy.gif', 'eatMyself.gif', 'hartslag.gif'];
-let listTitles = [
-  'Eet appels en scoor punten!',
-  'Eet geen snoep of je verliest punten',
-  'Jezelf opeten maakt je korter',
-  'Een hogere hartslag zorgt voor hogere snelheid'
-];
+let listTitles = ['Eet appels en scoor punten!', 'Eet geen snoep of je verliest punten', 'Jezelf opeten maakt je korter', 'Een hogere hartslag zorgt voor hogere snelheid'];
 let snakePositions = [
   [
     [2, 3],
@@ -573,14 +568,7 @@ const drawCandy = function() {
 // *********** generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(
-      roomInfo.players[i].name,
-      roomInfo.players[i].id,
-      snakePositions[i],
-      snakeStartDirections[i],
-      roomInfo.defaultSpeed,
-      roomInfo.players[i].color
-    );
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], snakeStartDirections[i], roomInfo.defaultSpeed, roomInfo.players[i].color);
     switch (roomInfo.players[i].color) {
       case '#FF0000':
         newsnake.head = redSnakeHead;

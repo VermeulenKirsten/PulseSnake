@@ -23,26 +23,22 @@ const showplayers = function() {
   for (player of roomInfo.players) {
     switch (player.color) {
       case '#FF0000':
-        head = '/img/png/red_head.png';
+        head = './img/png/red_head.png';
         break;
       case '#00FF00':
-        head = '/img/png/green_head.png';
+        head = './img/png/green_head.png';
         break;
       case '#0000FF':
-        head = '/img/png/blue_head.png';
+        head = './img/png/blue_head.png';
         break;
       case '#FFFF00':
-        head = '/img/png/yellow_head.png';
+        head = './img/png/yellow_head.png';
         break;
     }
     output += `<li class="o-layout__center c-lobby__player">
     <img class="c-lobby__img-sm" src="${head}" alt="Hoofdje" />
     <p class="u-mb-clear">${player.name}</p>
-    ${
-      player.ready
-        ? '<svg aria-hidden="true" focusable="false" class="c-icon c-lobby__ready" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path  d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path></svg>'
-        : '<svg aria-hidden="true" focusable="false" class="c-icon c-lobby__not-ready" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path></svg>'
-    }
+    ${player.ready ? '<svg aria-hidden="true" focusable="false" class="c-icon c-lobby__ready" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path  d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path></svg>' : '<svg aria-hidden="true" focusable="false" class="c-icon c-lobby__not-ready" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path></svg>'}
   </li>`;
   }
   playerList.innerHTML = output;
