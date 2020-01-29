@@ -105,7 +105,6 @@ const loadRoomInfo = function() {
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
-  console.log(playerRole);
 
   if (playerRole == 'Host') {
     domStart.addEventListener('click', goToGame);
@@ -125,6 +124,7 @@ const readyUp = function() {
   message = new Paho.MQTT.Message(JSON.stringify(new Message('playerReady', playerId)));
   message.destinationName = roomId;
   mqtt.send(message);
+  domStart.children[0].children[0].children[0].children[0].innerHTML = domStart.children[0].children[0].children[0].children[0].innerHTML == 'Klaar' ? 'Niet klaar' : 'Klaar';
 };
 // ***********  update the name in the room ***********
 
@@ -161,7 +161,6 @@ const goToCreate = function() {
 };
 
 const goToJoin = function() {
-  console.log('craeet');
   window.location.href = 'join.html';
   message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
   message.destinationName = roomId;

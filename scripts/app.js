@@ -202,6 +202,10 @@ const listener = function() {
       mqtt.send(message);
       window.location.href = 'index.html';
     } else {
+      message = new Paho.MQTT.Message(JSON.stringify(new Message('gamestop', '')));
+      message.destinationName = roomInfo.roomId;
+      mqtt.send(message);
+
       sessionStorage.clear();
       sessionStorage.setItem('sound', !muteButton.checked);
 
@@ -1004,9 +1008,15 @@ const checkPlayer = function() {
 // ***********  page reload ***********
 
 window.onbeforeunload = function() {
-  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-  message.destinationName = roomId;
-  mqtt.send(message);
+  if (playerNr != 0) {
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+    message.destinationName = roomId;
+    mqtt.send(message);
+  } else {
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('gamestop', '')));
+    message.destinationName = roomId;
+    mqtt.send(message);
+  }
 };
 
 const InitiateStartSecuence = function() {

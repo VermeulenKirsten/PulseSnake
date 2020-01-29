@@ -101,12 +101,12 @@ const onMessageArrived = function(msg) {
         for (let player in roomInfo.players) {
           if (roomInfo.players[player].id == message.message) {
             for (let snake in snakes) {
-              if (snakes[snake].Name == roomInfo.players[player].name) {
-                snakes.splice(snake);
+              if (snakes[snake].Id == roomInfo.players[player].id) {
+                snakes.splice(snake, 1);
               }
             }
             delete loadedPlayers[message.message];
-            roomInfo.players.splice(player);
+            roomInfo.players.splice(player, 1);
             setTimeout(function() {
               ctx.clearRect(0, 0, gamewidth, gameheight);
               drawFruit();
@@ -117,6 +117,11 @@ const onMessageArrived = function(msg) {
             }
           }
         }
+      }
+      break;
+    case 'gamestop':
+      {
+        window.location.href = '/index.html';
       }
       break;
 
