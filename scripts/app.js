@@ -572,6 +572,8 @@ const generateSnakes = function() {
         newsnake.body = redSnakeBody;
         newsnake.corner = redSnakeCorner;
         newsnake.tail = redSnakeTail;
+        newsnake.bodyHalf = redSnakeBodyHalf;
+        newsnake.bodyOtherHalf = redSnakeBodyOtherHalf;
         break;
       case '#00FF00':
         newsnake.head = greenSnakeHead;
@@ -586,12 +588,16 @@ const generateSnakes = function() {
         newsnake.body = blueSnakeBody;
         newsnake.corner = blueSnakeCorner;
         newsnake.tail = blueSnakeTail;
+        newsnake.bodyHalf = blueSnakeBodyHalf;
+        newsnake.bodyOtherHalf = blueSnakeBodyOtherHalf;
         break;
       case '#FFFF00':
         newsnake.head = yellowSnakeHead;
         newsnake.body = yellowSnakeBody;
         newsnake.corner = yellowSnakeCorner;
         newsnake.tail = yellowSnakeTail;
+        newsnake.bodyHalf = yellowSnakeBodyHalf;
+        newsnake.bodyOtherHalf = yellowSnakeBodyOtherHalf;
         break;
     }
     snakes.push(newsnake);
