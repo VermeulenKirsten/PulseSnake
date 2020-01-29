@@ -677,7 +677,7 @@ const gameOver = function() {
       eindscores.push({ Name: snake.Name, Score: snake.Speed, ScoreType: 'snelheid', Minuten: roomInfo.gameDuration });
       eindscores.push({ Name: snake.Name, Score: snake.topLength, ScoreType: 'lengte', Minuten: roomInfo.gameDuration });
       eindscores.push({ Name: snake.Name, Score: snake.fruitEaten, ScoreType: 'fruit', Minuten: roomInfo.gameDuration });
-      eindscores.push({ Name: snake.Name, Score: snake.candyEaten, ScoreType: 'candy', Minuten: roomInfo.gameDuration });
+      eindscores.push({ Name: snake.Name, Score: snake.candyEaten, ScoreType: 'snoep', Minuten: roomInfo.gameDuration });
       eindscores.push({ Name: snake.Name, Score: snake.topHeartbeat, ScoreType: 'hartslag', Minuten: roomInfo.gameDuration });
     }
     for (let eindscore of eindscores) {
