@@ -256,9 +256,9 @@ const gameTick = function(snakeObj) {
 
     for (let frame = 0; frame < scalefactor; frame++) {
       setTimeout(function() {
-        // requestAnimationFrame(function() {
-        drawSnake(snakeObj, oldTail, frame);
-        // });
+        requestAnimationFrame(function() {
+          drawSnake(snakeObj, oldTail, frame);
+        });
       }, timeBetweenFrames * frame);
     }
 
@@ -572,6 +572,8 @@ const generateSnakes = function() {
         newsnake.body = redSnakeBody;
         newsnake.corner = redSnakeCorner;
         newsnake.tail = redSnakeTail;
+        newsnake.bodyHalf = redSnakeBodyHalf;
+        newsnake.bodyOtherHalf = redSnakeBodyOtherHalf;
         break;
       case '#00FF00':
         newsnake.head = greenSnakeHead;
@@ -586,12 +588,16 @@ const generateSnakes = function() {
         newsnake.body = blueSnakeBody;
         newsnake.corner = blueSnakeCorner;
         newsnake.tail = blueSnakeTail;
+        newsnake.bodyHalf = blueSnakeBodyHalf;
+        newsnake.bodyOtherHalf = blueSnakeBodyOtherHalf;
         break;
       case '#FFFF00':
         newsnake.head = yellowSnakeHead;
         newsnake.body = yellowSnakeBody;
         newsnake.corner = yellowSnakeCorner;
         newsnake.tail = yellowSnakeTail;
+        newsnake.bodyHalf = yellowSnakeBodyHalf;
+        newsnake.bodyOtherHalf = yellowSnakeBodyOtherHalf;
         break;
     }
     snakes.push(newsnake);
@@ -916,6 +922,9 @@ const getHeartbeat = function() {
 
 const navigation = function() {
   backHeart.addEventListener('click', function() {
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+    message.destinationName = roomInfo.roomId;
+    mqtt.send(message);
     window.location.href = 'index.html';
   });
   backMovement.addEventListener('click', function() {
@@ -1015,14 +1024,11 @@ const init = function() {
 
   infobuttons();
   tutorialbuttons();
-  navigation();
   MQTTconnect();
+  navigation();
 
   getHeartbeat(scores);
   generateSnakes();
-
-  //generateSnakes();
-  // beginGame;
 };
 
 document.addEventListener('DOMContentLoaded', function() {

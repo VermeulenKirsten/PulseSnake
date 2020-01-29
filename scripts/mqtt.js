@@ -112,7 +112,9 @@ const onMessageArrived = function(msg) {
               drawFruit();
               drawCandy();
             }, 601);
-            initializeScores();
+            if (!stop) {
+              initializeScores();
+            }
           }
         }
       }
