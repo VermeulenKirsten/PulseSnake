@@ -847,11 +847,12 @@ li:last-child > .c-speed__indicator {
 }
 
 .c-tutorial__indicator {
-  height: var(--global-whitespace-sm);
+  height: var(--global-baseline);
   background-color: var(--global-color-gamma);
   border-radius: var(--global-border-radius);
   margin-right: var(--global-whitespace-md);
-  width: var(--global-whitespace-xxl);
+  margin-bottom: var(--global-whitespace-xxl);
+  width: var(--global-whitespace-md);
   transition: transform var(--global-transition-beta);
 }
 
@@ -868,7 +869,7 @@ li:last-child > .c-speed__indicator {
   display: grid;
   grid-template-columns: repeat(3, auto);
   column-gap: var(--global-whitespace-xxl);
-  margin-bottom: calc(var(--global-baseline) * 12);
+  margin-bottom: var(--global-whitespace-xxl);
 }
 
 .c-tutorial__skip {
