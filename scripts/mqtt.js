@@ -101,7 +101,7 @@ const onMessageArrived = function(msg) {
         for (let player in roomInfo.players) {
           if (roomInfo.players[player].id == message.message) {
             for (let snake in snakes) {
-              if (snakes[snake].id == roomInfo.players[player].id) {
+              if (snakes[snake].Id == roomInfo.players[player].id) {
                 snakes.splice(snake, 1);
               }
             }
