@@ -256,9 +256,9 @@ const gameTick = function(snakeObj) {
 
     for (let frame = 0; frame < scalefactor; frame++) {
       setTimeout(function() {
-        // requestAnimationFrame(function() {
-        drawSnake(snakeObj, oldTail, frame);
-        // });
+        requestAnimationFrame(function() {
+          drawSnake(snakeObj, oldTail, frame);
+        });
       }, timeBetweenFrames * frame);
     }
 
@@ -916,6 +916,9 @@ const getHeartbeat = function() {
 
 const navigation = function() {
   backHeart.addEventListener('click', function() {
+    message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+    message.destinationName = roomInfo.roomId;
+    mqtt.send(message);
     window.location.href = 'index.html';
   });
   backMovement.addEventListener('click', function() {
@@ -1015,14 +1018,11 @@ const init = function() {
 
   infobuttons();
   tutorialbuttons();
-  navigation();
   MQTTconnect();
+  navigation();
 
   getHeartbeat(scores);
   generateSnakes();
-
-  //generateSnakes();
-  // beginGame;
 };
 
 document.addEventListener('DOMContentLoaded', function() {
