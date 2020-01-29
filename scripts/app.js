@@ -192,7 +192,7 @@ const listener = function() {
       message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
       message.destinationName = roomInfo.roomId;
       mqtt.send(message);
-      window.location.href = 'index.html';
+      //window.location.href = 'index.html';
     } else {
       sessionStorage.clear();
       sessionStorage.setItem('sound', !muteButton.checked);
@@ -727,11 +727,6 @@ const continueTutorial = function() {
     overlayMovementHTML.classList.add('o-hide-accessible');
     overlayTutorialHTML.classList.remove('o-hide-accessible');
   });
-  // continueTutorialHTML.addEventListener('click', function() {
-  //   overlayTutorialHTML.classList.add('o-hide-accessible');
-  //   playMusic();
-  //   InitiateStartSecuence();
-  // });
 };
 
 const tutorialbuttons = function() {
@@ -977,7 +972,6 @@ const checkPlayer = function() {
   if (playerId == roomInfo.players[0].id) {
     playerNr = 0;
     for (player of roomInfo.players) {
-      console.log('p:', player);
       loadedPlayers[player.id] = false;
     }
   } else {
@@ -992,7 +986,7 @@ const checkPlayer = function() {
 
 const InitiateStartSecuence = function() {
   listener();
-  MQTTconnect();
+  notifyHost();
 };
 
 // *********** Init / DOMContentLoaded ***********
@@ -1006,6 +1000,8 @@ const init = function() {
   infobuttons();
   tutorialbuttons();
   navigation();
+  MQTTconnect();
+
   getHeartbeat(scores);
   generateSnakes();
 
