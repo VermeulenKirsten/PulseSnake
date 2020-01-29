@@ -232,8 +232,5 @@ const roomNotFound = function() {
     window.location.href = 'join.html?error=roomNotFound';
   }
 };
-if (location.protocol != 'http:') {
-  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
-}
 
 document.addEventListener('DOMContentLoaded', init);
