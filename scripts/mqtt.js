@@ -17,7 +17,6 @@ const notifyHost = function() {
 const onConnect = function() {
   console.log('Connected');
   mqtt.subscribe(roomInfo.roomId);
-  notifyHost();
 };
 
 const onFailure = function() {
@@ -112,6 +111,7 @@ const onMessageArrived = function(msg) {
                 snakes.splice(snake);
               }
             }
+            delete loadedPlayers[message.message];
             roomInfo.players.splice(player);
             setTimeout(function() {
               ctx.clearRect(0, 0, gamewidth, gameheight);

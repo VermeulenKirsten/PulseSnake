@@ -67,6 +67,18 @@ const onMessageArrived = function(msg) {
         }
       }
       break;
+    case 'playerUpdate':
+      {
+        if (playerRole == 'Host') {
+          let newplayer = incommingMessage.message;
+          roomInfo.updatePlayer(newplayer);
+          showplayers();
+          message = new Paho.MQTT.Message(JSON.stringify(new Message('roomInfo', roomInfo)));
+          message.destinationName = roomInfo.roomId;
+          mqtt.send(message);
+        }
+      }
+      break;
     case 'playerReady':
       {
         if (playerRole == 'Host') {
