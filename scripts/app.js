@@ -200,7 +200,7 @@ const listener = function() {
       message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
       message.destinationName = roomInfo.roomId;
       mqtt.send(message);
-      //window.location.href = 'index.html';
+      window.location.href = 'index.html';
     } else {
       sessionStorage.clear();
       sessionStorage.setItem('sound', !muteButton.checked);
