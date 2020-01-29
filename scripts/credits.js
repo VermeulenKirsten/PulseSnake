@@ -25,8 +25,5 @@ const init = function() {
   doms();
   eventListeners();
 };
-if (location.protocol != 'http:') {
-  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
-}
 
 document.addEventListener('DOMContentLoaded', init);

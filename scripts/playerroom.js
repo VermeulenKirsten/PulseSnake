@@ -123,6 +123,3 @@ const init = function() {
 document.addEventListener('DOMContentLoaded', function() {
   init();
 });
-if (location.protocol != 'http:') {
-  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
-}

@@ -138,9 +138,6 @@ const init = function() {
   addListener();
   generateRoomId();
 };
-if (location.protocol != 'http:') {
-  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
-}
 
 document.addEventListener('DOMContentLoaded', function() {
   init();
