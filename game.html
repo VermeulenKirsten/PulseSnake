@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <meta name="msapplication-TileColor" content="#f9d976" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <title>Pulse Snake 2.0</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#f9d976" />
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="scripts/Models/Snake.js"></script>
+    <script src="scripts/Models/Message.js"></script>
+    <script src="scripts/Models/Room.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script> -->
+    <script src="scripts/mqtt-lib.js" type="text/javascript"></script>
+    <script src="scripts/mqtt.js"></script>
+    <script src="scripts/app.js"></script>
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/screen.css" />
+  </head>
+  <body class="c-game o-layout__center">
+    <div class="c-game__grid">
+      <div class="c-button__base">
+        <div class="c-game__scoreboard c-input">
+          <p class="c-lead-md u-mb-clear">Scorebord</p>
+
+          <p class="js-tijd">Ready?</p>
+
+          <div class=" js-score">
+          </div>
+          <div class="c-game__button">
+            <p class="js-lobbyReady"></p>
+            <div class="c-button__wrap">
+              <button class="o-button-reset c-button c-button__gap o-layout__center u-mb-clear js-lobby">
+                <div class="c-button__base">
+                  <div class="c-button__outerhead">
+                    <div class="c-button__innerhead">
+                      <p class="c-button__text o-layout__center">Stoppen</p>
+                    </div>
+                  </div>
+                </div>
+              </button>
+
+              <div class=" c-button__round u-mb-clear">
+                <input type="checkbox" id="js-mute" class="c-mute o-hide-accessible" checked />
+                <label class="c-mute-label" for="js-mute">
+                  <div class="c-button__base c-button__base-round">
+                    <div class="c-button__outerhead c-button__outerhead-round">
+                      <div class="c-button__innerhead c-button__innerhead-round">
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="volume-up" class="c-icon c-icon-unmuted" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                          <path d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zm233.32-51.08c-11.17-7.33-26.18-4.24-33.51 6.95-7.34 11.17-4.22 26.18 6.95 33.51 66.27 43.49 105.82 116.6 105.82 195.58 0 78.98-39.55 152.09-105.82 195.58-11.17 7.32-14.29 22.34-6.95 33.5 7.04 10.71 21.93 14.56 33.51 6.95C528.27 439.58 576 351.33 576 256S528.27 72.43 448.35 19.97zM480 256c0-63.53-32.06-121.94-85.77-156.24-11.19-7.14-26.03-3.82-33.12 7.46s-3.78 26.21 7.41 33.36C408.27 165.97 432 209.11 432 256s-23.73 90.03-63.48 115.42c-11.19 7.14-14.5 22.07-7.41 33.36 6.51 10.36 21.12 15.14 33.12 7.46C447.94 377.94 480 319.54 480 256zm-141.77-76.87c-11.58-6.33-26.19-2.16-32.61 9.45-6.39 11.61-2.16 26.2 9.45 32.61C327.98 228.28 336 241.63 336 256c0 14.38-8.02 27.72-20.92 34.81-11.61 6.41-15.84 21-9.45 32.61 6.43 11.66 21.05 15.8 32.61 9.45 28.23-15.55 45.77-45 45.77-76.88s-17.54-61.32-45.78-76.86z"></path>
+                        </svg>
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="volume-mute" class="c-icon c-icon-muted" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                          <path d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM461.64 256l45.64-45.64c6.3-6.3 6.3-16.52 0-22.82l-22.82-22.82c-6.3-6.3-16.52-6.3-22.82 0L416 210.36l-45.64-45.64c-6.3-6.3-16.52-6.3-22.82 0l-22.82 22.82c-6.3 6.3-6.3 16.52 0 22.82L370.36 256l-45.63 45.63c-6.3 6.3-6.3 16.52 0 22.82l22.82 22.82c6.3 6.3 16.52 6.3 22.82 0L416 301.64l45.64 45.64c6.3 6.3 16.52 6.3 22.82 0l22.82-22.82c6.3-6.3 6.3-16.52 0-22.82L461.64 256z"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-button__base u-column-2">
+        <div class="c-game__frame c-input">
+          <div class="c-game__canvas o-layout__center">
+            <canvas width="910" height="770" class="c-game__field js-gameboard">Download Google Chrome om te spelen</canvas>
+            <div class="c-countdown o-layout__center js-countDown">
+              <p class="c-lead-xxxl u-color-white">Wachten op spelers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Overlay heart-->
+
+    <div class="c-overlay o-layout__center js-overlay-heart">
+      <div class="c-tutorial o-layout__center">
+        <p class="c-lead-sm u-mb-xxl">Hartslagmeter verbinden</p>
+        <div class="o-layout__center">
+          <div class="c-tutorial__heart c-tutorial__gap js-pompendHart">
+            <svg aria-hidden="true" focusable="false" class="" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"></path>
+            </svg>
+            <svg class="c-tutorial__heart-animation js-heartanimation" viewbox="0 0 512 512">
+              <!-- Loading animation -->
+              <circle class="c-loader__circle" r="75" cx="256" cy="256" />
+              <circle class="c-loader__circle c-loader__circle2" r="75" cx="256" cy="256" />
+              <circle class="c-loader__circle c-loader__circle3" r="75" cx="256" cy="256" />
+            </svg>
+            <div class="c-tutorial__heart-text ">
+              <p class="c-lead-lg js-hartslagwaarde"></p>
+            </div>
+          </div>
+          <div class="c-tutorial__buttons">
+            <button class="o-button-reset c-button js-hartslag">
+              <div class="c-button__base">
+                <div class="c-button__outerhead">
+                  <div class="c-button__innerhead">
+                    <p class="c-button__text o-layout__center">Verbinden</p>
+                  </div>
+                </div>
+              </div>
+            </button>
+            <button class="o-button-reset c-button js-infoHartslag">
+              <div class="c-button__base">
+                <div class="c-button__outerhead">
+                  <div class="c-button__innerhead">
+                    <p class="c-button__text o-layout__center">
+                      <svg aria-hidden="true" focusable="false" class="c-icon c-icon__gap" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 448c-110.532 0-200-89.431-200-200 0-110.495 89.472-200 200-200 110.491 0 200 89.471 200 200 0 110.53-89.431 200-200 200zm107.244-255.2c0 67.052-72.421 68.084-72.421 92.863V300c0 6.627-5.373 12-12 12h-45.647c-6.627 0-12-5.373-12-12v-8.659c0-35.745 27.1-50.034 47.579-61.516 17.561-9.845 28.324-16.541 28.324-29.579 0-17.246-21.999-28.693-39.784-28.693-23.189 0-33.894 10.977-48.942 29.969-4.057 5.12-11.46 6.071-16.666 2.124l-27.824-21.098c-5.107-3.872-6.251-11.066-2.644-16.363C184.846 131.491 214.94 112 261.794 112c49.071 0 101.45 38.304 101.45 88.8zM298 368c0 23.159-18.841 42-42 42s-42-18.841-42-42 18.841-42 42-42 42 18.841 42 42z"></path></svg>
+                      Help
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </button>
+            <div class="c-button__wrap">
+              <button type="button" class="o-button-reset u-mb-clear c-button__round c-button__gap js-back-heart">
+                <div class="c-button__base c-button__base-round">
+                  <div class="c-button__outerhead c-button__outerhead-round">
+                    <div class="c-button__innerhead c-button__innerhead-round">
+                      <svg aria-hidden="true" focusable="false" class="c-icon c-icon__mirror" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"></path></svg>
+                    </div>
+                  </div>
+                </div>
+              </button>
+                <button class="o-button-reset c-button u-mb-clear js-continue-heart">
+                  <div class="c-button__base">
+                    <div class="c-button__outerhead">
+                      <div class="c-button__innerhead">
+                        <p class="c-button__text o-layout__center">Ga verder</p>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+            </div>
+            
+          </div>
+        </div>
+        <div class="c-modal js-modal-hart">
+          <!-- Modal content -->
+          <div class="c-modal-content">
+            <span class="c-close">&times;</span>
+            <ol class="u-align-text-left">
+              <li class="u-mb-md">Leg de hartslagmeter aan door één maal op de knop te drukken. Wanneer er een groen lichtje verschijnt is alles in orde.</li>
+              <li class="u-mb-md">Zorg ervoor dat de Bluetooth op uw computer aan ligt.</li>
+              <li class="u-mb-md">Druk dan op ‘verbinden’, als alles goed is gegaan zou de hartslag meter moeten verschijnen de lijst.</li>
+              <li class="u-mb-md">Selecteer de hartslag meter met hetzelfde serienummer als er op de zijkant van hartslagmeter staat en druk op koppelen.</li>
+              <li>Wacht totdat er een hartslag wordt weergegeven.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay Controls -->
+
+    <div class="c-overlay o-layout__center js-overlay-buttons o-hide-accessible">
+      <div class="c-tutorial o-layout__center">
+        <p class="c-lead-sm u-mb-xxl">Test de besturing</p>
+        <div class="o-layout__center">
+
+
+        <div class="c-tutorial__controls c-tutorial__gap">
+          <div class="c-tutorial__control c-tutorial__up js-buttonUp">
+            <svg aria-hidden="true" focusable="false" class="c-tutorial__icon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path>
+            </svg>
+          </div>
+          <div class="c-tutorial__control c-tutorial__left js-buttonLeft">
+            <svg aria-hidden="true" focusable="false" class="c-tutorial__icon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg>
+          </div>
+          <div class="c-tutorial__control c-tutorial__right js-buttonRight">
+            <svg aria-hidden="true" focusable="false" class="c-tutorial__icon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path>
+            </svg>
+          </div>
+          <div class="c-tutorial__control c-tutorial__down js-buttonDown">
+            <svg aria-hidden="true" focusable="false" class="c-tutorial__icon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="c-tutorial__buttons">
+          <button class="o-button-reset c-button__gap c-button js-clearTutorial">
+            <div class="c-button__base">
+              <div class="c-button__outerhead">
+                <div class="c-button__innerhead">
+                  <p class="c-button__text o-layout__center">Opnieuw</p>
+                </div>
+              </div>
+            </div>
+          </button>
+
+
+          <button class="o-button-reset c-button js-infoBesturing">
+            <div class="c-button__base">
+              <div class="c-button__outerhead">
+                <div class="c-button__innerhead">
+                  <p class="c-button__text o-layout__center">
+                    <svg aria-hidden="true" focusable="false" class="c-icon c-icon__gap" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 448c-110.532 0-200-89.431-200-200 0-110.495 89.472-200 200-200 110.491 0 200 89.471 200 200 0 110.53-89.431 200-200 200zm107.244-255.2c0 67.052-72.421 68.084-72.421 92.863V300c0 6.627-5.373 12-12 12h-45.647c-6.627 0-12-5.373-12-12v-8.659c0-35.745 27.1-50.034 47.579-61.516 17.561-9.845 28.324-16.541 28.324-29.579 0-17.246-21.999-28.693-39.784-28.693-23.189 0-33.894 10.977-48.942 29.969-4.057 5.12-11.46 6.071-16.666 2.124l-27.824-21.098c-5.107-3.872-6.251-11.066-2.644-16.363C184.846 131.491 214.94 112 261.794 112c49.071 0 101.45 38.304 101.45 88.8zM298 368c0 23.159-18.841 42-42 42s-42-18.841-42-42 18.841-42 42-42 42 18.841 42 42z"></path></svg>
+                    Help
+                  </p>
+                </div>
+              </div>
+            </div>
+          </button>
+          <div class="c-button__wrap">
+            <button type="button" class="o-button-reset u-mb-clear c-button__round c-button__gap js-back-controls">
+              <div class="c-button__base c-button__base-round">
+                <div class="c-button__outerhead c-button__outerhead-round">
+                  <div class="c-button__innerhead c-button__innerhead-round">
+                    <svg aria-hidden="true" focusable="false" class="c-icon c-icon__mirror" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"></path></svg>
+                  </div>
+                </div>
+              </div>
+            </button>
+            <button class="o-button-reset c-button u-mb-clear js-continue-buttons">
+              <div class="c-button__base">
+                <div class="c-button__outerhead">
+                  <div class="c-button__innerhead">
+                    <p class="c-button__text o-layout__center">Ga verder</p>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+          
+          
+        </div>
+        </div>
+
+        <div class="c-modal js-modal-besturing">
+          <!-- Modal content -->
+          <div class="c-modal-content">
+            <span class="c-close c-close-besturing">&times;</span>
+            <ol class="u-align-text-left">
+              <li class="u-mb-md">Bevestig 2 draden met krokodilleklemmen aan beide helften van de handjes.</li>
+              <li class="u-mb-md">Neem de uiteinden van elke draad en breng ze samen bij de Makey Makey.</li>
+              <li class="u-mb-md">Verbind de overeenkomstige uiteinden met de pijltjes op de Makey Makey met behulp van krokodilleklemmen.</li>
+              <li class="u-mb-md">Verbind de Makey Makey via een USB-kabel met de computer.</li>
+              <li class="u-mb-md">Door beide helften van de handjes te bedekken met je hand word er een signaal verstuurd.</li>
+              <li class="u-mb-md">Wanneer er een correct signaal werd verstuurd wordt het overeenkomstige pijltje groen gekleurd.</li class="u-mb-md">
+              <li>Druk op 'Opnieuw' om de pijltjes te resetten</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tutorial -->
+
+      <div class="c-overlay o-layout__center js-overlay-tutorial o-hide-accessible">
+        <div class="c-tutorial o-layout__center">
+          <p class="c-lead-sm u-mb-xxl js-title">Eet appels en scoor punten!</p>
+          <div class="o-layout__center c-tutorial__vertical">
+
+
+            <div class="c-tutorial__slideshow">
+              <button type="button" class="o-button-reset c-button u-mb-clear js-previous-gif">
+                <div class="c-button__base c-button__base-round">
+                  <div class="c-button__outerhead c-button__outerhead-round">
+                    <div class="c-button__innerhead c-button__innerhead-round">
+                      <svg class="c-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <div class="c-button__base">
+                <div class="c-input c-tutorial__gif">
+                  <img class="js-gif" src="img/gif/apple.gif" alt="video">
+                </div>
+              </div>
+              <button type="button" class="o-button-reset c-button u-mb-clear js-next-gif">
+                <div class="c-button__base c-button__base-round">
+                  <div class="c-button__outerhead c-button__outerhead-round">
+                    <div class="c-button__innerhead c-button__innerhead-round">
+                      <svg class="c-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+            
+            
+
+            <ul class="o-list c-tutorial__indicators">
+              <li><div data-position="0" class="c-tutorial__indicator c-tutorial__indicator-active js-position"></div></li>
+              <li><div data-position="1" class="c-tutorial__indicator  js-position" ></div></li>
+              <li><div data-position="2" class="c-tutorial__indicator  js-position"></div></li>
+              <li><div  data-position="3" class="c-tutorial__indicator  js-position"></div></li>
+            </ul>
+
+
+            <button class="o-button-reset c-tutorial__skip c-button u-mb-clear js-skip">
+              <div class="c-button__base">
+                <div class="c-button__outerhead">
+                  <div class="c-button__innerhead">
+                    <p class="c-button__text o-layout__center js-tutorial-button">Overslaan</p>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Overlay -->
+    <!-- Storage voor sprites -->
+    <div class="c-sprites">
+      <audio src="./audio/snakemusic.mp3" id="js-audioplayer"></audio>
+      <audio src="./audio/fruit.wav" id="js-fruitsound"></audio>
+      <audio src="./audio/candy.wav" id="js-candysound"></audio>
+      <audio src="./audio/hitsound.wav" id="js-hitsound"></audio>
+
+      <img id="js-fruitIcon" src="./img/png/appleIcon.png" alt="fruitIcon" />
+      <img id="js-candyIcon" src="./img/png/candyIcon.png" alt="candyIcon" />
+
+      <img id="js-greensnakehead" src="./img/png/snakes/green/snakeboi-head.png" alt="snakeboi-head" />
+      <img id="js-greensnakebody" src="./img/png/snakes/green/snakeboi-body.png" alt="snakeboi-body" />
+      <img id="js-greensnakebodyhalf" src="./img/png/snakes/green/snakeboi-body-half.png" alt="snakeboi-body-half" />
+      <img id="js-greensnakebodyotherhalf" src="./img/png/snakes/green/snakeboi-body-otherhalf.png" alt="snakeboi-body-otherhalf" />
+      <img id="js-greensnakecorner" src="./img/png/snakes/green/snakeboi-corner.png" alt="snakeboi-corner" />
+      <img id="js-greensnaketail" src="./img/png/snakes/green/snakeboi-tail.png" alt="snakeboi-tail" />
+
+      <img id="js-redsnakehead" src="./img/png/snakes/red/snakeboi-head.png" alt="snakeboi-head" />
+      <img id="js-redsnakebody" src="./img/png/snakes/red/snakeboi-body.png" alt="snakeboi-body" />
+      <img id="js-redsnakecorner" src="./img/png/snakes/red/snakeboi-corner.png" alt="snakeboi-corner" />
+      <img id="js-redsnaketail" src="./img/png/snakes/red/snakeboi-tail.png" alt="snakeboi-tail" />
+      <img id="js-redsnakebodyhalf" src="./img/png/snakes/red/snakeboi-body-half.png" alt="snakeboi-body-half" />
+      <img id="js-redsnakebodyotherhalf" src="./img/png/snakes/red/snakeboi-body-otherhalf.png" alt="snakeboi-body-otherhalf" />
+
+      <img id="js-bluesnakehead" src="./img/png/snakes/blue/snakeboi-head.png" alt="snakeboi-head" />
+      <img id="js-bluesnakebody" src="./img/png/snakes/blue/snakeboi-body.png" alt="snakeboi-body" />
+      <img id="js-bluesnakecorner" src="./img/png/snakes/blue/snakeboi-corner.png" alt="snakeboi-corner" />
+      <img id="js-bluesnaketail" src="./img/png/snakes/blue/snakeboi-tail.png" alt="snakeboi-tail" />
+      <img id="js-bluesnakebodyhalf" src="./img/png/snakes/blue/snakeboi-body-half.png" alt="snakeboi-body-half" />
+      <img id="js-bluesnakebodyotherhalf" src="./img/png/snakes/blue/snakeboi-body-otherhalf.png" alt="snakeboi-body-otherhalf" />
+
+      <img id="js-yellowsnakehead" src="./img/png/snakes/yellow/snakeboi-head.png" alt="snakeboi-head" />
+      <img id="js-yellowsnakebody" src="./img/png/snakes/yellow/snakeboi-body.png" alt="snakeboi-body" />
+      <img id="js-yellowsnakecorner" src="./img/png/snakes/yellow/snakeboi-corner.png" alt="snakeboi-corner" />
+      <img id="js-yellowsnaketail" src="./img/png/snakes/yellow/snakeboi-tail.png" alt="snakeboi-tail" />
+      <img id="js-yellowsnakebodyhalf" src="./img/png/snakes/yellow/snakeboi-body-half.png" alt="snakeboi-body-half" />
+      <img id="js-yellowsnakebodyotherhalf" src="./img/png/snakes/yellow/snakeboi-body-otherhalf.png" alt="snakeboi-body-otherhalf" />
+    </div>
+  </body>
+</html>
