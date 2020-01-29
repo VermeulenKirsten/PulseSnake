@@ -1,7 +1,7 @@
 let mqtt;
 let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
-let port = 80;
+let port = 443;
 let loadedPlayers = {};
 hostNotified = false;
 
