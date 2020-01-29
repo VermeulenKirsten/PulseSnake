@@ -105,7 +105,6 @@ const loadRoomInfo = function() {
 // ***********  add eventlistener to submit button and generate room ***********
 
 const addListener = function() {
-  console.log(playerRole);
 
   if (playerRole == 'Host') {
     domStart.addEventListener('click', goToGame);
@@ -162,7 +161,6 @@ const goToCreate = function() {
 };
 
 const goToJoin = function() {
-  console.log('craeet');
   window.location.href = 'join.html';
   message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
   message.destinationName = roomId;
