@@ -15,7 +15,6 @@ const notifyHost = function() {
 };
 
 const onConnect = function() {
-  console.log('Connected');
   mqtt.subscribe(roomInfo.roomId);
 };
 
@@ -36,8 +35,6 @@ const onMessageArrived = function(msg) {
           mqtt.send(message);
 
           if (new Set(Object.values(loadedPlayers)).size === 1) {
-            console.log('all players are loaded');
-
             message = new Paho.MQTT.Message(JSON.stringify(new Message('startGame', '')));
             message.destinationName = roomInfo.roomId;
             mqtt.send(message);
@@ -60,7 +57,6 @@ const onMessageArrived = function(msg) {
       break;
     case 'snake':
       {
-        // console.log('snake message received ');
         for (let t in snakes) {
           if (snakes[t].Id == message.message.Id) {
             snakes[t].Name = message.message.Name;
@@ -85,14 +81,12 @@ const onMessageArrived = function(msg) {
       break;
     case 'fruit':
       {
-        console.log('fruit  message received ', message.message);
         fruit = message.message;
         drawFruit();
       }
       break;
     case 'candy':
       {
-        console.log('candy message received ', message.message);
         candy = message.message;
         drawCandy();
       }
@@ -131,8 +125,6 @@ const onMessageArrived = function(msg) {
 };
 
 const MQTTconnect = function() {
-  console.log('connecting to ' + host);
-  console.log('mqqtt id: ', playerId);
   mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
   let options = {
     timeout: 0,
