@@ -102,6 +102,7 @@ const getdomelements = function() {
   nextGifHTML = document.querySelector('.js-next-gif');
   indicatorPosition = document.querySelectorAll('.js-position');
   titleHTML = document.querySelector('.js-title');
+  tutorialButtonText = document.querySelector('.js-tutorial-button');
 
   greenSnakeHead = document.querySelector('#js-greensnakehead');
   greenSnakeTail = document.querySelector('#js-greensnaketail');
@@ -150,6 +151,10 @@ const gifListener = function() {
         if (dataPosition < '3') {
           element.classList.remove('c-tutorial__indicator-active');
         }
+
+        if (dataPosition == '2') {
+          tutorialButtonText.innerHTML = 'Start Spel';
+        }
       }
     });
     indicatorPosition.forEach(element => {
@@ -170,6 +175,9 @@ const gifListener = function() {
         dataPosition = element.dataset.position;
         if (dataPosition > '0') {
           element.classList.remove('c-tutorial__indicator-active');
+        }
+        if (dataPosition > '2') {
+          tutorialButtonText.innerHTML = 'Overslaan';
         }
       }
     });
