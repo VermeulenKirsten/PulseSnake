@@ -884,9 +884,11 @@ const getHeartbeat = function() {
           baseHeartBeat = heartValue;
         }
         if (heartValue < baseHeartBeat) {
-          baseHeartBeat = heartValue;
-          console.log('BaseHeartBeat: ' + baseHeartBeat);
-          tellerBaseHeartBeat = 1;
+          if (heartValue >= 60) {
+            baseHeartBeat = heartValue;
+            console.log('BaseHeartBeat: ' + baseHeartBeat);
+            tellerBaseHeartBeat = 1;
+          }
         }
         getHeartbeatCurrentSnake(heartValue);
         hartslagwaardeHTML.innerHTML = heartValue;
