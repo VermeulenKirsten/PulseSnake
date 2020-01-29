@@ -37,12 +37,7 @@ let makeymakeytest = 0;
 let overlayTutorialHTML;
 let continueTutorialHTML;
 let listGifs = ['apple.gif', 'candy.gif', 'eatMyself.gif', 'hartslag.gif'];
-let listTitles = [
-  'Eet appels en scoor punten!',
-  'Eet geen snoep of je verliest punten',
-  'Jezelf opeten maakt je korter',
-  'Een hogere hartslag zorgt voor hogere snelheid'
-];
+let listTitles = ['Eet appels en scoor punten!', 'Eet geen snoep of je verliest punten', 'Jezelf opeten maakt je korter', 'Een hogere hartslag zorgt voor hogere snelheid'];
 let snakePositions = [
   [
     [2, 3],
@@ -107,6 +102,7 @@ const getdomelements = function() {
   nextGifHTML = document.querySelector('.js-next-gif');
   indicatorPosition = document.querySelectorAll('.js-position');
   titleHTML = document.querySelector('.js-title');
+  tutorialButtonText = document.querySelector('.js-tutorial-button');
 
   greenSnakeHead = document.querySelector('#js-greensnakehead');
   greenSnakeTail = document.querySelector('#js-greensnaketail');
@@ -141,6 +137,8 @@ const getdomelements = function() {
   candySound = document.querySelector('#js-candysound');
   hitSound = document.querySelector('#js-hitsound');
   heartLoadingAnimation = document.querySelector('.js-heartanimation');
+
+  muteButton = document.querySelector('#js-mute');
 };
 
 const gifListener = function() {
@@ -153,6 +151,10 @@ const gifListener = function() {
         if (dataPosition < '3') {
           element.classList.remove('c-tutorial__indicator-active');
         }
+
+        if (dataPosition == '2') {
+          tutorialButtonText.innerHTML = 'Start Spel';
+        }
       }
     });
     indicatorPosition.forEach(element => {
@@ -161,7 +163,7 @@ const gifListener = function() {
       }
     });
     if (dataPosition < '3') {
-      gifHTML.src = `/img/gif/${listGifs[parseInt(dataPosition) + 1]}`;
+      gifHTML.src = `img/gif/${listGifs[parseInt(dataPosition) + 1]}`;
       titleHTML.innerHTML = listTitles[parseInt(dataPosition) + 1];
     }
   });
@@ -174,6 +176,9 @@ const gifListener = function() {
         if (dataPosition > '0') {
           element.classList.remove('c-tutorial__indicator-active');
         }
+        if (dataPosition > '2') {
+          tutorialButtonText.innerHTML = 'Overslaan';
+        }
       }
     });
     indicatorPosition.forEach(element => {
@@ -182,7 +187,7 @@ const gifListener = function() {
       }
     });
     if (dataPosition > '0') {
-      gifHTML.src = `/img/gif/${listGifs[parseInt(dataPosition) - 1]}`;
+      gifHTML.src = `img/gif/${listGifs[parseInt(dataPosition) - 1]}`;
       titleHTML.innerHTML = listTitles[parseInt(dataPosition) - 1];
     }
   });
@@ -192,26 +197,15 @@ const gifListener = function() {
 const listener = function() {
   document.querySelector('.js-lobby').addEventListener('click', function() {
     if (playerNr != 0) {
-      if (lobbyReady) {
-        for (let player of roomInfo.players) {
-          if (player.id == playerId) {
-            sessionStorage.setItem('player', JSON.stringify(player));
-          }
-        }
-        window.location.href = 'hostlobby.html?roomId=' + roomInfo.roomId;
-      } else {
-        message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
-        message.destinationName = roomInfo.roomId;
-        mqtt.send(message);
-        window.location.href = 'index.html';
-      }
+      message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+      message.destinationName = roomInfo.roomId;
+      mqtt.send(message);
+      //window.location.href = 'index.html';
     } else {
-      for (let player in roomInfo.players) {
-        roomInfo.players[player].ready = false;
-      }
-      console.log(roomInfo);
-      sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-      window.location.href = 'hostlobby.html';
+      sessionStorage.clear();
+      sessionStorage.setItem('sound', !muteButton.checked);
+
+      window.location.href = 'index.html';
     }
   });
 };
@@ -573,14 +567,7 @@ const drawCandy = function() {
 // *********** generate snake objects ***********
 const generateSnakes = function() {
   for (let i in roomInfo.players) {
-    newsnake = new Snake(
-      roomInfo.players[i].name,
-      roomInfo.players[i].id,
-      snakePositions[i],
-      snakeStartDirections[i],
-      roomInfo.defaultSpeed,
-      roomInfo.players[i].color
-    );
+    newsnake = new Snake(roomInfo.players[i].name, roomInfo.players[i].id, snakePositions[i], snakeStartDirections[i], roomInfo.defaultSpeed, roomInfo.players[i].color);
     switch (roomInfo.players[i].color) {
       case '#FF0000':
         newsnake.head = redSnakeHead;
@@ -626,12 +613,6 @@ const getSessionData = function() {
 };
 
 const startCountDown = function() {
-  audioPlayer.play();
-  muteButton = document.querySelector('#js-mute');
-  muteButton.addEventListener('click', function() {
-    console.log(muteButton);
-    audioPlayer.muted = !muteButton.checked;
-  });
   if (countDownTime == 0) {
     countDownhtml.children[0].innerHTML = 'GO!';
   } else if (countDownTime == -1) {
@@ -668,10 +649,16 @@ const startMovement = function() {
 const playMusic = function() {
   audioPlayer.play();
   audioPlayer.loop = true;
-  muteButton = document.querySelector('#js-mute');
+  if (sessionStorage.getItem('sound') == 'true') {
+    audioPlayer.muted = true;
+    muteButton.checked = false;
+  } else {
+    audioPlayer.muted = false;
+    muteButton.checked = true;
+  }
   muteButton.addEventListener('click', function() {
-    console.log(muteButton);
     audioPlayer.muted = !muteButton.checked;
+    sessionStorage.setItem('sound', !muteButton.checked);
   });
 };
 const gameOver = function() {
@@ -748,11 +735,6 @@ const continueTutorial = function() {
     overlayMovementHTML.classList.add('o-hide-accessible');
     overlayTutorialHTML.classList.remove('o-hide-accessible');
   });
-  // continueTutorialHTML.addEventListener('click', function() {
-  //   overlayTutorialHTML.classList.add('o-hide-accessible');
-  //   playMusic();
-  //   InitiateStartSecuence();
-  // });
 };
 
 const tutorialbuttons = function() {
@@ -1000,7 +982,6 @@ const checkPlayer = function() {
   if (playerId == roomInfo.players[0].id) {
     playerNr = 0;
     for (player of roomInfo.players) {
-      console.log('p:', player);
       loadedPlayers[player.id] = false;
     }
   } else {
@@ -1015,7 +996,7 @@ const checkPlayer = function() {
 
 const InitiateStartSecuence = function() {
   listener();
-  MQTTconnect();
+  notifyHost();
 };
 
 // *********** Init / DOMContentLoaded ***********
@@ -1029,12 +1010,18 @@ const init = function() {
   infobuttons();
   tutorialbuttons();
   navigation();
+  MQTTconnect();
+
   getHeartbeat(scores);
   generateSnakes();
 
   //generateSnakes();
   // beginGame;
 };
+
+if (location.protocol != 'http:') {
+  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   init();

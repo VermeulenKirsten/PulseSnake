@@ -20,7 +20,6 @@ const moveSlider = function() {
       domSelector.style.left = `${button.dataset.pos}%`;
       domSelectortext.innerHTML = button.value;
       getScores(button.value);
-      console.log(button.value);
       scoreType = button.value;
     }
   });
@@ -42,7 +41,6 @@ const eventListeners = function() {
 };
 
 const insertScores = function(scores) {
-  console.log(scores);
   let newhtml = '';
   for (index in scores) {
     newhtml += `<div class="c-input c-scoreboard__item">
@@ -55,7 +53,6 @@ const insertScores = function(scores) {
 
 // ***********  get scores ***********
 const getScores = async function(scoreType) {
-  console.log(`https://kotsapi.azurewebsites.net/api/getScoreType/${scoreType}`);
   const get = await fetch(`https://kotsapi.azurewebsites.net/api/getScoreType/${scoreType}`);
   const scores = await get.json();
   insertScores(scores);
@@ -68,5 +65,8 @@ const init = function() {
   eventListeners();
   getScores('Score');
 };
+if (location.protocol != 'http:') {
+  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
+}
 
 document.addEventListener('DOMContentLoaded', init);

@@ -81,7 +81,7 @@ html {
 *,
 *:before,
 *:after {
-  cursor: url('/img/cursor/cur222.cur'), auto;
+  cursor: url('../img/cursor/cur222.cur'), auto;
   box-sizing: inherit;
 }
 
@@ -373,7 +373,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/background.png') center no-repeat;
+  background: white url('../img/png/background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -527,7 +527,7 @@ input::placeholder {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/landingpage.png') center no-repeat;
+  background: white url('../img/png/landingpage.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -652,6 +652,26 @@ li:last-child > .c-speed__indicator {
   height: calc(var(--global-baseline) * 8);
 }
 
+.c-icon__hidden-pencil {
+  display: block;
+}
+
+.c-icon__hidden-save {
+  display: none;
+}
+
+.c-input:focus + label > .c-icon__hidden-pencil {
+  display: none;
+}
+.c-input:focus + label > .c-icon__hidden-save {
+  display: block;
+}
+.c-input:active + label > .c-icon__hidden-pencil {
+  display: none;
+}
+.c-input:active + label > .c-icon__hidden-save {
+  display: block;
+}
 /* ---------------- Game ---------------- */
 .c-game {
   position: relative;
@@ -659,7 +679,7 @@ li:last-child > .c-speed__indicator {
   z-index: 2;
   max-height: 100vh;
   height: 100vh;
-  background: white url('/img/png/simple_background.png') center no-repeat;
+  background: white url('../img/png/simple_background.png') center no-repeat;
   background-size: cover;
   overflow: hidden;
 }
@@ -696,7 +716,7 @@ li:last-child > .c-speed__indicator {
 
 .c-game__field {
   display: block;
-  background-image: url('/img/png/field_background.png');
+  background-image: url('../img/png/field_background.png');
 }
 
 .c-players {
@@ -727,7 +747,7 @@ li:last-child > .c-speed__indicator {
   width: 100%;
   height: 100%;
   background-color: white;
-  background-image: url('/img/png/background.png');
+  background-image: url('../img/png/background.png');
   background-size: cover;
   overflow: hidden;
 }
@@ -827,11 +847,12 @@ li:last-child > .c-speed__indicator {
 }
 
 .c-tutorial__indicator {
-  height: var(--global-whitespace-sm);
+  height: var(--global-baseline);
   background-color: var(--global-color-gamma);
   border-radius: var(--global-border-radius);
   margin-right: var(--global-whitespace-md);
-  width: var(--global-whitespace-xxl);
+  margin-bottom: var(--global-whitespace-xxl);
+  width: var(--global-whitespace-md);
   transition: transform var(--global-transition-beta);
 }
 
@@ -848,7 +869,7 @@ li:last-child > .c-speed__indicator {
   display: grid;
   grid-template-columns: repeat(3, auto);
   column-gap: var(--global-whitespace-xxl);
-  margin-bottom: calc(var(--global-baseline) * 12);
+  margin-bottom: var(--global-whitespace-xxl);
 }
 
 .c-tutorial__skip {
@@ -897,6 +918,93 @@ li:last-child > .c-speed__indicator {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.c-mute + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-unmuted {
+  display: none;
+}
+
+.c-mute:checked + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-unmuted {
+  display: block;
+}
+
+.c-mute + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-muted {
+  display: block;
+}
+
+.c-mute:checked + .c-mute-label .c-button__base .c-button__outerhead .c-button__innerhead .c-icon-muted {
+  display: none;
+}
+
+.c-tutorial__heart-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: none;
+}
+.c-loader__circle {
+  stroke: white;
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 10px;
+  stroke-dasharray: 0 470;
+  stroke-dashoffset: 380;
+  transform-origin: 256px 256px;
+  animation: cirkel 2s linear infinite;
+}
+.c-loader__circle2 {
+  stroke-dashoffset: 400;
+  animation-delay: 0.15s;
+}
+.c-loader__circle3 {
+  stroke-dashoffset: 420;
+  animation-delay: 0.3s;
+}
+
+@keyframes cirkel {
+  0% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(60deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------------- Credits ---------------- */
+
+.c-credits {
+  align-items: flex-start;
+  margin-bottom: 48px;
+  width: 100%;
+  max-width: 50%;
+  justify-content: space-around;
+}
+
+.c-credits__gap {
+  margin-right: 72px;
+}
+
+.c-logo {
+  width: 200px;
+  margin-left: 48px;
+  margin-right: 48px;
+}
+
+.c-logo-layout {
+  display: flex;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.c-logo-line {
+  border-right: 2px solid #000;
+  height: 100px;
+  display: flex;
+  align-items: center;
 }
 
 /* ---------------- Scoreboard ---------------- */

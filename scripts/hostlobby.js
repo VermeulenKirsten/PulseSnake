@@ -23,16 +23,16 @@ const showplayers = function() {
   for (player of roomInfo.players) {
     switch (player.color) {
       case '#FF0000':
-        head = '/img/png/red_head.png';
+        head = './img/png/red_head.png';
         break;
       case '#00FF00':
-        head = '/img/png/green_head.png';
+        head = './img/png/green_head.png';
         break;
       case '#0000FF':
-        head = '/img/png/blue_head.png';
+        head = './img/png/blue_head.png';
         break;
       case '#FFFF00':
-        head = '/img/png/yellow_head.png';
+        head = './img/png/yellow_head.png';
         break;
     }
     output += `<li class="o-layout__center c-lobby__player">
@@ -156,9 +156,7 @@ const updateName = function() {
 
 // ***********  Navigation ***********
 const goToCreate = function() {
-  console.log('craeet');
   sessionStorage.clear();
-
   window.location.href = 'create.html';
 };
 
@@ -201,21 +199,7 @@ const init = function() {
   roomId = url.searchParams.get('roomId');
   if (roomId) {
     playerRole = 'Guest';
-    if (sessionStorage.getItem('player')) {
-      localPlayer = JSON.parse(sessionStorage.getItem('player'));
-      oldRoom = JSON.parse(sessionStorage.getItem('roomInfo'));
-      let oldroomId = oldRoom.roomId;
-      playerId = localPlayer.id;
-      if (roomId == oldroomId) {
-        old = true;
-      } else {
-        old = false;
-        playerId = createUuid();
-      }
-    } else {
-      old = false;
-      playerId = createUuid();
-    }
+    playerId = createUuid();
     MQTTconnect(onConnectGuest);
     setTimeout(roomNotFound, 5000);
     generateDOMelements();
@@ -226,7 +210,6 @@ const init = function() {
     playerRole = 'Host';
     generateDOMelements();
     setHTML('Host');
-
     addListener();
     loadRoomInfo();
     updateSnakeColor();
@@ -249,5 +232,8 @@ const roomNotFound = function() {
     window.location.href = 'join.html?error=roomNotFound';
   }
 };
+if (location.protocol != 'http:') {
+  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
+}
 
 document.addEventListener('DOMContentLoaded', init);

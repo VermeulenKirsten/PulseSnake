@@ -20,7 +20,7 @@ const checkErrors = function() {
 
 // ***********  Navigation ***********
 const goToLobby = function() {
-  window.location.href = `http://127.0.0.1:5500/hostlobby.html?roomId=${domInput.value}`;
+  window.location.href = `/hostlobby.html?roomId=${domInput.value}`;
 };
 // ***********  go to play page ***********
 
@@ -39,5 +39,8 @@ const init = function() {
   eventListeners();
   checkErrors();
 };
+if (location.protocol != 'http:') {
+  location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
+}
 
 document.addEventListener('DOMContentLoaded', init);
