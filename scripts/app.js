@@ -30,7 +30,6 @@ let yellowSnakeHead, yellowSnakeBody, yellowSnakeCorner, yellowSnakeTail, yellow
 let audioPlayer, fruitSound, candySound, hitSound, muteButton;
 let countDownTime = 3;
 let baseHeartBeat;
-let baseSpeed = 4;
 let tellerBaseHeartBeat = 0;
 let heartLoadingAnimation;
 let makeymakeytest = 0;
@@ -774,7 +773,7 @@ const tutorialbuttons = function() {
 const getHeartbeatCurrentSnake = function(heartValue) {
   snakes[playerNr].heartbeat = heartValue;
   let snakespeed = (heartValue - baseHeartBeat) / 100;
-  snakes[playerNr].Speed = baseSpeed - snakespeed;
+  snakes[playerNr].Speed = roomInfo.defaultSpeed - snakespeed;
 };
 
 const getHeartbeat = function() {
