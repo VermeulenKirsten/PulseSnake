@@ -915,6 +915,9 @@ const getHeartbeat = function() {
 };
 
 const navigation = function() {
+  backHeart.addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
   backMovement.addEventListener('click', function() {
     overlayHTML.classList.remove('o-hide-accessible');
     overlayMovementHTML.classList.add('o-hide-accessible');
