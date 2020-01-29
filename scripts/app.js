@@ -200,7 +200,7 @@ const listener = function() {
       message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
       message.destinationName = roomInfo.roomId;
       mqtt.send(message);
-      //window.location.href = 'index.html';
+      window.location.href = 'index.html';
     } else {
       sessionStorage.clear();
       sessionStorage.setItem('sound', !muteButton.checked);
@@ -230,7 +230,6 @@ const handlekeydowns = function() {
       snakes[playerNr].Input('down');
     } else if (key.which === 70) {
       stop = true;
-      console.log(stop);
     }
   });
 };
@@ -497,7 +496,6 @@ const drawImage = function(image, x, y, degrees) {
 
 // *********** generate fruit ***********
 const generatefruit = function() {
-  // console.log('generating fruit');
   let x = Math.ceil(Math.random() * (gamewidth / scalefactor)) - 1;
   let y = Math.ceil(Math.random() * (gameheight / scalefactor)) - 1;
   fruit = [y, x];
@@ -688,7 +686,6 @@ const gameOver = function() {
 // *********** Begin Game ***********
 
 const beginGame = function() {
-  console.log('begin the game');
   checkPlayer();
   handlekeydowns();
   initializeScores();
@@ -866,9 +863,10 @@ const getHeartbeat = function() {
           baseHeartBeat = heartValue;
         }
         if (heartValue < baseHeartBeat) {
-          baseHeartBeat = heartValue;
-          console.log('BaseHeartBeat: ' + baseHeartBeat);
-          tellerBaseHeartBeat = 1;
+          if (heartValue >= 60) {
+            baseHeartBeat = heartValue;
+            tellerBaseHeartBeat = 1;
+          }
         }
         getHeartbeatCurrentSnake(heartValue);
         hartslagwaardeHTML.innerHTML = heartValue;
@@ -990,6 +988,13 @@ const checkPlayer = function() {
       }
     }
   }
+};
+// ***********  page reload ***********
+
+window.onbeforeunload = function() {
+  message = new Paho.MQTT.Message(JSON.stringify(new Message('disconnect', playerId)));
+  message.destinationName = roomId;
+  mqtt.send(message);
 };
 
 const InitiateStartSecuence = function() {

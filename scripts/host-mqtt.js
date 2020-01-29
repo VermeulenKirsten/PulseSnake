@@ -1,15 +1,13 @@
 let mqtt;
 let reconnectTimeout = 100;
 let host = 'mct-mqtt.westeurope.cloudapp.azure.com';
-let port = 80;
+let port = 443;
 let roomInfo;
 let localPlayer;
 
 // ***********  when succesfully connected to broker ***********
 
 const onConnect = function() {
-  console.log('Connected');
-
   mqtt.subscribe(roomInfo.roomId);
   message = new Paho.MQTT.Message(JSON.stringify(new Message('playerReady', playerId)));
   message.destinationName = roomInfo.roomId;
@@ -19,7 +17,6 @@ const onConnect = function() {
 // ***********  when succesfully connected to broker ***********
 
 const onConnectGuest = function() {
-  console.log('Connected');
   mqtt.subscribe(roomId);
   let guest = new Player(playerId);
   message = new Paho.MQTT.Message(JSON.stringify(new Message('player', guest)));
@@ -30,13 +27,11 @@ const onConnectGuest = function() {
 // ***********  not succesfully connected to broker ***********
 
 const onFailure = function() {
-  console.log('connection lost, reconnecting');
   setTimeout(MQTTconnect, reconnectTimeout);
 };
 // ***********  when a message arrives ***********
 
 const onMessageArrived = function(msg) {
-  console.log('message:', msg.payloadString);
   let incommingMessage = JSON.parse(msg.payloadString);
   switch (incommingMessage.type) {
     case 'player':
@@ -119,7 +114,6 @@ const onMessageArrived = function(msg) {
     case 'roomInfo':
       {
         if (playerRole == 'Guest') {
-          console.log('roomInfo received');
           roomInfo = incommingMessage.message;
           showplayers(roomInfo);
           updateNameInput();
@@ -134,7 +128,6 @@ const onMessageArrived = function(msg) {
           sessionStorage.setItem('roomInfo', roomInfo);
           sessionStorage.setItem('startTime', incommingMessage.message.startTime);
           sessionStorage.setItem('playerId', playerId);
-          console.log('startgame received', incommingMessage);
           window.location.href = 'game.html';
         }
       }
@@ -143,7 +136,6 @@ const onMessageArrived = function(msg) {
       {
         if (playerRole == 'Guest') {
           if (incommingMessage.message.errorMessage == 'room full' && incommingMessage.message.toId == playerId) {
-            console.log('room is full redirecting');
             window.location.href = 'join.html?error=roomFull';
           }
         }
@@ -158,7 +150,6 @@ const onMessageArrived = function(msg) {
 // ***********  connect to broker ***********
 
 const MQTTconnect = function(succesCallback) {
-  console.log('connecting to ' + host);
   mqtt = new Paho.MQTT.Client(host, Number(port), playerId);
   let options = {
     timeout: 0,

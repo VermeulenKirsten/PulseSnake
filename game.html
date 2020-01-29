@@ -20,7 +20,8 @@
     <script src="scripts/Models/Snake.js"></script>
     <script src="scripts/Models/Message.js"></script>
     <script src="scripts/Models/Room.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script> -->
+    <script src="scripts/mqtt-lib.js" type="text/javascript"></script>
     <script src="scripts/mqtt.js"></script>
     <script src="scripts/app.js"></script>
 
@@ -308,7 +309,7 @@
     <!-- End Overlay -->
     <!-- Storage voor sprites -->
     <div class="c-sprites">
-      <audio src="./audio/snakemusic.wav" id="js-audioplayer"></audio>
+      <audio src="./audio/snakemusic.mp3" id="js-audioplayer"></audio>
       <audio src="./audio/fruit.wav" id="js-fruitsound"></audio>
       <audio src="./audio/candy.wav" id="js-candysound"></audio>
       <audio src="./audio/hitsound.wav" id="js-hitsound"></audio>
