@@ -119,6 +119,11 @@ const onMessageArrived = function(msg) {
         }
       }
       break;
+    case 'gamestop':
+      {
+        window.location.href = '/index.html';
+      }
+      break;
 
     default: {
       console.log('unknown message');
